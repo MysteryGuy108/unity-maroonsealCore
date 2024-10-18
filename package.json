@@ -1,0 +1,21 @@
+{
+  "name": "com.maroonseal.maths",
+  "version": "1.0.0",
+  "displayName": "Maths",
+  "description": "A small maths library for Unity",
+  "unity": "2022.3",
+  "unityRelease": "20f1",
+  "documentationUrl": "https://example.com/",
+  "changelogUrl": "https://example.com/changelog.html",
+  "licensesUrl": "https://example.com/licensing.html",
+  "keywords": [
+    "custom",
+    "gizmos",
+    "utility"
+  ],
+  "author": {
+    "name": "MaroonSeal",
+    "email": "rory@maroonseal.com",
+    "url": "https://www.maroonseal.com"
+  }
+}

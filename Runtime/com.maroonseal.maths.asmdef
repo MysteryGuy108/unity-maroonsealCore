@@ -1,0 +1,21 @@
+{
+    "name": "com.maroonseal.maths",
+    "rootNamespace": "MaroonSeal.Packages.Maths",
+    "references": [
+        "GUID:f50f064ae3ab8cd4e9f5c3a38c1ed10a",
+        "GUID:e60f7798570068c439638171927b998a",
+        "GUID:8bde553b4b7b5b243ab7c742b70770a8",
+        "GUID:c75c8b724a1858e4eae9c373c38f1e75",
+        "GUID:9a9721b5895a9604eaf222f65c7e719b",
+        "GUID:2679f56e4aa58e14c91df806c9ce3e07"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
