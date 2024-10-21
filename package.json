@@ -1,8 +1,8 @@
 {
-  "name": "com.maroonseal.maths",
+  "name": "com.maroonseal.mathsanddatastructures",
   "version": "1.0.0",
-  "displayName": "Maths",
-  "description": "A small maths library for Unity",
+  "displayName": "Maths And Data Structures",
+  "description": "A small maths and data structures library helpful for game development in Unity",
   "unity": "2022.3",
   "unityRelease": "20f1",
   "documentationUrl": "https://example.com/",
