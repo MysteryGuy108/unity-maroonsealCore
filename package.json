@@ -1,17 +1,20 @@
 {
-  "name": "com.maroonseal.mathsanddatastructures",
+  "name": "com.maroonseal.core",
   "version": "1.0.0",
-  "displayName": "Maths And Data Structures",
-  "description": "A small maths and data structures library helpful for game development in Unity",
+  "displayName": "Maroon Seal Core",
+  "description": "A small collection of code libraries for use with Maroon Seal pacakges.",
   "unity": "2022.3",
   "unityRelease": "20f1",
   "documentationUrl": "https://example.com/",
   "changelogUrl": "https://example.com/changelog.html",
   "licensesUrl": "https://example.com/licensing.html",
   "keywords": [
-    "custom",
-    "gizmos",
-    "utility"
+    "maroon",
+    "seal",
+    "utility",
+    "maths",
+    "data",
+    "structures"
   ],
   "author": {
     "name": "MaroonSeal",
