@@ -42,18 +42,14 @@ namespace MaroonSeal.Packages.Maths.Cardinals {
 
         #region Get/Set
         public TData this[int i] {
-            get { 
-                switch (i) {
-                    case 0:
-                        return north;
-                    case 1:
-                        return east;
-                    case 2:
-                        return south;
-                    case 3:
-                        return west;
-                }
-                return default(TData);
+            readonly get {
+                return i switch {
+                    0 => north,
+                    1 => east,
+                    2 => south,
+                    3 => west,
+                    _ => default,
+                };
             }
 
             set {
@@ -71,21 +67,17 @@ namespace MaroonSeal.Packages.Maths.Cardinals {
         }
 
         public TData this[Cardinal2D _i] {
-            get { return this[_i.Index]; }
+            readonly get { return this[_i.Index]; }
             set { this[_i.Index] = value; }
         }
 
-        private TData GetData(Cardinal2D _direction) {
-            switch(_direction.cardinalDirection) {
-                case Cardinal2D.CardinalIndex.East:
-                    return east;
-                case Cardinal2D.CardinalIndex.South:
-                    return south;
-                case Cardinal2D.CardinalIndex.West:
-                    return west;
-                default:
-                    return north;
-            }
+        readonly public TData GetData(Cardinal2D _direction) {
+            return _direction.cardinalDirection switch {
+                Cardinal2D.CardinalIndex.East => east,
+                Cardinal2D.CardinalIndex.South => south,
+                Cardinal2D.CardinalIndex.West => west,
+                _ => north,
+            };
         }
 
         public void SetData(TData _data, Cardinal2D _direction) {
@@ -105,9 +97,7 @@ namespace MaroonSeal.Packages.Maths.Cardinals {
             }
         }
 
-        public TData[] GetArray() {
-            return new TData[4] { north, east, south, west };
-        }
+        readonly public TData[] GetArray() { return new TData[4] { north, east, south, west }; }
         #endregion
 
         #region Operators
@@ -125,19 +115,23 @@ namespace MaroonSeal.Packages.Maths.Cardinals {
                     _x.west.Equals(_y.west);
         }
 
-        override public bool Equals(object obj) {
+        public override readonly bool Equals(object obj) {
             if (obj is not Cardinal2DArray<TData>) { return false; }
 
             Cardinal2DArray<TData> mys = (Cardinal2DArray<TData>) obj;
             return this == mys;
         }
+
+        readonly public override int GetHashCode() {
+            return System.HashCode.Combine(north, east, south, west);
+        }
         #endregion
-    
+
         public Cardinal2DArray<TData> GetRotated(Cardinal2D _rotation) {
             return GetRotated(_rotation, true);
         }
 
-        public Cardinal2DArray<TData> GetRotated(Cardinal2D _rotation, bool _isClockwise) {
+        readonly public Cardinal2DArray<TData> GetRotated(Cardinal2D _rotation, bool _isClockwise) {
 
             TData[] rotatedEdges = new TData[4];
             TData[] edgeArray = GetArray();

@@ -149,5 +149,13 @@ namespace MaroonSeal.Packages.Maths.Cardinals {
         public static bool operator !=(Cardinal2D x, Cardinal2D y) {
             return x.cardinalDirection != y.cardinalDirection;
         }
+        readonly public override bool Equals(object obj) {
+            if (obj == null) { return false; }
+            if (obj is not Cardinal2D) { return false; }
+            return (Cardinal2D)obj == this;
+        }
+        readonly public override int GetHashCode() {
+            unchecked { return cardinalDirection.GetHashCode(); }
+        }
     }
 }

@@ -13,8 +13,6 @@ namespace MaroonSeal.Packages.Maths.Geometry {
             Radius = _radius;
         }
 
-        public bool IsPointInCircle(Vector2 _point) {
-            return Vector2.Distance(_point, Centre) < Radius;
-        }
+        readonly public bool IsPointInCircle(Vector2 _point) { return Vector2.Distance(_point, Centre) < Radius; }
     }
 }
