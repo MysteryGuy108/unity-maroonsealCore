@@ -25,7 +25,8 @@ namespace MaroonSeal.Packages.EditorExtras {
             }
 
             PolymorphicReferenceAttribute polymorphicReference = attribute as PolymorphicReferenceAttribute;
-
+            int currentIndent = EditorGUI.indentLevel;
+            EditorGUI.indentLevel = 0;
             EditorGUI.BeginProperty(_position, _label, _property);
 
             Rect headerPosition = _position;
@@ -51,6 +52,7 @@ namespace MaroonSeal.Packages.EditorExtras {
             EditorGUI.PropertyField(_position, _property, GUIContent.none, true);
 
             EditorGUI.EndProperty();
+            EditorGUI.indentLevel = currentIndent;
         }
 
         public override float GetPropertyHeight(SerializedProperty _property, GUIContent _label) {
