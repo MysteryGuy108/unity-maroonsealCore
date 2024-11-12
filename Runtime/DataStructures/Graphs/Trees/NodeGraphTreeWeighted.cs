@@ -12,7 +12,7 @@ namespace MaroonSeal.Core.DataStructures.NodeGraphs {
         public NodeGraphTreeWeighted(NodeGraphWeighted<TData> _inputGraph) : base() {
 
             // Copying nodes.
-            for(int i = 0; i < _inputGraph.NodeCount; i++) { AddNode(_inputGraph[i]); }
+            for(int i = 0; i < _inputGraph.NodeCount; i++) { PushNode(_inputGraph[i]); }
 
             // Adding edges.
             for(int i = 0; i < _inputGraph.NodeCount; i++) {

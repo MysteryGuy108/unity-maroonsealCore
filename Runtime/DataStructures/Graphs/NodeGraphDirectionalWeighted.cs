@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Core.DataStructures.NodeGraphs  {
+namespace MaroonSeal.Core.DataStructures.NodeGraphs {
 
     public class NodeGraphDirectionalWeighted<TData> : IEnumerable<TData>
     {
@@ -39,26 +39,26 @@ namespace MaroonSeal.Core.DataStructures.NodeGraphs  {
         }
         #endregion
 
-        #region Adding Nodes
-        public void AddNode(TData _node) {
-            AddNode(_node, Mathf.Infinity);
+        #region Pushing Nodes
+        public void PushNode(TData _node) {
+            PushNode(_node, Mathf.Infinity);
         }
 
-        virtual public void AddNode(TData _node, float _startWeight) {
-            AddNodeToList(_node, _startWeight);
+        virtual public void PushNode(TData _node, float _startWeight) {
+            PushNodeToList(_node, _startWeight);
         }
         
-        public void AddNodeRange(List<TData> _nodes) {
-            AddNodeRange(_nodes, Mathf.Infinity);
+        public void PushNodeRange(List<TData> _nodes) {
+            PushNodeRange(_nodes, Mathf.Infinity);
         }
 
-        virtual public void AddNodeRange(List<TData> _nodes, float _startWeight) {
+        virtual public void PushNodeRange(List<TData> _nodes, float _startWeight) {
             foreach(TData newNode in _nodes) {
-                AddNodeToList(newNode, _startWeight);
+                PushNodeToList(newNode, _startWeight);
             }
         }
 
-        private void AddNodeToList(TData _node, float _startWeight) {
+        private void PushNodeToList(TData _node, float _startWeight) {
             if (nodeList.Contains(_node)) { return; }
 
             nodeList.Add(_node);
@@ -69,8 +69,29 @@ namespace MaroonSeal.Core.DataStructures.NodeGraphs  {
             adjacencyMatrix.Add(new List<float>());
 
             for(int j=0; j < nodeList.Count; j++) {
-                adjacencyMatrix[nodeIndexLookup[_node]].Add(_startWeight);
+                if (adjacencyMatrix[nodeIndexLookup[_node]].Count < nodeList.Count) {
+                    adjacencyMatrix[nodeIndexLookup[_node]].Add(_startWeight);
+                }
+                else { adjacencyMatrix[nodeIndexLookup[_node]][j] = _startWeight; }
             }
+        }
+        #endregion
+
+        #region Popping Nodes
+        public TData PopNode() {
+            if (nodeList.Count <= 0) { return default; }
+            TData node = nodeList[^1];
+
+            for(int j=0; j < adjacencyMatrix.Count; j++) {
+                adjacencyMatrix[j][^1] = Mathf.Infinity;
+            }
+
+            adjacencyMatrix[^1].Clear();
+            adjacencyMatrix.RemoveAt(adjacencyMatrix.Count-1);
+
+            nodeIndexLookup.Remove(node);
+            nodeList.RemoveAt(nodeList.Count-1);
+            return node;
         }
         #endregion
 
@@ -119,7 +140,7 @@ namespace MaroonSeal.Core.DataStructures.NodeGraphs  {
         #region Operators
         public void Union(NodeGraphDirectionalWeighted<TData> _other) {
             // Adding nodes.
-            for(int i = 0; i < _other.NodeCount; i++) { AddNode(_other[i]); }
+            for(int i = 0; i < _other.NodeCount; i++) { PushNode(_other[i]); }
 
             foreach(TData node in _other) {
                 List<TData> adjacents = _other.GetAdjacentNodes(node);

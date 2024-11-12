@@ -12,7 +12,7 @@ namespace MaroonSeal.Core.DataStructures.NodeGraphs.Generators {
             NodeGraphWeighted<Vector2> graph = new();
             
             // Adding points to graph.
-            graph.AddNodeRange(_points);
+            graph.PushNodeRange(_points);
 
             List<TriangleVector2> triangles = CaluclateTrianglesFromPoints(_points, _pointsSquareBounds);
 

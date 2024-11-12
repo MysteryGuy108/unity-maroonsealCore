@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using MaroonSeal.Libraries.DataStructures;
-
 namespace MaroonSeal.Core.DataStructures.NodeGraphs.Traversal {
     abstract public class NodeGraphDijkstraTraversal
     {
