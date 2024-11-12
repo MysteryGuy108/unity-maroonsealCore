@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Packages.Maths.Geometry {
+namespace MaroonSeal.Core.Maths.Geometry {
     public struct TriangleVector2
     {
         public Vector2 PointA { get; private set; }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace MaroonSeal.Packages.Callbacks {
+namespace MaroonSeal.Core.Callbacks {
 
     abstract public class ComponentCallbackFunc : ComponentCallbackBase {
         public ComponentCallbackFunc(Component _target, string _methodName) : base(_target, _methodName) {}

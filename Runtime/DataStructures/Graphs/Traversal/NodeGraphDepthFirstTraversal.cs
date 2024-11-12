@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace MaroonSeal.Packages.DataStructures.NodeGraphs.Traversal {
+namespace MaroonSeal.Core.DataStructures.NodeGraphs.Traversal {
     public class NodeGraphDepthFirstTraversal
     {
         #region Path to Node that meets condition

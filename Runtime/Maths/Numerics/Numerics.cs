@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Packages.Numeric {
+namespace MaroonSeal.Core.Maths.Numeric {
     static public class Numerics
     {
         readonly static public float EPSILON = 0.0001f;

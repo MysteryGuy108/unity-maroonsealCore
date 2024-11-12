@@ -8,7 +8,7 @@ using System.Linq;
 using UnityEditor;
 #endif
 
-namespace MaroonSeal.Packages.EditorExtras {
+namespace MaroonSeal.Core.EditorHelpers {
 
 #if UNITY_EDITOR
     public class ClassSelectionGenericMenu

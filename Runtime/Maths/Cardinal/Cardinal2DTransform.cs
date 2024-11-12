@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Packages.Maths.Cardinals {
+namespace MaroonSeal.Core.Maths.Cardinals {
     public class Cardinal2DTransform : MonoBehaviour
     {
         [Header("Cardinal Transform")]

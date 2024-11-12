@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Packages.Maths.Waves {
+namespace MaroonSeal.Core.Maths.Waves {
 
     [System.Serializable]
     public class GerstnerWave

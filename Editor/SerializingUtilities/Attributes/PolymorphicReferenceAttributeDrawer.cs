@@ -9,7 +9,9 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace MaroonSeal.Packages.EditorExtras {
+using MaroonSeal.Core.EditorHelpers;
+
+namespace MaroonSeal.Core.Drawers {
 
 #if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(PolymorphicReferenceAttribute))]

@@ -10,7 +10,7 @@ using System.Reflection;
 using UnityEditor;
 #endif
 
-namespace MaroonSeal.Packages.Callbacks {
+namespace MaroonSeal.Core.Callbacks.Drawers {
 
 #if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(ComponentCallbackBase), true)]

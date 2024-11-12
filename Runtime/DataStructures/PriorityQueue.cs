@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Packages.DataStructures {
+namespace MaroonSeal.Core.DataStructures {
 
     public class PriorityQueue<TData>
     {

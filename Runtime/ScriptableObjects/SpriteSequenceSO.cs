@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Packages.Data {
+namespace MaroonSeal.Core.Data {
     
     [CreateAssetMenu(menuName = "Maroon Seal/Animation/Sprite Sequence", fileName = "New Sprite Sequence")]
     public class SpriteSequenceSO : ScriptableObject

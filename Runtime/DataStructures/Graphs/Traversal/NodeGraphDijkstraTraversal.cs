@@ -4,7 +4,7 @@ using UnityEngine;
 
 using MaroonSeal.Libraries.DataStructures;
 
-namespace MaroonSeal.Packages.DataStructures.NodeGraphs.Traversal {
+namespace MaroonSeal.Core.DataStructures.NodeGraphs.Traversal {
     abstract public class NodeGraphDijkstraTraversal
     {
         public class DistanceTable {

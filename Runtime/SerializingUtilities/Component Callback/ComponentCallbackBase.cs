@@ -5,7 +5,7 @@ using System.Reflection;
 
 using UnityEngine;
 
-namespace MaroonSeal.Packages.Callbacks {
+namespace MaroonSeal.Core.Callbacks {
     [System.Serializable]
     abstract public class ComponentCallbackBase
     {

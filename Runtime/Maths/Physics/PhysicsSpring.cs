@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Packages.Maths.Physics {
+namespace MaroonSeal.Core.Maths.Physics {
     [System.Serializable]
     public class PhysicsSpring : PhysicsBody {
         [Header("Spring Settings")]

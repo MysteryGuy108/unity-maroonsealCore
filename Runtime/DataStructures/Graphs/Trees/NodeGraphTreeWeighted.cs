@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace MaroonSeal.Packages.DataStructures.NodeGraphs {
+namespace MaroonSeal.Core.DataStructures.NodeGraphs {
     public class NodeGraphTreeWeighted<TData> : NodeGraphWeighted<TData>
     {
         public NodeGraphTreeWeighted() : base() { }

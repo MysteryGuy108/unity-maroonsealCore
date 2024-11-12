@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Packages.Maths.Geometry {
+namespace MaroonSeal.Core.Maths.Geometry {
     public struct CircleVector2
     {
         public Vector2 Centre {get; private set;}

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Packages.Maths.PolarCoordinates {
+namespace MaroonSeal.Core.Maths.PolarCoordinates {
     [System.Serializable]
     public struct CylindricalCoordinate
     {
