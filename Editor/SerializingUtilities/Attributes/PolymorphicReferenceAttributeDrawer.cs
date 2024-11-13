@@ -44,7 +44,7 @@ namespace MaroonSeal.Core.Drawers {
                 if (!_property.managedReferenceValue.GetType().IsAbstract) { title = _property.managedReferenceValue.GetType().Name; }
             }
            
-            if (GUI.Button(headerPosition, title)) {
+            if (EditorGUI.DropdownButton(headerPosition, new GUIContent(title), FocusType.Keyboard)) {
                 activeProperty = _property;
 
                 ClassSelectionGenericMenu selectionMenu = new(fieldInfo.FieldType, _property.managedReferenceValue?.GetType(), ClickHandler);
