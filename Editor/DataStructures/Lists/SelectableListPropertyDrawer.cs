@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace MaroonSeal.Packages.DataStructures.Editor {
+namespace MaroonSeal.Core.DataStructures.Editor {
 
     [CustomPropertyDrawer(typeof(SelectableList<>))]
     public class SelectableListPropertyDrawer : PropertyDrawer

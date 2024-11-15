@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Libraries.DataStructures {
+namespace MaroonSeal.Core.DataStructures {
 
     [System.Serializable]
     public class Checklist<TData> : IEnumerable<Checklist<TData>.Step>
