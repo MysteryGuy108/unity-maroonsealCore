@@ -8,7 +8,7 @@ using MaroonSeal.Core.EditorHelpers;
 
 namespace MaroonSeal.Core.DataStructures.Drawers {
 
-    [CustomPropertyDrawer(typeof(Map<,>))]
+    [CustomPropertyDrawer(typeof(DictionaryLUT<,>))]
     public class MapDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect _position, SerializedProperty _property, GUIContent _label) {

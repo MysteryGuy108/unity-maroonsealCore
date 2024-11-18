@@ -7,13 +7,13 @@ using MaroonSeal.Core.EditorHelpers;
 
 namespace MaroonSeal.Core.DataStructures.Drawers {
 
-    [CustomPropertyDrawer(typeof(Map<,>.Element))]
-    public class MapElementDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(LUTElement<,>))]
+    public class LUTElementDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect _position, SerializedProperty _property, GUIContent _label) {
             EditorGUI.BeginProperty(_position, _label, _property);
             
-            SerializedProperty valueProperty = _property.FindPropertyRelative("dataValue");
+            SerializedProperty valueProperty = _property.FindPropertyRelative("data");
             if (valueProperty.propertyType == SerializedPropertyType.Generic) {
                 DrawVerticalKeyValue(_position, _property, _label);
             }
@@ -25,7 +25,7 @@ namespace MaroonSeal.Core.DataStructures.Drawers {
         }
 
         public override float GetPropertyHeight(SerializedProperty _property, GUIContent _label) {
-            return EditorGUI.GetPropertyHeight(_property.FindPropertyRelative("dataValue"), _label, true);
+            return EditorGUI.GetPropertyHeight(_property.FindPropertyRelative("data"), _label, true);
         }
 
         private void DrawInLineKeyValue(Rect _position, SerializedProperty _property, GUIContent _label) {
@@ -33,8 +33,7 @@ namespace MaroonSeal.Core.DataStructures.Drawers {
             headerPosition.height = 18.0f;
             headerPosition.width = EditorGUIUtility.labelWidth;
 
-            SerializedProperty keyProperty = _property.FindPropertyRelative("key");
-            EditorGUI.PropertyField(headerPosition, keyProperty, GUIContent.none);
+            DrawDelayedKeyField(headerPosition, _property.FindPropertyRelative("key"));
 
             Rect contentPosition = _position;
             contentPosition.x += EditorGUIUtility.labelWidth+8;
@@ -42,7 +41,7 @@ namespace MaroonSeal.Core.DataStructures.Drawers {
 
             contentPosition.height = 18.0f;
 
-            SerializedProperty valueProperty = _property.FindPropertyRelative("dataValue");
+            SerializedProperty valueProperty = _property.FindPropertyRelative("data");
             EditorGUI.PropertyField(contentPosition, valueProperty, GUIContent.none);
         }
 
@@ -52,13 +51,33 @@ namespace MaroonSeal.Core.DataStructures.Drawers {
             headerPosition.height = 18.0f;
             headerPosition.width = EditorGUIUtility.labelWidth;
 
-            SerializedProperty keyProperty = _property.FindPropertyRelative("key");
-            EditorGUI.PropertyField(headerPosition, keyProperty, GUIContent.none);
+            DrawDelayedKeyField(headerPosition, _property.FindPropertyRelative("key"));
 
             Rect contentPosition = _position;
 
-            SerializedProperty valueProperty = _property.FindPropertyRelative("dataValue");
+            SerializedProperty valueProperty = _property.FindPropertyRelative("data");
             EditorGUI.PropertyField(contentPosition, valueProperty, GUIContent.none, true);
+        }
+
+        private void DrawDelayedKeyField(Rect _position, SerializedProperty _keyProperty) {
+            EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
+
+            switch(_keyProperty.propertyType) {
+                case SerializedPropertyType.Float:
+                    EditorGUI.DelayedFloatField(_position, _keyProperty, GUIContent.none);
+                    break;
+                case SerializedPropertyType.Integer:
+                    EditorGUI.DelayedIntField(_position, _keyProperty, GUIContent.none);
+                    break;
+                case SerializedPropertyType.String:
+                    EditorGUI.DelayedTextField(_position, _keyProperty, GUIContent.none);
+                    break;
+                default:
+                    EditorGUI.PropertyField(_position, _keyProperty, GUIContent.none);
+                    break;
+            }
+
+            EditorGUI.EndDisabledGroup();
         }
     }
 }

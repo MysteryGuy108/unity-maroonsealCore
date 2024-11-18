@@ -8,7 +8,7 @@ namespace MaroonSeal.Core.Management {
     public class DisplayManager : MonoBehaviour
     {
         [Header("Fullscreen Settings")]
-        [SerializeField] private Map<string, FullScreenMode> fullscreenOptions;
+        [SerializeField] private DictionaryLUT<string, FullScreenMode> fullscreenOptions;
 
         [Header("Resolution Settings")]
         private int currentResolutionIndex;
