@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 
-namespace MaroonSeal.Core.DataStructures.Drawers {
+namespace MaroonSeal.Core.DataStructures.LUTs.Drawers {
 
     [CustomPropertyDrawer(typeof(OrderedLUT<>))]
     public class OrderedLUTDrawer : PropertyDrawer

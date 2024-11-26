@@ -6,22 +6,22 @@ using UnityEditor;
 
 using MaroonSeal.Core.EditorHelpers;
 
-namespace MaroonSeal.Core.DataStructures.Drawers {
+namespace MaroonSeal.Core.DataStructures.LUTs.Drawers {
 
     [CustomPropertyDrawer(typeof(DictionaryLUT<,>))]
-    public class MapDrawer : PropertyDrawer
+    public class DictionaryLUTDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect _position, SerializedProperty _property, GUIContent _label) {
             EditorGUI.BeginProperty(_position, _label, _property);
 
-            SerializedProperty elementList = _property.FindPropertyRelative("elementList");
+            SerializedProperty itemListProperty = _property.FindPropertyRelative("itemList");
 
             EditorGUI.BeginChangeCheck();
-            EditorGUI.PropertyField(_position, elementList, _label);
+            EditorGUI.PropertyField(_position, itemListProperty, _label);
 
-            if (EditorGUI.EndChangeCheck() && elementList.arraySize >= 2) {
-                SerializedProperty lastElementKey = elementList.GetArrayElementAtIndex(elementList.arraySize-1).FindPropertyRelative("key");
-                SerializedProperty secondToLastKey = elementList.GetArrayElementAtIndex(elementList.arraySize-2).FindPropertyRelative("key");
+            if (EditorGUI.EndChangeCheck() && itemListProperty.arraySize >= 2) {
+                SerializedProperty lastElementKey = itemListProperty.GetArrayElementAtIndex(itemListProperty.arraySize-1).FindPropertyRelative("key");
+                SerializedProperty secondToLastKey = itemListProperty.GetArrayElementAtIndex(itemListProperty.arraySize-2).FindPropertyRelative("key");
 
                 if (GetPropertyElementKeysEqual(lastElementKey, secondToLastKey)) {
                     SetPropertyElementIterativeName(lastElementKey);
@@ -32,8 +32,8 @@ namespace MaroonSeal.Core.DataStructures.Drawers {
         }
 
         public override float GetPropertyHeight(SerializedProperty _property, GUIContent _label) {
-            SerializedProperty elementList = _property.FindPropertyRelative("elementList");
-            return EditorGUI.GetPropertyHeight(elementList);
+            SerializedProperty itemListProperty = _property.FindPropertyRelative("itemList");
+            return EditorGUI.GetPropertyHeight(itemListProperty);
         }
 
         private bool GetPropertyElementKeysEqual(SerializedProperty _keyPropertyA, SerializedProperty _keyPropertyB) {

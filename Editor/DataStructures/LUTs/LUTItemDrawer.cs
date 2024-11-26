@@ -5,10 +5,10 @@ using UnityEditor;
 
 using MaroonSeal.Core.EditorHelpers;
 
-namespace MaroonSeal.Core.DataStructures.Drawers {
+namespace MaroonSeal.Core.DataStructures.LUTs.Drawers {
 
-    [CustomPropertyDrawer(typeof(LUTElement<,>))]
-    public class LUTElementDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(LUTItem<,>))]
+    public class LUTItemDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect _position, SerializedProperty _property, GUIContent _label) {
             EditorGUI.BeginProperty(_position, _label, _property);

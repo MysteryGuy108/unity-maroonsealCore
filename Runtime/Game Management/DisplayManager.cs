@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using MaroonSeal.Core.DataStructures;
+
 using UnityEngine;
+
+using MaroonSeal.Core.DataStructures.LUTs;
 
 namespace MaroonSeal.Core.Management {
     public class DisplayManager : MonoBehaviour
