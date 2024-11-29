@@ -1,6 +1,6 @@
 {
     "name": "maroonseal.core.Editor.Tests",
-    "rootNamespace": "Testing.MaroonSeal.Core",
+    "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",

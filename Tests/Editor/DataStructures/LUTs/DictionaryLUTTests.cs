@@ -6,7 +6,7 @@ using UnityEngine.TestTools;
 
 using MaroonSeal.Core.DataStructures.LUTs;
 
-namespace Testing.MaroonSeal.Core.DataStructures.LUTs
+namespace DataStructures.LUTs
 {
     public class DictionaryLUTTests
     {

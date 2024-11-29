@@ -6,7 +6,7 @@ using UnityEngine.TestTools;
 
 using MaroonSeal.Core.Maths.Cardinals;
 
-namespace Testing.MaroonSeal.Core.Maths.Cardinal
+namespace Maths.Cardinal
 {
     public class Cardinal2DTests
     {

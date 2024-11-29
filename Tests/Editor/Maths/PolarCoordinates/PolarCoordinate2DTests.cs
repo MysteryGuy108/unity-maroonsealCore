@@ -6,7 +6,7 @@ using UnityEngine.TestTools;
 
 using MaroonSeal.Core.Maths.PolarCoordinates;
 
-namespace Testing.MaroonSeal.Core.Maths.PolarCoordinates
+namespace Maths.PolarCoordinates
 {
     public class PolarCoordinate2DTests
     {

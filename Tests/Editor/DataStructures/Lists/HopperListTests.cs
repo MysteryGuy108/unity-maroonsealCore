@@ -6,7 +6,7 @@ using UnityEngine.TestTools;
 
 using MaroonSeal.Core.DataStructures;
 
-namespace Testing.MaroonSeal.Core.DataStructures.Lists
+namespace DataStructures.Lists
 {
     public class HopperListTests
     {
