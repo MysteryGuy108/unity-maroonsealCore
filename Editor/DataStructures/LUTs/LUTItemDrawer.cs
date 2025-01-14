@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEditor;
 
-using MaroonSeal.Core.EditorHelpers;
 
 namespace MaroonSeal.Core.DataStructures.LUTs.Drawers {
 

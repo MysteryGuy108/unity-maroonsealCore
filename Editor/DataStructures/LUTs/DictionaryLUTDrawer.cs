@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-using MaroonSeal.Core.EditorHelpers;
+using MaroonSeal.Core.DataStructures.LUTs;
 
-namespace MaroonSeal.Core.DataStructures.LUTs.Drawers {
+namespace MaroonSealEditor.DataStructures.LUTs {
 
     [CustomPropertyDrawer(typeof(DictionaryLUT<,>))]
     public class DictionaryLUTDrawer : PropertyDrawer

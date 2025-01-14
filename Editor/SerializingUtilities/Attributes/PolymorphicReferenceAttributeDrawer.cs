@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-using MaroonSeal.Core.EditorHelpers;
+using MaroonSealEditor;
 
 namespace MaroonSeal.Core.Drawers {
 
