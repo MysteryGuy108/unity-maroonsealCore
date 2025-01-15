@@ -4,17 +4,25 @@ using System.Linq;
 
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.UIElements;
+using System.Reflection;
 
 namespace MaroonSealEditor {
-    [InitializeOnLoad]
-    public class CustomEditorHierarchyDrawer
+    
+    [UnityEditor.InitializeOnLoad]
+    public class CustomEditorHierarchyLabelDrawer
     {
         static bool hierarchyEditorWindowHasFocus;
+
         static EditorWindow hierarchyEditorWindow;
 
-        static CustomEditorHierarchyDrawer() {
+        TreeViewController treeViewController;
+
+        static CustomEditorHierarchyLabelDrawer() {
             EditorApplication.hierarchyWindowItemOnGUI += OnHirearchyWindowItemOnGUI;
             EditorApplication.update += OnEditorUpdate;
+
+            var sceneHierarchyType = typeof(Editor).Assembly.GetType("UnityEditor.SceneHierarchy");
         } 
 
         static private void OnEditorUpdate() {  
@@ -33,7 +41,7 @@ namespace MaroonSealEditor {
             GameObject obj = EditorUtility.InstanceIDToObject(_instanceID) as GameObject;
             if (obj == null) { return; }
             
-            CustomEditorHierarchyLabel hierarchyLabel = obj.GetComponent<CustomEditorHierarchyLabel>();
+            EditorHierarchyLabel hierarchyLabel = obj.GetComponent<EditorHierarchyLabel>();
             if (hierarchyLabel == null) { return; }
 
             GUIContent content = GetHierarchyContent(obj, hierarchyLabel);
@@ -47,7 +55,7 @@ namespace MaroonSealEditor {
             EditorGUI.LabelField(_selectionRect, obj.name);
         }
 
-        static private GUIContent GetHierarchyContent(GameObject _obj, CustomEditorHierarchyLabel _label) {
+        static private GUIContent GetHierarchyContent(GameObject _obj, EditorHierarchyLabel _label) {
             Component[] components = _obj.GetComponents<Component>();
             if (components == null || components.Length <= 0) { return null; }
 
@@ -64,30 +72,31 @@ namespace MaroonSealEditor {
 
             Type targetType = targetComponent.GetType();
 
-            GUIContent content = EditorGUIUtility.ObjectContent(null, targetType);
+            GUIContent content = EditorGUIUtility.ObjectContent(targetComponent, targetType);
             content.text = null;
             content.tooltip = targetType.Name;
 
             return content;
         }
 
-        static private Color GetBackgroundColour(int _instanceID, Rect _selectionRect, CustomEditorHierarchyLabel _label) {
+        static private Color GetBackgroundColour(int _instanceID, Rect _selectionRect, EditorHierarchyLabel _label) {
             
             Rect hoveringBox = _selectionRect;
+
             if (hierarchyEditorWindow != null) {
                 hoveringBox.x -= hierarchyEditorWindow.position.width - hoveringBox.width; 
                 hoveringBox.width = hierarchyEditorWindow.position.width + 16.0f;
             }
-        
+
             bool isHovering = hoveringBox.Contains(Event.current.mousePosition);
-            bool isSelected = Selection.instanceIDs.Contains(_instanceID) || Selection.activeInstanceID == _instanceID;
+            bool isSelected = Selection.instanceIDs.Contains(_instanceID);
             bool isFocus = hierarchyEditorWindowHasFocus;
 
-            if (_label.useDefaultColours) {
-                return UnityEditorBackgroundColourHelper.Get(isSelected, isHovering, isFocus);
+            if (!_label.useDefaultColours && !isSelected){
+                return isHovering ? _label.HoveringColour : _label.backgroundColour;
             }
             else {
-                return _label.GetColour(isSelected, isHovering, isFocus);
+                return UnityEditorBackgroundColourHelper.Get(isSelected, isHovering, isFocus);
             }
         }
     }
