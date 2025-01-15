@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Core.Maths.PolarCoordinates {
+namespace MaroonSeal.Maths.PolarCoordinates {
     public class CylindricalCoordinateTransform : MonoBehaviour
     {
         [SerializeField] protected CylindricalCoordinate coordinate;

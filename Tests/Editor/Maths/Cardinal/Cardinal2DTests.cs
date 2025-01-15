@@ -4,9 +4,9 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-using MaroonSeal.Core.Maths.Cardinals;
+using MaroonSeal.Maths.Cardinals;
 
-namespace Maths.Cardinal
+namespace MaroonSealTesting.Maths.Cardinal
 {
     public class Cardinal2DTests
     {

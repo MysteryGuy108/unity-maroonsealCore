@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace MaroonSeal.Core.DataStructures.NodeGraphs.Traversal {
+namespace MaroonSeal.DataStructures.NodeGraphs.Traversal {
     public class NodeGraphBreadthFirstTraversal {
 
         #region Path to Node that meets condition

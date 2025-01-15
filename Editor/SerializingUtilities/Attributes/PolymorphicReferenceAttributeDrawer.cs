@@ -4,16 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
-
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
 
-using MaroonSealEditor;
+using MaroonSeal.SerializingUtilities;
 
-namespace MaroonSeal.Core.Drawers {
+namespace MaroonSealEditor.SerializingUtilities {
 
-#if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(PolymorphicReferenceAttribute))]
     public class PolymorphicReferenceAttributeDrawer : PropertyDrawer
     {
@@ -67,6 +63,5 @@ namespace MaroonSeal.Core.Drawers {
             activeProperty.serializedObject.ApplyModifiedProperties();
             activeProperty = null;
         }
-#endif
     }
 }

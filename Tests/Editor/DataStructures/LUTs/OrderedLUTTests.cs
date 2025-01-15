@@ -4,9 +4,9 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-using MaroonSeal.Core.DataStructures.LUTs;
+using MaroonSeal.DataStructures.LUTs;
 
-namespace DataStructures.LUTs
+namespace MaroonSealTesting.DataStructures.LUTs
 {
     public class OrderedLUTTests
     {

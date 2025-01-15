@@ -1,18 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-
-using System;
 using System.Reflection;
 
-
-#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
-#endif
 
-namespace MaroonSeal.Core.Callbacks.Drawers {
+using MaroonSeal.Callbacks;
 
-#if UNITY_EDITOR
+namespace MaroonSealEditor.Callbacks {
+
     [CustomPropertyDrawer(typeof(ComponentCallbackBase), true)]
     public class ComponentCallbackDrawer : PropertyDrawer
     {
@@ -138,7 +135,6 @@ namespace MaroonSeal.Core.Callbacks.Drawers {
         }
         #endregion
     }
-#endif
 }
 
 

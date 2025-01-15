@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace MaroonSeal.Core.DataStructures.LUTs {
+namespace MaroonSeal.DataStructures.LUTs {
 
     [System.Serializable]
     public class DictionaryLUT<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Core.DataStructures.LUTs {
+namespace MaroonSeal.DataStructures.LUTs {
     [System.Serializable]
     public class OrderedLUT<TData> : IEnumerable, ISerializationCallbackReceiver{
         [NonReorderable][SerializeField] protected List<LUTItem<float, TData>> lookupTable;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Core.Maths.Geometry {
+namespace MaroonSeal.Maths.Geometry {
     public abstract class IntersectionCalculator
     {
         //https://stackoverflow.com/questions/23016676/line-segment-and-circle-intersection

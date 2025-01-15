@@ -4,7 +4,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-using MaroonSeal.Core.DataStructures;
+using MaroonSeal.DataStructures;
 
 namespace DataStructures.Lists
 {

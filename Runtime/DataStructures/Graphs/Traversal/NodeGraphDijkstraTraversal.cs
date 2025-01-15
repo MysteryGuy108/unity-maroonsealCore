@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Core.DataStructures.NodeGraphs.Traversal {
+namespace MaroonSeal.DataStructures.NodeGraphs.Traversal {
     abstract public class NodeGraphDijkstraTraversal
     {
         public class DistanceTable {

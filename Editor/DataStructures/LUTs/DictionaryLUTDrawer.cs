@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-using MaroonSeal.Core.DataStructures.LUTs;
+using MaroonSeal.DataStructures.LUTs;
 
 namespace MaroonSealEditor.DataStructures.LUTs {
 

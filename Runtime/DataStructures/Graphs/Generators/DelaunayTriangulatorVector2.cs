@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using MaroonSeal.Core.Maths.Geometry;
+using MaroonSeal.Maths.Geometry;
 
-namespace MaroonSeal.Core.DataStructures.NodeGraphs.Generators {
+namespace MaroonSeal.DataStructures.NodeGraphs.Generators {
     public class DelaunayTriangulatorGraphCalculator
     {
         static public NodeGraphWeighted<Vector2> CalculateGraph(List<Vector2> _points, float _pointsSquareBounds) {

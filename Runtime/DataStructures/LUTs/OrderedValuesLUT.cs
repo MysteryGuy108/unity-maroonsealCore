@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Core.DataStructures.LUTs {
+namespace MaroonSeal.DataStructures.LUTs {
     public class OrderedValuesLUT : OrderedLUT<float>
     {
         #region Constructors

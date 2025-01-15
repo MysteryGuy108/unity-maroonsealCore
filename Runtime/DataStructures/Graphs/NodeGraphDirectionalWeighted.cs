@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Core.DataStructures.NodeGraphs {
+namespace MaroonSeal.DataStructures.NodeGraphs {
 
     public class NodeGraphDirectionalWeighted<TData> : IEnumerable<TData>
     {

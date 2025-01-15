@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Core {
-    static public class ExtraGizmos
+namespace MaroonSeal.UnityExtensions {
+    static public class GizmosExtensions
     {
         #region Arrows
         public static void DrawArrowHead(Vector3 _position, Vector3 _direction, float _headLength = 1.5f, float _headAngle = 20.0f) {
@@ -35,7 +35,7 @@ namespace MaroonSeal.Core {
             DrawArrow(midPoint, pos, arrowHeadLength, arrowHeadAngle);
         }
 
-        public static void DrawArrowTarget(Vector3 _pos) {
+        public static void DrawArrowTarget(this Gizmos _gizmos, Vector3 _pos) {
             DrawArrow((Vector3.right * 1.5f) + _pos, (Vector3.right * 0.125f) + _pos, 0.5f);
             DrawArrow((Vector3.right * -1.5f) + _pos, (Vector3.right * -0.125f) + _pos, 0.5f);
             DrawArrow((Vector3.forward * 1.5f) + _pos, (Vector3.forward * 0.125f) + _pos, 0.5f);

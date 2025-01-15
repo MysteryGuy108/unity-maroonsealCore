@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Core.DataStructures.NodeGraphs.Traversal {
+namespace MaroonSeal.DataStructures.NodeGraphs.Traversal {
     public class DistanceTable {
         readonly public PriorityQueue<int> vertexQueue;
         readonly public HashSet<int> visitedVertices;

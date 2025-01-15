@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Core.UnityExtensions {
+namespace MaroonSeal.UnityExtensions {
     public static class LayerMaskExtensions
     {
         public static bool ContainsLayer(this LayerMask _mask, int _layer) {

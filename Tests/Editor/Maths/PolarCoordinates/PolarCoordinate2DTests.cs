@@ -4,7 +4,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-using MaroonSeal.Core.Maths.PolarCoordinates;
+using MaroonSeal.Maths.PolarCoordinates;
 
 namespace Maths.PolarCoordinates
 {
