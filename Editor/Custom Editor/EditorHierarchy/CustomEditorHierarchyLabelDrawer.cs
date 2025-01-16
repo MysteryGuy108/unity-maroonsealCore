@@ -4,56 +4,80 @@ using System.Linq;
 
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.IMGUI.Controls;
+using UnityEditor.SceneManagement;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
-using System.Reflection;
 
 namespace MaroonSealEditor {
     
+    public struct ItemSelectionStatus {
+        public bool IsSelected;
+        public bool IsHovered;
+        public bool IsDropdownHovered;
+    }
+
     [UnityEditor.InitializeOnLoad]
     public class CustomEditorHierarchyLabelDrawer
     {
         static bool hierarchyEditorWindowHasFocus;
-
         static EditorWindow hierarchyEditorWindow;
-
-        TreeViewController treeViewController;
-
+        static HashSet<int> selectedInstanceIDs;
+        
         static CustomEditorHierarchyLabelDrawer() {
-            EditorApplication.hierarchyWindowItemOnGUI += OnHirearchyWindowItemOnGUI;
-            EditorApplication.update += OnEditorUpdate;
+            selectedInstanceIDs = new HashSet<int>();
 
-            var sceneHierarchyType = typeof(Editor).Assembly.GetType("UnityEditor.SceneHierarchy");
+            EditorApplication.hierarchyWindowItemOnGUI -= OnHirearchyWindowItemOnGUI;
+            EditorApplication.hierarchyWindowItemOnGUI += OnHirearchyWindowItemOnGUI;
+
+            EditorApplication.update -= OnEditorUpdate;
+            EditorApplication.update += OnEditorUpdate;
         } 
 
+        #region Hierarchy Window Drawer    
         static private void OnEditorUpdate() {  
             if (hierarchyEditorWindow == null) {
-                hierarchyEditorWindow = EditorWindow.GetWindow(System.Type.GetType("UnityEditor.SceneHierarchyWindow,UnityEditor"));
+                hierarchyEditorWindow = EditorWindow.GetWindow(
+                    Type.GetType($"{nameof(UnityEditor)}.SceneHierarchyWindow,{nameof(UnityEditor)}"));
             }
 
             hierarchyEditorWindowHasFocus = EditorWindow.focusedWindow != null &&
                 EditorWindow.focusedWindow == hierarchyEditorWindow;
 
-            if (Event.current == null) { return; }
+            selectedInstanceIDs?.Clear();
         }
 
         static private void OnHirearchyWindowItemOnGUI(int _instanceID, Rect _selectionRect) {
-        
+            
+            ItemSelectionStatus currentItemSelection = GetItemSelectionStatus(_instanceID, _selectionRect);
+            UpdateSelectedObjectIDLUT(_instanceID, currentItemSelection);
+
             GameObject obj = EditorUtility.InstanceIDToObject(_instanceID) as GameObject;
             if (obj == null) { return; }
-            
+
             EditorHierarchyLabel hierarchyLabel = obj.GetComponent<EditorHierarchyLabel>();
             if (hierarchyLabel == null) { return; }
 
             GUIContent content = GetHierarchyContent(obj, hierarchyLabel);
 
-            EditorGUI.DrawRect(_selectionRect, GetBackgroundColour(_instanceID, _selectionRect, hierarchyLabel));
+            ClearDefault(_selectionRect, currentItemSelection);
+
+            Color originalColor = GUI.color;
+            if (!obj.activeInHierarchy)  {
+                Color transparentIconColor = new(originalColor.r, originalColor.g, originalColor.b, 0.5f);
+                GUI.color = transparentIconColor;
+            }
 
             EditorGUI.LabelField(_selectionRect, content);
 
-            _selectionRect.x += 18.5f;
-            _selectionRect.width -= 18.5f;
-            EditorGUI.LabelField(_selectionRect, obj.name);
+            Rect textRect = _selectionRect;
+            textRect.x += 18.5f;
+            textRect.width -= 18.5f;
+            EditorGUI.LabelField(textRect, obj.name);
+
+            GUI.color = originalColor;
         }
+        #endregion
 
         static private GUIContent GetHierarchyContent(GameObject _obj, EditorHierarchyLabel _label) {
             Component[] components = _obj.GetComponents<Component>();
@@ -79,25 +103,60 @@ namespace MaroonSealEditor {
             return content;
         }
 
-        static private Color GetBackgroundColour(int _instanceID, Rect _selectionRect, EditorHierarchyLabel _label) {
-            
-            Rect hoveringBox = _selectionRect;
+        #region Selection Drawing
+        static private ItemSelectionStatus GetItemSelectionStatus(int _instanceID, Rect _selectionRect) {
+            Rect rowSelectionRect = _selectionRect;
+            rowSelectionRect.x = 0; 
+            rowSelectionRect.width = short.MaxValue;
 
-            if (hierarchyEditorWindow != null) {
-                hoveringBox.x -= hierarchyEditorWindow.position.width - hoveringBox.width; 
-                hoveringBox.width = hierarchyEditorWindow.position.width + 16.0f;
-            }
+            float expandIconWidth = 11.0f;
 
-            bool isHovering = hoveringBox.Contains(Event.current.mousePosition);
-            bool isSelected = Selection.instanceIDs.Contains(_instanceID);
-            bool isFocus = hierarchyEditorWindowHasFocus;
+            Rect expandIconRect = _selectionRect;
+            expandIconRect.x -= expandIconWidth;
+            expandIconRect.width = expandIconWidth + 3.0f;
 
-            if (!_label.useDefaultColours && !isSelected){
-                return isHovering ? _label.HoveringColour : _label.backgroundColour;
+            return new ItemSelectionStatus() {
+                IsSelected = Selection.instanceIDs.Contains(_instanceID),
+                IsHovered = rowSelectionRect.Contains(Event.current.mousePosition),
+                IsDropdownHovered = expandIconRect.Contains(Event.current.mousePosition)
+            };
+        }
+
+        static private void UpdateSelectedObjectIDLUT(int _instanceID, ItemSelectionStatus _selectionStatus) {
+
+            if (_selectionStatus.IsSelected || (_selectionStatus.IsDropdownHovered && EditorMouseInput.GetIsPressed()))  {
+                if (Selection.instanceIDs.Length > 1) { selectedInstanceIDs.Clear(); }
+                selectedInstanceIDs.Add(_instanceID);
             }
             else {
-                return UnityEditorBackgroundColourHelper.Get(isSelected, isHovering, isFocus);
+                selectedInstanceIDs.Remove(_instanceID);
             }
         }
+
+        static private void ClearDefault(Rect _selectionRect, ItemSelectionStatus _selectionStatus) {
+            
+            int selectedAmount = Selection.instanceIDs.Length > 1 ? Selection.instanceIDs.Length : selectedInstanceIDs.Count;
+            bool isFocus = hierarchyEditorWindowHasFocus;
+            Color backgroundColour;
+            bool mouseInput = EditorMouseInput.GetIsPressed();
+
+            if (_selectionStatus.IsSelected) {
+                if (mouseInput && !_selectionStatus.IsDropdownHovered && !_selectionStatus.IsHovered && selectedAmount == 1) {
+                    backgroundColour = EditorColours.Default;
+                }
+                else {
+                    backgroundColour = isFocus ? EditorColours.Selected : EditorColours.SelectedUnfocused;
+                }
+            }
+            else if (_selectionStatus.IsHovered) {
+                backgroundColour = mouseInput && !_selectionStatus.IsDropdownHovered ? EditorColours.Selected : EditorColours.Hovered;
+            }
+            else {
+                backgroundColour = EditorColours.Default;
+            }
+            
+            EditorGUI.DrawRect(_selectionRect, backgroundColour);
+        }
+        #endregion
     }
 }

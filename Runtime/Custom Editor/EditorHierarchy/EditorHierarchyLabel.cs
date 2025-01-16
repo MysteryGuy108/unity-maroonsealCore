@@ -1,6 +1,7 @@
 using UnityEngine;
 
 namespace MaroonSealEditor {
+    #if UNITY_EDITOR
     [DisallowMultipleComponent]
     public class EditorHierarchyLabel : MonoBehaviour
     {
@@ -10,4 +11,5 @@ namespace MaroonSealEditor {
 
         public Color HoveringColour { get { return backgroundColour * 1.25f;}}
     }
+    #endif
 }
