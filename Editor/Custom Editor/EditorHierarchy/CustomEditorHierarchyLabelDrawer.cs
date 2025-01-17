@@ -59,7 +59,7 @@ namespace MaroonSealEditor {
             if (hierarchyLabel == null) { return; }
 
             GUIContent content = GetHierarchyContent(obj, hierarchyLabel);
-
+            if (content == null) { return;}
             ClearDefault(_selectionRect, currentItemSelection);
 
             Color originalColor = GUI.color;

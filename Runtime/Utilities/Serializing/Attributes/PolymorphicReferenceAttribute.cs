@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.SerializingUtilities {
+namespace MaroonSeal.Utilities.Serialization {
     [AttributeUsage(AttributeTargets.Field)]
     public class PolymorphicReferenceAttribute : PropertyAttribute
     {

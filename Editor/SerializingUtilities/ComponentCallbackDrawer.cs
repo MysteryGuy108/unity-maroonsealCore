@@ -6,9 +6,9 @@ using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 
-using MaroonSeal.Callbacks;
+using MaroonSeal.Utilities.Callbacks;
 
-namespace MaroonSealEditor.Callbacks {
+namespace MaroonSealEditor.Utilities.Callbacks {
 
     [CustomPropertyDrawer(typeof(ComponentCallbackBase), true)]
     public class ComponentCallbackDrawer : PropertyDrawer

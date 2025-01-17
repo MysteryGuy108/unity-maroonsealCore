@@ -8,7 +8,7 @@ using System.Linq;
 using UnityEditor;
 #endif
 
-namespace MaroonSealEditor.SerializingUtilities {
+namespace MaroonSealEditor.Utilities {
 
 #if UNITY_EDITOR
     public class ClassSelectionGenericMenu

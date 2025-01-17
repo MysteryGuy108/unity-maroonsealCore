@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-using MaroonSeal.SerializingUtilities;
+using MaroonSeal.Utilities.Serialization;
 
-namespace MaroonSealEditor.SerializingUtilities {
+namespace MaroonSealEditor.Utilities.Serialization {
 
     [CustomPropertyDrawer(typeof(PolymorphicReferenceAttribute))]
     public class PolymorphicReferenceAttributeDrawer : PropertyDrawer
