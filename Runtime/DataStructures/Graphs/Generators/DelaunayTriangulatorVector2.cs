@@ -14,56 +14,56 @@ namespace MaroonSeal.DataStructures.NodeGraphs.Generators {
             // Adding points to graph.
             graph.PushNodeRange(_points);
 
-            List<TriangleVector2> triangles = CaluclateTrianglesFromPoints(_points, _pointsSquareBounds);
+            List<Triangle2D> triangles = CaluclateTrianglesFromPoints(_points, _pointsSquareBounds);
 
             for(int i = 0; i < triangles.Count; i++) {
                 
-                int indexA = graph[triangles[i].PointA];
-                int indexB = graph[triangles[i].PointB];
-                int indexC = graph[triangles[i].PointC];
+                int indexA = graph[triangles[i].pointA];
+                int indexB = graph[triangles[i].pointB];
+                int indexC = graph[triangles[i].pointC];
                 
                 if (indexA < 0 || indexB < 0 || indexC < 0) { continue; }
                 if (indexA == indexB || indexB == indexC || indexC == indexA) { continue; }
                 
-                graph.SetEdgeWeight(indexA, indexB, triangles[i].EdgeAB);
-                graph.SetEdgeWeight(indexB, indexC, triangles[i].EdgeBC);
-                graph.SetEdgeWeight(indexC, indexA, triangles[i].EdgeCA);
+                graph.SetEdgeWeight(indexA, indexB, triangles[i].GetLengthAB());
+                graph.SetEdgeWeight(indexB, indexC, triangles[i].GetLengthBC());
+                graph.SetEdgeWeight(indexC, indexA, triangles[i].GetLengthCA());
             }
 
             return graph;
         }
 
-        static private List<TriangleVector2> CaluclateTrianglesFromPoints(List<Vector2> _points, float _pointsSquareBounds) {
+        static private List<Triangle2D> CaluclateTrianglesFromPoints(List<Vector2> _points, float _pointsSquareBounds) {
             
-            List<TriangleVector2> triangles = new() {
+            List<Triangle2D> triangles = new() {
                 GetSuperTriangle(_pointsSquareBounds)
             };
 
             foreach(Vector2 point in _points) {
                 
-                List<TriangleVector2> badTriangles =  new List<TriangleVector2>();
+                List<Triangle2D> badTriangles =  new List<Triangle2D>();
 
-                foreach(TriangleVector2 tri in triangles) {
-                    if (tri.CalculateCircumcircle().IsPointInCircle(point)) {
+                foreach(Triangle2D tri in triangles) {
+                    if (tri.GetCircumcircle().IsPointInCircle(point)) {
                         badTriangles.Add(tri);
                     }
                 }
 
                 List<Vector2[]> polygonEdges = new();
 
-                foreach(TriangleVector2 badTri in badTriangles) { 
+                foreach(Triangle2D badTri in badTriangles) { 
                     List<Vector2[]> edges = new() {
-                        new Vector2[2] { badTri.PointA, badTri.PointB },
-                        new Vector2[2] { badTri.PointB, badTri.PointC },
-                        new Vector2[2] { badTri.PointC, badTri.PointA }
+                        new Vector2[2] { badTri.pointA, badTri.pointB },
+                        new Vector2[2] { badTri.pointB, badTri.pointC },
+                        new Vector2[2] { badTri.pointC, badTri.pointA }
                     };
 
                     foreach(Vector2[] edge in edges) {
 
                         int count = 0;
 
-                        foreach(TriangleVector2 badTri2 in badTriangles) { 
-                            if (badTri2.HasVertex(edge[0]) && badTri2.HasVertex(edge[1])) {
+                        foreach(Triangle2D badTri2 in badTriangles) { 
+                            if (badTri2.ContainsPoint(edge[0]) && badTri2.ContainsPoint(edge[1])) {
                                 count++;
                             }
                         }
@@ -75,7 +75,7 @@ namespace MaroonSeal.DataStructures.NodeGraphs.Generators {
                 }
 
                 for(int i = triangles.Count-1; i >=0; i--) {
-                    foreach(TriangleVector2 badTri in badTriangles) {
+                    foreach(Triangle2D badTri in badTriangles) {
                         if (triangles[i] == badTri) {
                             triangles.RemoveAt(i);
                             break;
@@ -86,7 +86,7 @@ namespace MaroonSeal.DataStructures.NodeGraphs.Generators {
                 badTriangles.Clear();
 
                 foreach(Vector2[] edge in polygonEdges) {
-                    TriangleVector2 newTri = new TriangleVector2(point, edge[0], edge[1]);
+                    Triangle2D newTri = new Triangle2D(point, edge[0], edge[1]);
                     triangles.Add(newTri);
                 }
                 polygonEdges.Clear();
@@ -95,7 +95,7 @@ namespace MaroonSeal.DataStructures.NodeGraphs.Generators {
             return triangles;
         }
 
-        static private TriangleVector2 GetSuperTriangle(float _squareSize) {
+        static private Triangle2D GetSuperTriangle(float _squareSize) {
 
             float triangleSideLength = _squareSize / 0.464f;
 
@@ -104,7 +104,7 @@ namespace MaroonSeal.DataStructures.NodeGraphs.Generators {
 
             Vector2Int triC = new((int)(_squareSize * 0.5f), (int)(0.86602540378f * triangleSideLength));
 
-            return new TriangleVector2(triA, triB, triC);
+            return new Triangle2D(triA, triB, triC);
         }
     }
 }

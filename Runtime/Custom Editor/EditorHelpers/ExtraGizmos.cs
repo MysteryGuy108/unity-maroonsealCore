@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 namespace MaroonSeal.UnityExtensions {
-    static public class GizmosExtensions
+    static public class ExtraGizmos
     {
         #region Arrows
         public static void DrawArrowHead(Vector3 _position, Vector3 _direction, float _headLength = 1.5f, float _headAngle = 20.0f) {
