@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using MaroonSeal.Maths.Geometry;
+using MaroonSeal.Maths;
 
 namespace MaroonSeal.DataStructures.NodeGraphs.Generators {
     public class DelaunayTriangulatorGraphCalculator
