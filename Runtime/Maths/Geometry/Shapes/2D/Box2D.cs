@@ -1,9 +1,11 @@
-using MaroonSeal.Utilities;
 using UnityEngine;
+
+using MaroonSeal.Maths.Interpolation;
+using MaroonSeal.Maths.SDFs;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct Box2D : IPolygonShape2D, ISDFShape2D, IVector2Interpolatable
+    public struct Box2D : IPolygonShape2D, ISDFShape2D, IInterpolatable<Box2D>, ILerpPath2D
     {
         public Vector2 centre;
         public Vector2 size;
@@ -28,6 +30,15 @@ namespace MaroonSeal.Maths {
             return (Box2D)obj == this;
         }
         readonly public override int GetHashCode() { return System.HashCode.Combine(centre, size); }
+        #endregion
+
+        #region Box2D
+        readonly public bool IsPointInBounds(Vector2 _point) {
+            _point -= centre;
+            Vector2 halfSize = size / 2.0f;
+            return _point.x >= -halfSize.x && _point.x <= halfSize.x &&
+                _point.y >= -halfSize.y && _point.y <= halfSize.y;
+        }
         #endregion
 
         #region IPolygon2D
@@ -55,31 +66,29 @@ namespace MaroonSeal.Maths {
         }
         #endregion
 
-        #region ILerpShape2D
-        readonly public Vector2 InterpolateVector2(float _time) {
-            Line2D[] edges = GetEdges();
-            _time *= 4;
-            int segment = (int)Mathf.Clamp(_time, 0, 3);
-            return edges[segment].InterpolateVector2(_time - segment);
-        }
-        readonly public Vector3 InterpolateVector3(float _time) { return InterpolateVector2(_time); }
-        #endregion
-
         #region ISDFShape2D
         readonly public float GetSignedDistance(Vector2 _point) {
             Vector2 d = ((Vector2)_point).Abs()-size;
             Vector2 max = new(Mathf.Max(d.x, 0.0f), Mathf.Max(d.y, 0.0f));
             return max.magnitude + Mathf.Min(Mathf.Max(d.x,d.y), 0.0f);
         }
+        public readonly float GetSignedDistance(Vector3 _point) { return GetSignedDistance((Vector2)_point); }
         #endregion
 
-        readonly public bool IsPointInBounds(Vector2 _point) {
-            _point -= centre;
-            Vector2 halfSize = size / 2.0f;
-            return _point.x >= -halfSize.x && _point.x <= halfSize.x &&
-                _point.y >= -halfSize.y && _point.y <= halfSize.y;
+        #region IInterpolation
+        public readonly Box2D LerpTowards(Box2D _target, float _time) {
+            return new Box2D(
+                Vector2.Lerp(this.centre, _target.centre, _time), 
+                Vector2.Lerp(this.size, _target.size, _time));
         }
 
-
+        public readonly Vector2 LerpAlongPath(float _time) {
+            Line2D[] edges = GetEdges();
+            _time *= 4;
+            int segment = (int)Mathf.Clamp(_time, 0, 3);
+            return edges[segment].LerpAlongPath(_time - segment);
+        }
+        readonly Vector3 ILerpPath.LerpAlongPath(float _time) { return LerpAlongPath(_time); }
+        #endregion
     }
 }

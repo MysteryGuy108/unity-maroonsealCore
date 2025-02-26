@@ -4,7 +4,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-using MaroonSeal.Maths.Cardinals;
+using MaroonSeal.Maths;
 
 namespace MaroonSealTesting.Maths.Cardinal
 {

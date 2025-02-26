@@ -1,8 +1,10 @@
 using UnityEngine;
 
+using MaroonSeal.Maths.Interpolation;
+
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct CubicBezier2D : IShape2D, IVector2Interpolatable 
+    public struct CubicBezier2D : IOpenShape2D, IInterpolatable<CubicBezier2D>, ILerpPath2D 
     {
         public Vector2 anchorA;
         public Vector2 controlA;
@@ -40,8 +42,20 @@ namespace MaroonSeal.Maths {
         readonly public override int GetHashCode() { return System.HashCode.Combine(anchorA, controlA, controlB, anchorB); }
         #endregion
 
-        #region ILerpShape
-        public readonly Vector2 InterpolateVector2(float _time) {
+        #region IOpenShape2D
+        public readonly Vector2 GetStartPoint() { return anchorA; }
+        public readonly Vector2 GetEndPoint() { return anchorB; }
+        #endregion
+
+        #region IInterpolation
+        readonly public CubicBezier2D LerpTowards(CubicBezier2D _target, float _time) {
+            return new(
+                Vector2.Lerp(anchorA, _target.anchorA, _time),
+                Vector2.Lerp(anchorA, _target.controlA, _time),
+                Vector2.Lerp(anchorA, _target.controlB, _time),
+                Vector2.Lerp(anchorA, _target.anchorB, _time));
+        }
+        readonly public Vector2 LerpAlongPath(float _time) {
             float tm = 1.0f -_time;
             float tm2 = tm * tm;
             float tm3 = tm * tm * tm;
@@ -50,7 +64,10 @@ namespace MaroonSeal.Maths {
             float t3 = _time * _time * _time;
             return (tm3 * anchorA) + (3 * tm2 * _time * controlA) + (3 * tm * t2 * controlB) + (t3 * anchorB);
         }
-        readonly public Vector3 InterpolateVector3(float _time) { return InterpolateVector2(_time); }
+
+        readonly Vector3 ILerpPath.LerpAlongPath(float _t) {
+            return LerpAlongPath(_t);
+        }
         #endregion
     }
 }

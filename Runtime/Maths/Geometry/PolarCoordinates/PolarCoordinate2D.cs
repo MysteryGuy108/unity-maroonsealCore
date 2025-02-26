@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Maths.PolarCoordinates {
+namespace MaroonSeal.Maths {
     public struct PolarCoordinate2D
     {
         public float theta;

@@ -1,8 +1,11 @@
 using UnityEngine;
 
+using MaroonSeal.Maths.Interpolation;
+using MaroonSeal.Maths.SDFs;
+
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct Line2D : ISDFShape2D, IVector2Interpolatable 
+    public struct Line2D : IOpenShape2D, ISDFShape2D, IInterpolatable<Line2D>
     {
         public Vector2 pointA;
         public Vector2 pointB;
@@ -17,7 +20,7 @@ namespace MaroonSeal.Maths {
 
         public static bool operator != (Line2D _a, Line2D _b) { return !(_a.pointA == _b.pointA && _a.pointB == _b.pointB); }
     
-        readonly public override bool Equals(object obj) {
+        public readonly override bool Equals(object obj) {
             if (obj == null) { return false; }
             if (obj is not Line2D) { return false; }
             return (Line2D)obj == this;
@@ -26,22 +29,7 @@ namespace MaroonSeal.Maths {
         readonly public override int GetHashCode() { return System.HashCode.Combine(pointA, pointB); }
         #endregion
 
-        #region ISDFShape2D
-        public readonly float GetSignedDistance(Vector2 _point) {
-            Vector2 pa = (Vector2)_point-pointA;
-            Vector2 ba = pointB-pointA;
-            float h = Mathf.Clamp( Vector2.Dot(pa,ba)/Vector2.Dot(ba,ba), 0.0f, 1.0f );
-            return (pa - ba * h).magnitude;
-        }
-        #endregion
-
-        #region ILerpShape
-        public readonly Vector2 InterpolateVector2(float _time) {
-            return Vector2.Lerp(pointA, pointB, _time);
-        }
-        public readonly Vector3 InterpolateVector3(float _time) { return InterpolateVector2(_time); }
-        #endregion
-
+        #region Line2D
         public readonly float GetLength() { return Vector3.Distance(pointA, pointB); }
 
         public readonly bool IsPointInBounds(Vector2 _point) {
@@ -56,5 +44,33 @@ namespace MaroonSeal.Maths {
             return _point.x >= minX && _point.x <= maxX && 
                 _point.y >= minY && _point.y <= maxY;
         }
+        #endregion
+
+        #region IOpenShape2D
+        public readonly Vector2 GetStartPoint() { return pointA; }
+        public readonly Vector2 GetEndPoint() { return pointB; }
+        #endregion
+
+        #region ISDFShape2D
+        public readonly float GetSignedDistance(Vector2 _point) {
+            Vector2 pa = _point-pointA;
+            Vector2 ba = pointB-pointA;
+            float h = Mathf.Clamp( Vector2.Dot(pa,ba)/Vector2.Dot(ba,ba), 0.0f, 1.0f );
+            return (pa - ba * h).magnitude;
+        }
+
+        public readonly float GetSignedDistance(Vector3 _point) { return GetSignedDistance((Vector2)_point); }
+        #endregion
+
+        #region IInterpolation
+        public readonly Line2D LerpTowards(Line2D _target, float _time) {
+            return new Line2D(Vector2.Lerp(this.pointA, _target.pointA, _time), Vector2.Lerp(this.pointB, _target.pointB, _time));
+        }
+
+        public readonly Vector2 LerpAlongPath(float _time) {
+            return Vector2.Lerp(pointA, pointB, _time);
+        }
+        readonly Vector3 ILerpPath.LerpAlongPath(float _time) { return LerpAlongPath(_time); }
+        #endregion
     }
 }

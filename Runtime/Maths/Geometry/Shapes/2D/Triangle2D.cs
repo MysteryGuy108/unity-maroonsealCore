@@ -1,11 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+using MaroonSeal.Maths.Interpolation;
+using MaroonSeal.Maths.SDFs;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct Triangle2D : IPolygonShape2D, ISDFShape2D, IVector2Interpolatable
+    public struct Triangle2D : IPolygonShape2D, ISDFShape2D, IInterpolatable<Triangle2D>, ILerpPath2D
     {
         public Vector2 pointA;
         public Vector2 pointB;
@@ -34,6 +35,30 @@ namespace MaroonSeal.Maths {
         readonly public override int GetHashCode() { return System.HashCode.Combine(pointA, pointB, pointC); }
         #endregion
 
+        #region Triangle2D
+        readonly public bool ContainsPoint(Vector2 _point) { return _point == pointA || _point == pointB || _point == pointC; }
+
+        readonly public float GetLengthAB() { return Vector2.Distance(pointA, pointB); }
+        readonly public float GetLengthBC() { return Vector2.Distance(pointB, pointC); }
+        readonly public float GetLengthCA() { return Vector2.Distance(pointC, pointA); }
+
+        readonly public Line2D GetEdgeAB() { return new Line2D(pointA, pointB); }
+        readonly public Line2D GetEdgeBC() { return new Line2D(pointB, pointC);  }
+        readonly public Line2D GetEdgeCA() { return new Line2D(pointC, pointA);  }
+
+        readonly public Circle2D GetCircumcircle() {
+            float d = 2 * (pointA.x * (pointB.y - pointC.y) + pointB.x * (pointC.y - pointA.y) + pointC.x * (pointA.y - pointB.y));
+
+            float ux = ((pointA.x * pointA.x + pointA.y * pointA.y) * (pointB.y - pointC.y) + (pointB.x * pointB.x + pointB.y * pointB.y) * (pointC.y - pointA.y) + (pointC.x * pointC.x + pointC.y * pointC.y) * (pointA.y - pointB.y)) / d;
+            float uy = ((pointA.x * pointA.x + pointA.y * pointA.y) * (pointC.x - pointB.x) + (pointB.x * pointB.x + pointB.y * pointB.y) * (pointA.x - pointC.x) + (pointC.x * pointC.x + pointC.y * pointC.y) * (pointB.x - pointA.x)) / d;
+
+            Vector2 circumCentre = new(ux, uy);
+            float circumRadius = Vector2.Distance(pointA, circumCentre);
+
+            return new Circle2D(circumCentre, circumRadius);
+        }
+        #endregion
+        
         #region IPolygon2D
         readonly public int VertexCount { get { return 3; } }
         readonly public Vector2[] GetVertices() { return new Vector2[3] { pointA, pointB, pointC} ; }
@@ -57,10 +82,19 @@ namespace MaroonSeal.Maths {
             return -sqrt(d.x)*sign(d.y);
             */
         }
+        public readonly float GetSignedDistance(Vector3 _point) { return GetSignedDistance((Vector2)_point); }
         #endregion
 
-        #region ILerpShape
-        public readonly Vector2 InterpolateVector2(float _time) {
+
+        #region IInterpolation
+        readonly public Triangle2D LerpTowards(Triangle2D _target, float _time) {
+            return new(
+                Vector2.Lerp(pointA, _target.pointA, _time),
+                Vector2.Lerp(pointB, _target.pointB, _time),
+                Vector2.Lerp(pointC, _target.pointC, _time));
+        }
+
+        public readonly Vector2 LerpAlongPath(float _time) {
             float totalTime = _time * 3.0f;
             if (totalTime <= 1.0f) {
                 return Vector2.Lerp(pointA, pointB, totalTime);
@@ -71,30 +105,8 @@ namespace MaroonSeal.Maths {
             
             return Vector2.Lerp(pointC, pointA, totalTime-2.0f);
         }
-        public readonly Vector3 InterpolateVector3(float _time) { return InterpolateVector2(_time); }
+        readonly Vector3 ILerpPath.LerpAlongPath(float _time) { return LerpAlongPath(_time); }
         #endregion
-
-        readonly public bool ContainsPoint(Vector2 _point) { return _point == pointA || _point == pointB || _point == pointC; }
-
-        readonly public float GetLengthAB() { return Vector2.Distance(pointA, pointB); }
-        readonly public float GetLengthBC() { return Vector2.Distance(pointB, pointC); }
-        readonly public float GetLengthCA() { return Vector2.Distance(pointC, pointA); }
-
-        readonly public Line2D GetEdgeAB() { return new Line2D(pointA, pointB); }
-        readonly public Line2D GetEdgeBC() { return new Line2D(pointB, pointC);  }
-        readonly public Line2D GetEdgeCA() { return new Line2D(pointC, pointA);  }
-
-        readonly public Circle2D GetCircumcircle() {
-            float d = 2 * (pointA.x * (pointB.y - pointC.y) + pointB.x * (pointC.y - pointA.y) + pointC.x * (pointA.y - pointB.y));
-
-            float ux = ((pointA.x * pointA.x + pointA.y * pointA.y) * (pointB.y - pointC.y) + (pointB.x * pointB.x + pointB.y * pointB.y) * (pointC.y - pointA.y) + (pointC.x * pointC.x + pointC.y * pointC.y) * (pointA.y - pointB.y)) / d;
-            float uy = ((pointA.x * pointA.x + pointA.y * pointA.y) * (pointC.x - pointB.x) + (pointB.x * pointB.x + pointB.y * pointB.y) * (pointA.x - pointC.x) + (pointC.x * pointC.x + pointC.y * pointC.y) * (pointB.x - pointA.x)) / d;
-
-            Vector2 circumCentre = new(ux, uy);
-            float circumRadius = Vector2.Distance(pointA, circumCentre);
-
-            return new Circle2D(circumCentre, circumRadius);
-        }
     }
 }
 

@@ -1,7 +1,9 @@
 using UnityEngine;
 
+using MaroonSeal.Maths.Interpolation;
+
 namespace MaroonSeal.Maths {
-    public static class GeometryGizmos
+    public static class ShapeGizmos
     {
         #region 2D
         public static void DrawLine2D(Line2D _line, float _pointRadii = 0.03125f) {
@@ -26,18 +28,18 @@ namespace MaroonSeal.Maths {
         }
 
         public static void DrawCircle2D(Circle2D _circle, int _resolution = 32, float _pointRadii = 0.03125f) {
-            DrawLerpShape(_circle, _resolution);
-            Gizmos.DrawSphere(_circle.InterpolateVector2(0.0f), _pointRadii);
+            DrawLerpPath(_circle, _resolution);
+            Gizmos.DrawSphere(_circle.LerpAlongPath(0.0f), _pointRadii);
         }
 
         public static void DrawArc2D(Arc2D _arc, int _resolution = 32, float _pointRadii = 0.03125f) {
-            DrawLerpShape(_arc, _resolution);
-            Gizmos.DrawSphere(_arc.InterpolateVector2(0.0f), _pointRadii);
-            Gizmos.DrawSphere(_arc.InterpolateVector2(1.0f), _pointRadii);
+            DrawLerpPath(_arc, _resolution);
+            Gizmos.DrawSphere(_arc.GetStartPoint(), _pointRadii);
+            Gizmos.DrawSphere(_arc.GetEndPoint(), _pointRadii);
         }
 
         public static void DrawCubicBezier2D(CubicBezier2D _bezier, int _resolution = 32, float _pointRadii = 0.03125f) {
-            DrawLerpShape(_bezier, _resolution);
+            DrawLerpPath(_bezier, _resolution);
 
             Gizmos.DrawLine(_bezier.anchorA, _bezier.controlA);
             Gizmos.DrawSphere(_bezier.anchorA, _pointRadii);
@@ -50,33 +52,33 @@ namespace MaroonSeal.Maths {
         #endregion
 
         #region 3D
-        public static void DrawLine3D(Line3D _line, float _pointRadii = 0.03125f) {
+        public static void DrawLine(Line _line, float _pointRadii = 0.03125f) {
             Gizmos.DrawLine(_line.pointA, _line.pointB);
             Gizmos.DrawSphere(_line.pointA, _pointRadii);
             Gizmos.DrawSphere(_line.pointB, _pointRadii);
         }
 
-        public static void DrawTriangle3D(Triangle3D _triangle, float _pointRadii = 0.03125f) {
+        public static void DrawTriangle(Triangle _triangle, float _pointRadii = 0.03125f) {
             DrawPolygon3D(_triangle, _pointRadii);
         }
 
-        public static void DrawBox3D(Box3D _box, float _pointRadii = 0.03125f) {
+        public static void DrawBox(Box _box, float _pointRadii = 0.03125f) {
             DrawPolygon3D(_box, _pointRadii);
         }
 
-        public static void DrawPolygon3D(IPolygonShape3D _polygon, float _pointRadii = 0.03125f) {
-            Line3D[] edges = _polygon.GetEdges();
-            foreach(Line3D edge in edges) { 
-                DrawLine3D(edge, _pointRadii);
+        public static void DrawPolygon3D(IPolygonShape _polygon, float _pointRadii = 0.03125f) {
+            Line[] edges = _polygon.GetEdges();
+            foreach(Line edge in edges) { 
+                DrawLine(edge, _pointRadii);
             }
         }
 
-        public static void DrawSphere3D(Sphere3D _sphere) {
+        public static void DrawSphere(Sphere _sphere) {
             Gizmos.DrawSphere(_sphere.centre, _sphere.radius);
         }
 
-        public static void DrawCubicBezier3D(CubicBezier3D _bezier, int _resolution = 32, float _pointRadii = 0.03125f) {
-            DrawLerpShape(_bezier, _resolution);
+        public static void DrawCubicBezier(CubicBezier _bezier, int _resolution = 32, float _pointRadii = 0.03125f) {
+            DrawLerpPath(_bezier, _resolution);
 
             Gizmos.DrawLine(_bezier.anchorA, _bezier.controlA);
             Gizmos.DrawSphere(_bezier.anchorA, _pointRadii);
@@ -89,11 +91,11 @@ namespace MaroonSeal.Maths {
         #endregion
 
         #region Drawers
-        public static void DrawLerpShape(IVector3Interpolatable _shape, int _resolution = 32) {
+        public static void DrawLerpPath(ILerpPath _shape, int _resolution = 32) {
             float timeStep = 1.0f / (_resolution-1);
-            Vector3 prevPoint = _shape.InterpolateVector3(0.0f);
+            Vector3 prevPoint = _shape.LerpAlongPath(0.0f);
             for(int i = 1; i < _resolution; i++) {
-                Vector3 currentPoint = _shape.InterpolateVector3(i * timeStep);
+                Vector3 currentPoint = _shape.LerpAlongPath(i * timeStep);
                 Gizmos.DrawLine(prevPoint, currentPoint);
                 prevPoint = currentPoint;
             }

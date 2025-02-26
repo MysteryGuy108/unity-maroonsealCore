@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 
 using MaroonSeal.DataStructures.NodeGraphs;
 
-namespace DataStructures.NodeGraphs
+namespace MaroonSealTesting.DataStructures.NodeGraphs
 {
     public class NodeGraphWeightedTests
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Maths.Cardinals {
+namespace MaroonSeal.Maths {
     [System.Serializable]
     public struct Cardinal2D
     {

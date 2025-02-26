@@ -1,8 +1,9 @@
-
 using UnityEngine;
 
+using MaroonSeal.Maths.Interpolation;
+
 namespace MaroonSeal.Maths {
-    public struct CubicBezier3D : IVector3Interpolatable
+    public struct CubicBezier : IOpenShape, IInterpolatable<CubicBezier>, ILerpPath
     {
         public Vector3 anchorA;
         public Vector3 controlA;
@@ -10,42 +11,50 @@ namespace MaroonSeal.Maths {
         public Vector3 anchorB;
 
         #region Constructors and Operators
-        public CubicBezier3D(Vector3 _anchorA, Vector3 _controlA, Vector3 _controlB, Vector3 _anchorB ) {
+        public CubicBezier(Vector3 _anchorA, Vector3 _controlA, Vector3 _controlB, Vector3 _anchorB ) {
             anchorA = _anchorA;
             controlA = _controlA;
             controlB = _controlB;
             anchorB = _anchorB;
         }
         
-        public static explicit operator CubicBezier2D(CubicBezier3D _current) {
+        public static explicit operator CubicBezier2D(CubicBezier _current) {
             return new(_current.anchorA, _current.controlA, _current.controlB, _current.anchorB);
         }
 
-        public static bool operator == (CubicBezier3D _a, CubicBezier3D _b) {
+        public static bool operator == (CubicBezier _a, CubicBezier _b) {
             return _a.anchorA == _b.anchorA && 
                 _a.controlA == _b.controlA &&
                 _a.controlB == _b.controlB &&
                 _a.anchorB == _b.anchorB;
         }
 
-        public static bool operator != (CubicBezier3D _a, CubicBezier3D _b) {
+        public static bool operator != (CubicBezier _a, CubicBezier _b) {
             return !(_a.anchorA == _b.anchorA && 
                 _a.controlA == _b.controlA &&
                 _a.controlB == _b.controlB &&
                 _a.anchorB == _b.anchorB);
         }
     
-        readonly public override bool Equals(object obj) {
-            if (obj == null) { return false; }
-            if (obj is not CubicBezier3D) { return false; }
-            return (CubicBezier3D)obj == this;
-        }
-
+        readonly public override bool Equals(object obj) { return ((CubicBezier)obj == this) && obj != null && obj is CubicBezier; }
         readonly public override int GetHashCode() { return System.HashCode.Combine(anchorA, controlA, controlB, anchorB); }
         #endregion
 
-        #region ILerpShape
-        public readonly Vector3 InterpolateVector3(float _time) {
+        #region IOpenShape3D
+        public readonly Vector3 GetStart() { return anchorA; }
+        public readonly Vector3 GetEnd() { return anchorB; }
+        #endregion
+
+        #region IInterpolation
+        public readonly CubicBezier LerpTowards(CubicBezier _other, float _time) {
+            return new CubicBezier(
+                Vector3.Lerp(anchorA, _other.anchorA, _time),
+                Vector3.Lerp(controlA, _other.controlA, _time),
+                Vector3.Lerp(controlB, _other.controlB, _time),
+                Vector3.Lerp(anchorA, _other.anchorB, _time));
+        }
+
+        public readonly Vector3 LerpAlongPath(float _time) {
             float tm = 1.0f -_time;
             float tm2 = tm * tm;
             float tm3 = tm * tm * tm;

@@ -4,9 +4,9 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-using MaroonSeal.Maths.PolarCoordinates;
+using MaroonSeal.Maths;
 
-namespace Maths.PolarCoordinates
+namespace MaroonSealTesting.Maths.PolarCoordinates
 {
     public class PolarCoordinate2DTests
     {

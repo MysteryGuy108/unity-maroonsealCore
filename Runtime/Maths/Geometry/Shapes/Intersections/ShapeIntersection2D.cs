@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Maths.Geometry {
+namespace MaroonSeal.Maths {
     public static class ShapeIntersection2D
     {
         // Line and Line
