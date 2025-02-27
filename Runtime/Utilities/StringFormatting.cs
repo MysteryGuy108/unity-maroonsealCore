@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSealEditor {
+namespace MaroonSeal {
     static public class StringFormatting
     {   
         static public string GetIterativeName(string newNametag) {

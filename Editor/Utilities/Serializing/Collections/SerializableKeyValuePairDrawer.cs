@@ -1,16 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-
 using UnityEngine;
 using UnityEditor;
 
-using MaroonSeal.DataStructures.LUTs;
+using MaroonSeal.Serializing;
 
-namespace MaroonSealEditor.DataStructures.LUTs {
-
-    [CustomPropertyDrawer(typeof(LUTItem<,>))]
-    public class LUTItemDrawer : PropertyDrawer
+namespace MaroonSealEditor.Serialization {
+    [CustomPropertyDrawer(typeof(SerializableKeyValuePair<,>), true)]
+    sealed public class SerializableKeyValuePairDrawer : PropertyDrawer
     {
+        #region Property Drawer
         public override void OnGUI(Rect _position, SerializedProperty _property, GUIContent _label) {
             EditorGUI.BeginProperty(_position, _label, _property);
             
@@ -28,7 +25,9 @@ namespace MaroonSealEditor.DataStructures.LUTs {
         public override float GetPropertyHeight(SerializedProperty _property, GUIContent _label) {
             return EditorGUI.GetPropertyHeight(_property.FindPropertyRelative("data"), _label, true);
         }
+        #endregion
 
+        #region Value Drawing
         private void DrawInLineKeyValue(Rect _position, SerializedProperty _property, GUIContent _label) {
             Rect headerPosition = _position;
             headerPosition.height = 18.0f;
@@ -43,7 +42,7 @@ namespace MaroonSealEditor.DataStructures.LUTs {
             contentPosition.height = 18.0f;
 
             SerializedProperty valueProperty = _property.FindPropertyRelative("data");
-            EditorGUI.PropertyField(contentPosition, valueProperty, GUIContent.none);
+            DrawDelayedKeyField(contentPosition, valueProperty);
         }
 
         private void DrawVerticalKeyValue(Rect _position, SerializedProperty _property, GUIContent _label) {
@@ -59,6 +58,7 @@ namespace MaroonSealEditor.DataStructures.LUTs {
             SerializedProperty valueProperty = _property.FindPropertyRelative("data");
             EditorGUI.PropertyField(contentPosition, valueProperty, GUIContent.none, true);
         }
+        #endregion
 
         private void DrawDelayedKeyField(Rect _position, SerializedProperty _keyProperty) {
             EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
@@ -80,5 +80,5 @@ namespace MaroonSealEditor.DataStructures.LUTs {
 
             EditorGUI.EndDisabledGroup();
         }
-    }
+    }  
 }
