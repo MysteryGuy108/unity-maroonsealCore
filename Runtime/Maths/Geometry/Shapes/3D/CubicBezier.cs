@@ -3,7 +3,7 @@ using UnityEngine;
 using MaroonSeal.Maths.Interpolation;
 
 namespace MaroonSeal.Maths {
-    public struct CubicBezier : IOpenShape, ILerpPathVector3
+    public struct CubicBezier : IOpenShape
     {
         public Vector3 anchorA;
         public Vector3 controlA;
@@ -41,8 +41,8 @@ namespace MaroonSeal.Maths {
         #endregion
 
         #region IOpenShape
-        public readonly Vector3 GetStart() { return anchorA; }
-        public readonly Vector3 GetEnd() { return anchorB; }
+        public readonly Vector3 GetStartPoint() { return anchorA; }
+        public readonly Vector3 GetEndPoint() { return anchorB; }
         #endregion
 
         #region ILerpPath
@@ -57,7 +57,7 @@ namespace MaroonSeal.Maths {
         }
         #endregion
 
-        static public CubicBezier LerpTowards(CubicBezier _a, CubicBezier _b, float _time) {
+        static public CubicBezier Lerp(CubicBezier _a, CubicBezier _b, float _time) {
             return new CubicBezier(
                 Vector3.Lerp(_a.anchorA, _b.anchorA, _time),
                 Vector3.Lerp(_a.controlA, _b.controlA, _time),

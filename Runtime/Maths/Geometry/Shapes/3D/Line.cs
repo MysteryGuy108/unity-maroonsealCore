@@ -1,10 +1,8 @@
 using UnityEngine;
 
-using MaroonSeal.Maths.Interpolation;
-
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct Line : ILerpPathVector3
+    public struct Line
     {
         public Vector3 pointA;
         public Vector3 pointB;
@@ -30,19 +28,28 @@ namespace MaroonSeal.Maths {
         readonly public override int GetHashCode() { return System.HashCode.Combine(pointA, pointB); }
         #endregion
 
-        #region Line3D
+        #region Line
         public readonly float GetLength() { return Vector3.Distance(pointA, pointB); }
+
+        public readonly Vector3 GetDirection() {
+            return (pointA - pointB).normalized;
+        }
+
+        public readonly Vector3 GetPositionAtTime(float _time) {
+            if (pointA == pointB) { return pointA; }
+            return Vector3.Lerp(pointA, pointB, _time);
+        }
+
+        public readonly Vector3 GetPositionAtDistance(float _distance) {
+            if (pointA == pointB) { return pointA; }
+            return Vector3.Lerp(pointA, pointB, _distance / GetLength());
+        }
         #endregion
 
-        #region IOpenShape3D
+        #region IOpenShape
         public readonly Vector3 GetStart() { return pointA; }
         public readonly Vector3 GetEnd() { return pointB; }
         #endregion
 
-        #region IInterpolation
-        public readonly Vector3 GetPositionAtTime(float _time) {
-            return Vector3.Lerp(pointA, pointB, _time);
-        }
-        #endregion
     }
 }

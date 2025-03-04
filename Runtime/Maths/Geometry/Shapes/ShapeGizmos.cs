@@ -28,18 +28,18 @@ namespace MaroonSeal.Maths {
         }
 
         public static void DrawCircle2D(Circle2D _circle, int _resolution = 32, float _pointRadii = 0.03125f) {
-            DrawLerpPath(_circle, _resolution);
+            //DrawLerpPath(_circle, _resolution);
             Gizmos.DrawSphere(_circle.GetPositionAtTime(0.0f), _pointRadii);
         }
 
         public static void DrawArc2D(Arc2D _arc, int _resolution = 32, float _pointRadii = 0.03125f) {
-            DrawLerpPath(_arc, _resolution);
+            //DrawLerpPath(_arc, _resolution);
             Gizmos.DrawSphere(_arc.GetStartPoint(), _pointRadii);
             Gizmos.DrawSphere(_arc.GetEndPoint(), _pointRadii);
         }
 
         public static void DrawCubicBezier2D(CubicBezier2D _bezier, int _resolution = 32, float _pointRadii = 0.03125f) {
-            DrawLerpPath(_bezier, _resolution);
+            //DrawLerpPath(_bezier, _resolution);
 
             Gizmos.DrawLine(_bezier.anchorA, _bezier.controlA);
             Gizmos.DrawSphere(_bezier.anchorA, _pointRadii);
@@ -78,7 +78,7 @@ namespace MaroonSeal.Maths {
         }
 
         public static void DrawCubicBezier(CubicBezier _bezier, int _resolution = 32, float _pointRadii = 0.03125f) {
-            DrawLerpPath(_bezier, _resolution);
+            //DrawLerpPath(_bezier, _resolution);
 
             Gizmos.DrawLine(_bezier.anchorA, _bezier.controlA);
             Gizmos.DrawSphere(_bezier.anchorA, _pointRadii);
@@ -90,8 +90,9 @@ namespace MaroonSeal.Maths {
         }
         #endregion
 
+        /*
         #region Drawers
-        public static void DrawLerpPath(ILerpPathVector3 _shape, int _resolution = 32) {
+        public static void DrawLerpPath(ILerpPath _shape, int _resolution = 32) {
             float timeStep = 1.0f / (_resolution-1);
             Vector3 prevPoint = _shape.GetPositionAtTime(0.0f);
             for(int i = 1; i < _resolution; i++) {
@@ -101,5 +102,6 @@ namespace MaroonSeal.Maths {
             }
         }
         #endregion
+        */
     }
 }

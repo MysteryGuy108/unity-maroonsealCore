@@ -4,7 +4,7 @@ using MaroonSeal.Maths.Interpolation;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct CubicBezier2D : IOpenShape2D, ILerpPathVector2 
+    public struct CubicBezier2D : IOpenShape2D 
     {
         public Vector2 anchorA;
         public Vector2 controlA;
@@ -56,10 +56,6 @@ namespace MaroonSeal.Maths {
             float t2 = _time * _time;
             float t3 = _time * _time * _time;
             return (tm3 * anchorA) + (3 * tm2 * _time * controlA) + (3 * tm * t2 * controlB) + (t3 * anchorB);
-        }
-
-        readonly Vector3 ILerpPathVector3.GetPositionAtTime(float _t) {
-            return GetPositionAtTime(_t);
         }
         #endregion
 

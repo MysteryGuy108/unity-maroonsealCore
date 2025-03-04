@@ -5,7 +5,7 @@ using MaroonSeal.Maths.SDFs;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct Triangle : IPolygonShape, ISDFShape, ILerpPathVector3
+    public struct Triangle : IPolygonShape, ISDFShape
     {
         public Vector3 pointA;
         public Vector3 pointB;

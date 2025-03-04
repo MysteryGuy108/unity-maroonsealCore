@@ -6,7 +6,7 @@ using MaroonSeal.Maths.SDFs;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct Triangle2D : IPolygonShape2D, ISDFShape2D, ILerpPathVector2
+    public struct Triangle2D : IPolygonShape2D, ISDFShape2D
     {
         public Vector2 pointA;
         public Vector2 pointB;
@@ -98,7 +98,6 @@ namespace MaroonSeal.Maths {
             
             return Vector2.Lerp(pointC, pointA, totalTime-2.0f);
         }
-        readonly Vector3 ILerpPathVector3.GetPositionAtTime(float _time) { return GetPositionAtTime(_time); }
         #endregion
 
         static public Triangle2D Lerp(Triangle2D _a, Triangle2D _b,float _time) {

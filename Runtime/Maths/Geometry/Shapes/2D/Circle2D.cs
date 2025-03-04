@@ -5,7 +5,7 @@ using MaroonSeal.Maths.SDFs;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct Circle2D : IShape2D, ISDFShape2D, ILerpPathVector2 
+    public struct Circle2D : IShape2D, ISDFShape2D 
     {
         public Vector2 centre;
         [Min(0.0f)] public float radius;
@@ -44,14 +44,20 @@ namespace MaroonSeal.Maths {
         public readonly float GetSignedDistance(Vector3 _point) { return GetSignedDistance((Vector2)_point); }
         #endregion
 
-        #region IInterpolation
+        readonly public Vector2 GetPositionAtRadians(float _radians) {
+            _radians = Mathf.Repeat(_radians, Mathf.PI * 2.0f);
+            return (new Vector2(Mathf.Cos(_radians), Mathf.Sin(_radians)) * radius) + centre;
+        }
+
+        readonly public Vector2 GetPositionAtDegrees(float _degrees) {
+            float radTheta = Mathf.Repeat(_degrees, 360.0f) * Mathf.Deg2Rad;
+            return GetPositionAtRadians(radTheta);
+        }
 
         readonly public Vector2 GetPositionAtTime(float _time) {
             float lerpTheta = Mathf.Lerp(0.0f, Mathf.PI * 2.0f, _time);
-            return (new Vector2(Mathf.Cos(lerpTheta), Mathf.Sin(lerpTheta)) * radius) + centre;
+            return GetPositionAtRadians(lerpTheta);
         }
-        readonly Vector3 ILerpPathVector3.GetPositionAtTime(float _time) { return GetPositionAtTime(_time); }
-        #endregion
 
         static public Circle2D Lerp(Circle2D _a, Circle2D _b, float _time) {
             return new Circle2D(

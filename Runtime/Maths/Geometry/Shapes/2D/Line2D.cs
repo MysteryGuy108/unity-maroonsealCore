@@ -66,7 +66,6 @@ namespace MaroonSeal.Maths {
         public readonly Vector2 GetPositionAtTime(float _time) {
             return Vector2.Lerp(pointA, pointB, _time);
         }
-        readonly Vector3 ILerpPathVector3.GetPositionAtTime(float _time) { return GetPositionAtTime(_time); }
         #endregion
 
         static public Line2D Lerp(Line2D _a, Line2D _b, float _time) {

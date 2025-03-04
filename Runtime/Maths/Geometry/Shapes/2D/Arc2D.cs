@@ -6,7 +6,7 @@ using MaroonSeal.Maths.SDFs;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct Arc2D : IOpenShape2D, ISDFShape2D, ILerpPathVector2 
+    public struct Arc2D : IOpenShape2D, ISDFShape2D 
     {
         public Vector2 centre;
         [Min(0.0f)] public float radius;
@@ -54,11 +54,22 @@ namespace MaroonSeal.Maths {
         readonly public float GetRadiansDelta() { return GetEndRadians() - GetStartRadians(); } 
 
         readonly public float GetArcLength() { return GetRadiansDelta() * 2.0f * Mathf.PI * radius; }
+
+        readonly public Vector2 GetPositionAlongArcAtDegrees(float _theta) {
+            _theta = Mathf.Clamp(_theta, Mathf.Min(startDegrees, endDegrees), Mathf.Max(startDegrees, endDegrees));
+            _theta *= Mathf.Deg2Rad;
+            return (new Vector2(Mathf.Cos(_theta), Mathf.Sin(_theta)) * radius) + centre;
+        }
+
+        readonly public Vector2 GetPositionAlongArcAtTime(float _time) {
+            float lerpTheta = Mathf.Lerp(startDegrees, endDegrees, _time) * Mathf.Deg2Rad;
+            return (new Vector2(Mathf.Cos(lerpTheta), Mathf.Sin(lerpTheta)) * radius) + centre;
+        }
         #endregion
 
         #region IOpenShape2D
-        public readonly Vector2 GetStartPoint() { return GetPositionAtTime(0.0f); }
-        public readonly Vector2 GetEndPoint() { return GetPositionAtTime(1.0f); }
+        public readonly Vector2 GetStartPoint() { return GetPositionAlongArcAtTime(0.0f); }
+        public readonly Vector2 GetEndPoint() { return GetPositionAlongArcAtTime(1.0f); }
         #endregion
 
         #region ISDFShape2D
@@ -69,7 +80,7 @@ namespace MaroonSeal.Maths {
         public readonly float GetSignedDistance(Vector3 _point) { return GetSignedDistance((Vector2)_point); }
         #endregion
 
-        #region IInterpolation
+        #region Static
         static public Arc2D Lerp(Arc2D _a, Arc2D _b, float _time) {
             return new(
                 Vector2.Lerp(_a.centre, _b.centre, _time),
@@ -77,11 +88,7 @@ namespace MaroonSeal.Maths {
                 Mathf.Lerp(_a.startDegrees, _b.startDegrees, _time),
                 Mathf.Lerp(_a.endDegrees, _b.endDegrees, _time));
         }
-        readonly public Vector2 GetPositionAtTime(float _time) {
-            float lerpTheta = Mathf.Lerp(startDegrees, endDegrees, _time) * Mathf.Deg2Rad;
-            return (new Vector2(Mathf.Cos(lerpTheta), Mathf.Sin(lerpTheta)) * radius) + centre;
-        }
-        readonly Vector3 ILerpPathVector3.GetPositionAtTime(float _time) { return GetPositionAtTime(_time); }
+
         #endregion
     }
 }

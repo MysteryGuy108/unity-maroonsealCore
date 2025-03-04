@@ -12,9 +12,9 @@ namespace MaroonSeal.Maths {
         public Line[] GetEdges();
     }
 
-    public interface IOpenShape : IShape, ILerpPathVector3 {
-        public Vector3 GetStart();
-        public Vector3 GetEnd();
+    public interface IOpenShape : IShape {
+        public Vector3 GetStartPoint();
+        public Vector3 GetEndPoint();
     }
 
     #region 2D
@@ -26,7 +26,7 @@ namespace MaroonSeal.Maths {
         public Line2D[] GetEdges();
     }
 
-    public interface IOpenShape2D : IShape2D, ILerpPathVector2 {
+    public interface IOpenShape2D : IShape2D {
         public Vector2 GetStartPoint();
         public Vector2 GetEndPoint();
     }
