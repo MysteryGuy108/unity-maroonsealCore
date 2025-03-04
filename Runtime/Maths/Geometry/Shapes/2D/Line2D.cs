@@ -5,7 +5,7 @@ using MaroonSeal.Maths.SDFs;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct Line2D : IOpenShape2D, ISDFShape2D, IInterpolatable<Line2D>
+    public struct Line2D : IOpenShape2D, ISDFShape2D
     {
         public Vector2 pointA;
         public Vector2 pointB;
@@ -62,15 +62,16 @@ namespace MaroonSeal.Maths {
         public readonly float GetSignedDistance(Vector3 _point) { return GetSignedDistance((Vector2)_point); }
         #endregion
 
-        #region IInterpolation
-        public readonly Line2D LerpTowards(Line2D _target, float _time) {
-            return new Line2D(Vector2.Lerp(this.pointA, _target.pointA, _time), Vector2.Lerp(this.pointB, _target.pointB, _time));
-        }
-
-        public readonly Vector2 LerpAlongPath(float _time) {
+        #region ILerpPath2D
+        public readonly Vector2 GetPositionAtTime(float _time) {
             return Vector2.Lerp(pointA, pointB, _time);
         }
-        readonly Vector3 ILerpPath.LerpAlongPath(float _time) { return LerpAlongPath(_time); }
+        readonly Vector3 ILerpPathVector3.GetPositionAtTime(float _time) { return GetPositionAtTime(_time); }
         #endregion
+
+        static public Line2D Lerp(Line2D _a, Line2D _b, float _time) {
+            return new Line2D(Vector2.Lerp(_a.pointA, _b.pointA, _time), Vector2.Lerp(_a.pointB, _b.pointB, _time));
+        }
+
     }
 }

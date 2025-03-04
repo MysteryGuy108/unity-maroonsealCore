@@ -7,36 +7,36 @@ using MaroonSeal.Serializing;
 
 namespace MaroonSeal.Maths.Interpolation {
     [System.Serializable]
-    public class CompositeLerpPath<TPath> : SerializableListBase<TPath>, ILerpPath where TPath : ILerpPath { 
+    public class CompositeLerpPath<TPath> : SerializableListBase<TPath>, ILerpPathVector3 where TPath : ILerpPathVector3 { 
 
         #region ILerpPath
-        public Vector3 LerpAlongPath(float _time) {
+        public Vector3 GetPositionAtTime(float _time) {
             if (Count <= 0) { return Vector2.zero; }
             _time *= this.Count;
             int index = (int)Mathf.Clamp(_time, 0, this.Count-1);
-            return this[index].LerpAlongPath(_time - index);
+            return this[index].GetPositionAtTime(_time - index);
         }
         #endregion
     }
 
     [System.Serializable]
-    public class CompositeLerpPath : CompositeLerpPath<ILerpPath> {}
+    public class CompositeLerpPath : CompositeLerpPath<ILerpPathVector3> {}
 
     [System.Serializable]
-    public class CompositeLerpPath2D<TPath> : CompositeLerpPath<TPath>, ILerpPath2D where TPath : ILerpPath2D {
+    public class CompositeLerpPath2D<TPath> : CompositeLerpPath<TPath>, ILerpPathVector2 where TPath : ILerpPathVector2 {
         #region ILerpPath2D
-        new public Vector2 LerpAlongPath(float _time) {
+        new public Vector2 GetPositionAtTime(float _time) {
             if (Count <= 0) { return Vector2.zero; }
             _time *= this.Count;
             int index = (int)Mathf.Clamp(_time, 0, this.Count-1);
-            return this[index].LerpAlongPath(_time - index);
+            return this[index].GetPositionAtTime(_time - index);
         }
 
-        Vector3 ILerpPath.LerpAlongPath(float _time) { return base.LerpAlongPath(_time); }
+        Vector3 ILerpPathVector3.GetPositionAtTime(float _time) { return base.GetPositionAtTime(_time); }
         #endregion
     }
 
     [System.Serializable]
-    public class CompositeLerpPath2D : CompositeLerpPath2D<ILerpPath2D> {}
+    public class CompositeLerpPath2D : CompositeLerpPath2D<ILerpPathVector2> {}
 }
 

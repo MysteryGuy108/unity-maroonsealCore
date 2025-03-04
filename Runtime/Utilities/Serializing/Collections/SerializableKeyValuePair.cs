@@ -7,14 +7,16 @@ namespace MaroonSeal.Serializing {
 
     [System.Serializable]
     public struct SerializableKeyValuePair<TKey, TValue> {
+
+        [SerializeField] private bool keyIsReadonly;
         [SerializeField] private TKey key;
         readonly public TKey Key { get { return key; } }
-        [SerializeField] private TValue data;
-        readonly public TValue Value { get { return data; } }
+        [SerializeField] private TValue value;
+        readonly public TValue Value { get { return value; } }
 
-        public SerializableKeyValuePair(TKey _key, TValue _value) { key = _key; data = _value;}
-        public SerializableKeyValuePair((TKey, TValue) _pair) { key = _pair.Item1; data = _pair.Item2; }
-        public SerializableKeyValuePair(KeyValuePair<TKey, TValue> _pair) { key = _pair.Key; data = _pair.Value; }
+        public SerializableKeyValuePair(TKey _key, TValue _value, bool _keyIsReadonly = false) { key = _key; value = _value; keyIsReadonly = _keyIsReadonly; }
+        public SerializableKeyValuePair((TKey, TValue) _pair, bool _keyIsReadonly = false) { key = _pair.Item1; value = _pair.Item2;  keyIsReadonly = _keyIsReadonly; }
+        public SerializableKeyValuePair(KeyValuePair<TKey, TValue> _pair, bool _keyIsReadonly = false) { key = _pair.Key; value = _pair.Value; keyIsReadonly = _keyIsReadonly;}
 
         public static explicit operator KeyValuePair<TKey, TValue>(SerializableKeyValuePair<TKey, TValue> _other) {
             return new(_other.Key, _other.Value);
@@ -29,7 +31,7 @@ namespace MaroonSeal.Serializing {
 
         readonly override public int GetHashCode() {
             unchecked {
-                return HashCode.Combine(key.GetHashCode(), data.GetHashCode());
+                return HashCode.Combine(key.GetHashCode(), value.GetHashCode());
             }
         }
     }

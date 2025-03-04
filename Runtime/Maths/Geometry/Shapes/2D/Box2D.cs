@@ -5,7 +5,7 @@ using MaroonSeal.Maths.SDFs;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct Box2D : IPolygonShape2D, ISDFShape2D, IInterpolatable<Box2D>, ILerpPath2D
+    public struct Box2D : IPolygonShape2D, ISDFShape2D, ILerpPathVector2
     {
         public Vector2 centre;
         public Vector2 size;
@@ -76,19 +76,19 @@ namespace MaroonSeal.Maths {
         #endregion
 
         #region IInterpolation
-        public readonly Box2D LerpTowards(Box2D _target, float _time) {
-            return new Box2D(
-                Vector2.Lerp(this.centre, _target.centre, _time), 
-                Vector2.Lerp(this.size, _target.size, _time));
-        }
-
-        public readonly Vector2 LerpAlongPath(float _time) {
+        public readonly Vector2 GetPositionAtTime(float _time) {
             Line2D[] edges = GetEdges();
             _time *= 4;
             int segment = (int)Mathf.Clamp(_time, 0, 3);
-            return edges[segment].LerpAlongPath(_time - segment);
+            return edges[segment].GetPositionAtTime(_time - segment);
         }
-        readonly Vector3 ILerpPath.LerpAlongPath(float _time) { return LerpAlongPath(_time); }
+        readonly Vector3 ILerpPathVector3.GetPositionAtTime(float _time) { return GetPositionAtTime(_time); }
         #endregion
+
+        static public Box2D Lerp(Box2D _a, Box2D _b, float _time) {
+            return new Box2D(
+                Vector2.Lerp(_a.centre, _b.centre, _time), 
+                Vector2.Lerp(_a.size, _b.size, _time));
+        }
     }
 }

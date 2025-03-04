@@ -5,7 +5,7 @@ using MaroonSeal.Maths.SDFs;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct Sphere : ISDFShape, IInterpolatable<Sphere>
+    public struct Sphere : ISDFShape
     {
         public Vector3 centre;
         [Min(0.0f)]public float radius;
@@ -39,8 +39,8 @@ namespace MaroonSeal.Maths {
         #endregion
 
         #region IInterpolation
-        readonly public Sphere LerpTowards(Sphere _target, float _time) {
-            return new(Vector3.Lerp(centre, _target.centre, _time), Mathf.Lerp(radius, _target.radius, _time));
+        static public Sphere Lerp(Sphere _a, Sphere _b, float _time) {
+            return new(Vector3.Lerp(_a.centre, _b.centre, _time), Mathf.Lerp(_a.radius, _b.radius, _time));
         }
         #endregion
     }

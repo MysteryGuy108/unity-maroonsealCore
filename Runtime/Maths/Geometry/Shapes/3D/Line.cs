@@ -4,7 +4,7 @@ using MaroonSeal.Maths.Interpolation;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct Line : ILerpPath
+    public struct Line : ILerpPathVector3
     {
         public Vector3 pointA;
         public Vector3 pointB;
@@ -40,7 +40,7 @@ namespace MaroonSeal.Maths {
         #endregion
 
         #region IInterpolation
-        public readonly Vector3 LerpAlongPath(float _time) {
+        public readonly Vector3 GetPositionAtTime(float _time) {
             return Vector3.Lerp(pointA, pointB, _time);
         }
         #endregion

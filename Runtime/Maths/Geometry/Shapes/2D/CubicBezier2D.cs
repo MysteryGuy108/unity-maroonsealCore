@@ -4,7 +4,7 @@ using MaroonSeal.Maths.Interpolation;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct CubicBezier2D : IOpenShape2D, IInterpolatable<CubicBezier2D>, ILerpPath2D 
+    public struct CubicBezier2D : IOpenShape2D, ILerpPathVector2 
     {
         public Vector2 anchorA;
         public Vector2 controlA;
@@ -47,15 +47,8 @@ namespace MaroonSeal.Maths {
         public readonly Vector2 GetEndPoint() { return anchorB; }
         #endregion
 
-        #region IInterpolation
-        readonly public CubicBezier2D LerpTowards(CubicBezier2D _target, float _time) {
-            return new(
-                Vector2.Lerp(anchorA, _target.anchorA, _time),
-                Vector2.Lerp(anchorA, _target.controlA, _time),
-                Vector2.Lerp(anchorA, _target.controlB, _time),
-                Vector2.Lerp(anchorA, _target.anchorB, _time));
-        }
-        readonly public Vector2 LerpAlongPath(float _time) {
+        #region ILerpPath2D
+        readonly public Vector2 GetPositionAtTime(float _time) {
             float tm = 1.0f -_time;
             float tm2 = tm * tm;
             float tm3 = tm * tm * tm;
@@ -65,9 +58,17 @@ namespace MaroonSeal.Maths {
             return (tm3 * anchorA) + (3 * tm2 * _time * controlA) + (3 * tm * t2 * controlB) + (t3 * anchorB);
         }
 
-        readonly Vector3 ILerpPath.LerpAlongPath(float _t) {
-            return LerpAlongPath(_t);
+        readonly Vector3 ILerpPathVector3.GetPositionAtTime(float _t) {
+            return GetPositionAtTime(_t);
         }
         #endregion
+
+        static public CubicBezier2D Lerp(CubicBezier2D _a, CubicBezier2D _b, float _time) {
+            return new(
+                Vector2.Lerp(_a.anchorA, _b.anchorA, _time),
+                Vector2.Lerp(_a.controlA, _b.controlA, _time),
+                Vector2.Lerp(_a.controlB, _b.controlB, _time),
+                Vector2.Lerp(_a.anchorA, _b.anchorB, _time));
+        }
     }
 }

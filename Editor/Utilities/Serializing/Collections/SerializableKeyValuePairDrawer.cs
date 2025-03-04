@@ -11,7 +11,7 @@ namespace MaroonSealEditor.Serialization {
         public override void OnGUI(Rect _position, SerializedProperty _property, GUIContent _label) {
             EditorGUI.BeginProperty(_position, _label, _property);
             
-            SerializedProperty valueProperty = _property.FindPropertyRelative("data");
+            SerializedProperty valueProperty = _property.FindPropertyRelative("value");
             if (valueProperty.propertyType == SerializedPropertyType.Generic) {
                 DrawVerticalKeyValue(_position, _property, _label);
             }
@@ -23,7 +23,7 @@ namespace MaroonSealEditor.Serialization {
         }
 
         public override float GetPropertyHeight(SerializedProperty _property, GUIContent _label) {
-            return EditorGUI.GetPropertyHeight(_property.FindPropertyRelative("data"), _label, true);
+            return EditorGUI.GetPropertyHeight(_property.FindPropertyRelative("value"), _label, true);
         }
         #endregion
 
@@ -33,7 +33,11 @@ namespace MaroonSealEditor.Serialization {
             headerPosition.height = 18.0f;
             headerPosition.width = EditorGUIUtility.labelWidth;
 
+            bool isKeyReadonly = _property.FindPropertyRelative("keyIsReadonly").boolValue;
+
+            EditorGUI.BeginDisabledGroup(isKeyReadonly);
             DrawDelayedKeyField(headerPosition, _property.FindPropertyRelative("key"));
+            EditorGUI.EndDisabledGroup();
 
             Rect contentPosition = _position;
             contentPosition.x += EditorGUIUtility.labelWidth+8;
@@ -41,7 +45,7 @@ namespace MaroonSealEditor.Serialization {
 
             contentPosition.height = 18.0f;
 
-            SerializedProperty valueProperty = _property.FindPropertyRelative("data");
+            SerializedProperty valueProperty = _property.FindPropertyRelative("value");
             DrawDelayedKeyField(contentPosition, valueProperty);
         }
 
@@ -51,11 +55,14 @@ namespace MaroonSealEditor.Serialization {
             headerPosition.height = 18.0f;
             headerPosition.width = EditorGUIUtility.labelWidth;
 
+            bool isKeyReadonly = _property.FindPropertyRelative("keyIsReadonly").boolValue;
+            EditorGUI.BeginDisabledGroup(isKeyReadonly);
             DrawDelayedKeyField(headerPosition, _property.FindPropertyRelative("key"));
+            EditorGUI.EndDisabledGroup();
 
             Rect contentPosition = _position;
 
-            SerializedProperty valueProperty = _property.FindPropertyRelative("data");
+            SerializedProperty valueProperty = _property.FindPropertyRelative("value");
             EditorGUI.PropertyField(contentPosition, valueProperty, GUIContent.none, true);
         }
         #endregion

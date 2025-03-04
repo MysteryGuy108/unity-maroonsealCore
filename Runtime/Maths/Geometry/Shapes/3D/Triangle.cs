@@ -5,7 +5,7 @@ using MaroonSeal.Maths.SDFs;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct Triangle : IPolygonShape, ISDFShape, ILerpPath
+    public struct Triangle : IPolygonShape, ISDFShape, ILerpPathVector3
     {
         public Vector3 pointA;
         public Vector3 pointB;
@@ -82,7 +82,7 @@ namespace MaroonSeal.Maths {
         #endregion
 
         #region IInterpolatable
-        public readonly Vector3 LerpAlongPath(float _time) {
+        public readonly Vector3 GetPositionAtTime(float _time) {
             float totalTime = _time * 3.0f;
             if (totalTime <= 1.0f) {
                 return Vector3.Lerp(pointA, pointB, totalTime);

@@ -3,7 +3,7 @@ using UnityEngine;
 using MaroonSeal.Maths.Interpolation;
 
 namespace MaroonSeal.Maths {
-    public struct CubicBezier : IOpenShape, IInterpolatable<CubicBezier>, ILerpPath
+    public struct CubicBezier : IOpenShape, ILerpPathVector3
     {
         public Vector3 anchorA;
         public Vector3 controlA;
@@ -40,21 +40,13 @@ namespace MaroonSeal.Maths {
         readonly public override int GetHashCode() { return System.HashCode.Combine(anchorA, controlA, controlB, anchorB); }
         #endregion
 
-        #region IOpenShape3D
+        #region IOpenShape
         public readonly Vector3 GetStart() { return anchorA; }
         public readonly Vector3 GetEnd() { return anchorB; }
         #endregion
 
-        #region IInterpolation
-        public readonly CubicBezier LerpTowards(CubicBezier _other, float _time) {
-            return new CubicBezier(
-                Vector3.Lerp(anchorA, _other.anchorA, _time),
-                Vector3.Lerp(controlA, _other.controlA, _time),
-                Vector3.Lerp(controlB, _other.controlB, _time),
-                Vector3.Lerp(anchorA, _other.anchorB, _time));
-        }
-
-        public readonly Vector3 LerpAlongPath(float _time) {
+        #region ILerpPath
+        public readonly Vector3 GetPositionAtTime(float _time) {
             float tm = 1.0f -_time;
             float tm2 = tm * tm;
             float tm3 = tm * tm * tm;
@@ -64,5 +56,13 @@ namespace MaroonSeal.Maths {
             return (tm3 * anchorA) + (3 * tm2 * _time * controlA) + (3 * tm * t2 * controlB) + (t3 * anchorB);
         }
         #endregion
+
+        static public CubicBezier LerpTowards(CubicBezier _a, CubicBezier _b, float _time) {
+            return new CubicBezier(
+                Vector3.Lerp(_a.anchorA, _b.anchorA, _time),
+                Vector3.Lerp(_a.controlA, _b.controlA, _time),
+                Vector3.Lerp(_a.controlB, _b.controlB, _time),
+                Vector3.Lerp(_a.anchorA, _b.anchorB, _time));
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace MaroonSeal.Maths {
 
         public static void DrawCircle2D(Circle2D _circle, int _resolution = 32, float _pointRadii = 0.03125f) {
             DrawLerpPath(_circle, _resolution);
-            Gizmos.DrawSphere(_circle.LerpAlongPath(0.0f), _pointRadii);
+            Gizmos.DrawSphere(_circle.GetPositionAtTime(0.0f), _pointRadii);
         }
 
         public static void DrawArc2D(Arc2D _arc, int _resolution = 32, float _pointRadii = 0.03125f) {
@@ -91,11 +91,11 @@ namespace MaroonSeal.Maths {
         #endregion
 
         #region Drawers
-        public static void DrawLerpPath(ILerpPath _shape, int _resolution = 32) {
+        public static void DrawLerpPath(ILerpPathVector3 _shape, int _resolution = 32) {
             float timeStep = 1.0f / (_resolution-1);
-            Vector3 prevPoint = _shape.LerpAlongPath(0.0f);
+            Vector3 prevPoint = _shape.GetPositionAtTime(0.0f);
             for(int i = 1; i < _resolution; i++) {
-                Vector3 currentPoint = _shape.LerpAlongPath(i * timeStep);
+                Vector3 currentPoint = _shape.GetPositionAtTime(i * timeStep);
                 Gizmos.DrawLine(prevPoint, currentPoint);
                 prevPoint = currentPoint;
             }

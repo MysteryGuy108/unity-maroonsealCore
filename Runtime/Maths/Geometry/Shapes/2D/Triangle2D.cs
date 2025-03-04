@@ -6,7 +6,7 @@ using MaroonSeal.Maths.SDFs;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct Triangle2D : IPolygonShape2D, ISDFShape2D, IInterpolatable<Triangle2D>, ILerpPath2D
+    public struct Triangle2D : IPolygonShape2D, ISDFShape2D, ILerpPathVector2
     {
         public Vector2 pointA;
         public Vector2 pointB;
@@ -86,15 +86,8 @@ namespace MaroonSeal.Maths {
         #endregion
 
 
-        #region IInterpolation
-        readonly public Triangle2D LerpTowards(Triangle2D _target, float _time) {
-            return new(
-                Vector2.Lerp(pointA, _target.pointA, _time),
-                Vector2.Lerp(pointB, _target.pointB, _time),
-                Vector2.Lerp(pointC, _target.pointC, _time));
-        }
-
-        public readonly Vector2 LerpAlongPath(float _time) {
+        #region ILerpPath2D
+        public readonly Vector2 GetPositionAtTime(float _time) {
             float totalTime = _time * 3.0f;
             if (totalTime <= 1.0f) {
                 return Vector2.Lerp(pointA, pointB, totalTime);
@@ -105,8 +98,15 @@ namespace MaroonSeal.Maths {
             
             return Vector2.Lerp(pointC, pointA, totalTime-2.0f);
         }
-        readonly Vector3 ILerpPath.LerpAlongPath(float _time) { return LerpAlongPath(_time); }
+        readonly Vector3 ILerpPathVector3.GetPositionAtTime(float _time) { return GetPositionAtTime(_time); }
         #endregion
+
+        static public Triangle2D Lerp(Triangle2D _a, Triangle2D _b,float _time) {
+            return new(
+                Vector2.Lerp(_a.pointA, _b.pointA, _time),
+                Vector2.Lerp(_a.pointB, _b.pointB, _time),
+                Vector2.Lerp(_a.pointC, _b.pointC, _time));
+        }
     }
 }
 

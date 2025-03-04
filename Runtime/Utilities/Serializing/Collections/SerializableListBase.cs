@@ -16,6 +16,10 @@ namespace MaroonSeal.Serializing {
         public bool IsReadOnly => false;
 
         public void Add(T _item) { list.Add(_item); }
+        public void Insert(int _index, T _item) { list.Insert(_index, _item); }
+
+        public bool Remove(T _item) { return list.Remove(_item); }
+        public void RemoveAt(int _index) { list.RemoveAt(_index); }
 
         public void Clear() { list.Clear(); }
 
@@ -23,27 +27,21 @@ namespace MaroonSeal.Serializing {
 
         public void CopyTo(T[] _array, int _arrayIndex) { list.CopyTo(_array, _arrayIndex); }
 
-        public IEnumerator<T> GetEnumerator() { return list.GetEnumerator(); }
-
         public int IndexOf(T _item) { return list.IndexOf(_item); }
 
-        public void Insert(int _index, T _item) { list.Insert(_index, _item); }
 
-        public bool Remove(T _item) { return list.Remove(_item); }
-
-        public void RemoveAt(int _index) { list.RemoveAt(_index); }
-
+        public IEnumerator<T> GetEnumerator() { return list.GetEnumerator(); }
         IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
         #endregion
 
         #region ISerializationCallbackReciever
-        public void OnAfterDeserialize() {
+        virtual public void OnBeforeSerialize() {}
+
+        virtual public void OnAfterDeserialize() {
             if (m_Initialised) { return; }
             list = new();
             m_Initialised = true;
         }
-
-        public void OnBeforeSerialize() {}
         #endregion
     }
 }

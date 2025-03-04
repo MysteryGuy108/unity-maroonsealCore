@@ -1,15 +1,6 @@
 using UnityEngine;
 
 namespace MaroonSeal.Maths.Interpolation {
-
-    public interface IInterpolatable<TType> {
-        public TType LerpTowards(TType _target, float _time);
-
-        static public TType Interpolate(IInterpolatable<TType> _a, IInterpolatable<TType> _b, float _time) {
-            return _a.LerpTowards((TType)_b, _time);
-        }
-    }
-
     public static class Interpolation {
 
         #region Lerp
