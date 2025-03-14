@@ -45,8 +45,12 @@ namespace MaroonSealEditor.Serialization {
 
             contentPosition.height = 18.0f;
 
+            bool isValueReadonly = _property.FindPropertyRelative("valueIsReadonly").boolValue;
             SerializedProperty valueProperty = _property.FindPropertyRelative("value");
+
+            EditorGUI.BeginDisabledGroup(isValueReadonly);
             DrawDelayedKeyField(contentPosition, valueProperty);
+            EditorGUI.EndDisabledGroup();
         }
 
         private void DrawVerticalKeyValue(Rect _position, SerializedProperty _property, GUIContent _label) {

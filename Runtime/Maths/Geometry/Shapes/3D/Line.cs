@@ -35,12 +35,12 @@ namespace MaroonSeal.Maths {
             return (pointA - pointB).normalized;
         }
 
-        public readonly Vector3 GetPositionAtTime(float _time) {
+        public readonly Vector3 EvaluatePosition(float _time) {
             if (pointA == pointB) { return pointA; }
             return Vector3.Lerp(pointA, pointB, _time);
         }
 
-        public readonly Vector3 GetPositionAtDistance(float _distance) {
+        public readonly Vector3 EvaluatePositionAtDistance(float _distance) {
             if (pointA == pointB) { return pointA; }
             return Vector3.Lerp(pointA, pointB, _distance / GetLength());
         }

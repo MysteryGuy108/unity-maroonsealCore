@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 
 using MaroonSeal.Serializing;
-using System;
 
 namespace MaroonSeal.DataStructures {
     [System.Serializable]

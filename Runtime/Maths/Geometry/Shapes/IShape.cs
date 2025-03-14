@@ -12,9 +12,9 @@ namespace MaroonSeal.Maths {
         public Line[] GetEdges();
     }
 
-    public interface IOpenShape : IShape {
-        public Vector3 GetStartPoint();
-        public Vector3 GetEndPoint();
+    public interface ICurveShape : IShape {
+        public Vector3 EvaluatePosition(float _t);
+        public Vector3 EvaluateTangent(float _t);
     }
 
     #region 2D

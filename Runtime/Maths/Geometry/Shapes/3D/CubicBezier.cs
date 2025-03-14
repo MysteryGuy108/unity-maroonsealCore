@@ -1,9 +1,8 @@
 using UnityEngine;
 
-using MaroonSeal.Maths.Interpolation;
 
 namespace MaroonSeal.Maths {
-    public struct CubicBezier : IOpenShape
+    public struct CubicBezier : ICurveShape
     {
         public Vector3 anchorA;
         public Vector3 controlA;
@@ -46,23 +45,35 @@ namespace MaroonSeal.Maths {
         #endregion
 
         #region ILerpPath
-        public readonly Vector3 GetPositionAtTime(float _time) {
-            float tm = 1.0f -_time;
+        public readonly Vector3 EvaluatePosition(float _t) {
+            float tm = 1.0f -_t;
             float tm2 = tm * tm;
             float tm3 = tm * tm * tm;
 
-            float t2 = _time * _time;
-            float t3 = _time * _time * _time;
-            return (tm3 * anchorA) + (3 * tm2 * _time * controlA) + (3 * tm * t2 * controlB) + (t3 * anchorB);
+            float t2 = _t * _t;
+            float t3 = _t * _t * _t;
+            return (tm3 * anchorA) + (3 * tm2 * _t * controlA) + (3 * tm * t2 * controlB) + (t3 * anchorB);
+        }
+        public readonly Vector3 EvaluateTangent(float _t) {
+            Vector3 pos0 = anchorA;
+            Vector3 pos1 = controlA;
+            Vector3 pos2 = controlB;
+            Vector3 pos3 = anchorB;
+
+            float tm = 1.0f -_t;
+            float tm2 = tm * tm;
+            float t2 = _t * _t;
+            
+            return (3.0f * tm2 * (pos1 - pos0)) + (6.0f * tm * _t * (pos2 - pos1)) + (3.0f * t2 * (pos3 - pos2));
         }
         #endregion
 
-        static public CubicBezier Lerp(CubicBezier _a, CubicBezier _b, float _time) {
+        static public CubicBezier Lerp(CubicBezier _a, CubicBezier _b, float _t) {
             return new CubicBezier(
-                Vector3.Lerp(_a.anchorA, _b.anchorA, _time),
-                Vector3.Lerp(_a.controlA, _b.controlA, _time),
-                Vector3.Lerp(_a.controlB, _b.controlB, _time),
-                Vector3.Lerp(_a.anchorA, _b.anchorB, _time));
+                Vector3.Lerp(_a.anchorA, _b.anchorA, _t),
+                Vector3.Lerp(_a.controlA, _b.controlA, _t),
+                Vector3.Lerp(_a.controlB, _b.controlB, _t),
+                Vector3.Lerp(_a.anchorA, _b.anchorB, _t));
         }
     }
 }

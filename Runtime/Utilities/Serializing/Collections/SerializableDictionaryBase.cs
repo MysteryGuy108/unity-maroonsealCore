@@ -39,6 +39,14 @@ namespace MaroonSeal.Serializing {
             RefreshItemList();
         }
 
+        public void AddRange(List<SerializableKeyValuePair<TKey, TValue>> _list) {
+            foreach(SerializableKeyValuePair<TKey, TValue> item in _list) {
+                dictionary.Add(item.Key, item.Value);
+                itemList.Add(item);
+            }
+            RefreshItemList();
+        }
+
         public void AddRange(TKey[] _keys, TValue[] _values) {
             for(int i = 0; i < Mathf.Min(_keys.Length, _values.Length); i++) {
                 dictionary.Add(_keys[i], _values[i]);
