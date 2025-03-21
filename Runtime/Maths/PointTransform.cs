@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace MaroonSeal.Maths {
     [System.Serializable]
-    public struct PointTransform {
+    public struct PointTransform : IEquatable<PointTransform> {
         public Vector3 position;
         public Vector3 eulerAngles;
         public Vector3 scale;
@@ -58,6 +59,23 @@ namespace MaroonSeal.Maths {
             eulerAngles = _transform.eulerAngles;
             scale = _transform.localScale;
         }
+        #endregion
+
+        #region Operators
+        readonly public bool Equals(PointTransform _other) {
+            return this.position == _other.position && 
+                this.eulerAngles == _other.eulerAngles && 
+                this.scale == _other.scale;
+        }
+        public override readonly bool Equals(object obj) => this.Equals((PointTransform)obj);
+
+        public override readonly int GetHashCode() {
+            unchecked {
+                return HashCode.Combine(position, eulerAngles, scale);
+            }
+        }
+        public static bool operator ==(PointTransform _a, PointTransform _b) => _a.Equals(_b);
+        public static bool operator !=(PointTransform _a, PointTransform _b) => !_a.Equals(_b);
         #endregion
 
         readonly public PointTransform GetLocalPoint(Transform _transform) {
