@@ -1,76 +1,52 @@
+using System;
 using UnityEngine;
 
-using MaroonSeal.Maths.Interpolation;
-using MaroonSeal.Maths.SDFs;
-
-namespace MaroonSeal.Maths {
-    [System.Serializable]
-    public struct Line2D : IOpenShape2D, ISDFShape2D
+namespace MaroonSeal.Maths.Shapes {
+    public struct Line2D : IShape2D, IInterpolationShape
     {
-        public Vector2 pointA;
-        public Vector2 pointB;
+        public Vector2 from;
+        public Vector2 to;
 
-        #region Constructors and Operators
-        public Line2D(Vector2 _pointA, Vector2 _pointB) {
-            pointA = _pointA;
-            pointB = _pointB;
+        readonly public PointTransform2D Transform => PointTransform2D.Origin;
+
+        #region Constructors
+        public Line2D(Vector2 _from, Vector2 _to) {
+            from = _from;
+            to = _to;
         }
-        
-        public static bool operator == (Line2D _a, Line2D _b) { return _a.pointA == _b.pointA && _a.pointB == _b.pointB; }
+        #endregion
 
-        public static bool operator != (Line2D _a, Line2D _b) { return !(_a.pointA == _b.pointA && _a.pointB == _b.pointB); }
-    
-        public readonly override bool Equals(object obj) {
-            if (obj == null) { return false; }
-            if (obj is not Line2D) { return false; }
-            return (Line2D)obj == this;
+        #region Operators
+        readonly public bool Equals(Line2D _other) {
+            return this.from == _other.from && 
+                this.to == _other.to;
         }
+        public override readonly bool Equals(object obj) => this.Equals((Line2D)obj);
 
-        readonly public override int GetHashCode() { return System.HashCode.Combine(pointA, pointB); }
+        public override readonly int GetHashCode() {
+            unchecked {
+                return HashCode.Combine(from, to);
+            }
+        }
+        public static bool operator ==(Line2D _a, Line2D _b) => _a.Equals(_b);
+        public static bool operator !=(Line2D _a, Line2D _b) => !_a.Equals(_b);
         #endregion
 
         #region Line2D
-        public readonly float GetLength() { return Vector3.Distance(pointA, pointB); }
+        public readonly float GetLength() { return Vector2.Distance(from, to); }
 
-        public readonly bool IsPointInBounds(Vector2 _point) {
-            float minX, maxX;
-            if (pointA.x <= pointB.x) { minX = pointA.x; maxX = pointB.x; }
-            else { minX = pointB.x; maxX = pointA.x; }
-
-            float minY, maxY;
-            if (pointA.y <= pointB.y) { minY = pointA.y; maxY = pointB.y; }
-            else { minY = pointB.y; maxY = pointA.y; }
-
-            return _point.x >= minX && _point.x <= maxX && 
-                _point.y >= minY && _point.y <= maxY;
-        }
+        public readonly Vector2 GetVector() => to - from;
+        public readonly Vector2 GetDirection() => GetVector().normalized;
+        
+        public void FlipDirection() { (to, from) = (from, to); }
         #endregion
 
-        #region IOpenShape2D
-        public readonly Vector2 GetStartPoint() { return pointA; }
-        public readonly Vector2 GetEndPoint() { return pointB; }
+        #region IInterpolationShape
+        public readonly Vector2 EvaluatePositionAtTime(float _t) => Vector2.Lerp(from, to, _t);
+        public readonly Vector2 EvaluateTangentAtTime(float _t) => GetDirection();
+
+        readonly Vector3 IInterpolationShape.EvaluatePositionAtTime(float _t) => this.EvaluatePositionAtTime(_t);
+        readonly Vector3 IInterpolationShape.EvaluateTangentAtTime(float _t) => this.EvaluateTangentAtTime(_t);
         #endregion
-
-        #region ISDFShape2D
-        public readonly float GetSignedDistance(Vector2 _point) {
-            Vector2 pa = _point-pointA;
-            Vector2 ba = pointB-pointA;
-            float h = Mathf.Clamp( Vector2.Dot(pa,ba)/Vector2.Dot(ba,ba), 0.0f, 1.0f );
-            return (pa - ba * h).magnitude;
-        }
-
-        public readonly float GetSignedDistance(Vector3 _point) { return GetSignedDistance((Vector2)_point); }
-        #endregion
-
-        #region ILerpPath2D
-        public readonly Vector2 GetPositionAtTime(float _time) {
-            return Vector2.Lerp(pointA, pointB, _time);
-        }
-        #endregion
-
-        static public Line2D Lerp(Line2D _a, Line2D _b, float _time) {
-            return new Line2D(Vector2.Lerp(_a.pointA, _b.pointA, _time), Vector2.Lerp(_a.pointB, _b.pointB, _time));
-        }
-
     }
 }

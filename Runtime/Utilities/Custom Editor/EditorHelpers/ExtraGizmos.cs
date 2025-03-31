@@ -54,6 +54,17 @@ namespace MaroonSeal {
             Gizmos.DrawLine(_pos + bl, _pos + tr);
             Gizmos.DrawLine(_pos + br, _pos + tl);
         }
+
+        public static void DrawCross(Vector3 _pos, Vector3 _size, Quaternion? _rotation = null) {
+            Quaternion rotation = _rotation ?? Quaternion.identity;
+            Vector3 right = rotation * (_size.x * 0.5f * Vector3.right);
+            Vector3 up = rotation * (_size.y * 0.5f * Vector3.up);
+            Vector3 forward = rotation * (_size.z * 0.5f * Vector3.forward);
+
+            Gizmos.DrawLine(_pos - right, _pos + right);
+            Gizmos.DrawLine(_pos - up, _pos + up);
+            Gizmos.DrawLine(_pos - forward, _pos + forward);
+        }
  
         public static void DrawCircleCross(Vector3 _pos, float _crossSize = 1.0f, float _circleRadius = 1.0f, int _resolution = 32) {
             DrawWireCircle(_pos, _circleRadius, _resolution);

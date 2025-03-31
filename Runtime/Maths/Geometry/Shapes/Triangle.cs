@@ -1,27 +1,26 @@
 using UnityEngine;
 
-using MaroonSeal.Maths.Interpolation;
 using MaroonSeal.Maths.SDFs;
 
-namespace MaroonSeal.Maths {
+namespace MaroonSeal.Maths.Shapes {
     [System.Serializable]
-    public struct Triangle : IPolygonShape, ISDFShape
+    public struct Triangle : IShape3D, IPolygon, ISDFShape
     {
         public Vector3 pointA;
         public Vector3 pointB;
         public Vector3 pointC;
 
-        #region Constructors and Operators
+        readonly public PointTransform Transform => PointTransform.Origin;
+
+        #region Constructors
         public Triangle(Vector3 _point1, Vector3 _point2, Vector3 _point3) {
             pointA = _point1;
             pointB = _point2;
             pointC = _point3;
         }
+        #endregion
 
-        public static explicit operator Triangle2D(Triangle _current) {
-            return new(_current.pointA, _current.pointB, _current.pointC);
-        }
-
+        #region Operators
         public static bool operator == (Triangle _a, Triangle _b) {
             return _a.pointA == _b.pointA && _a.pointB == _b.pointB && _a.pointC == _b.pointC;
         }
@@ -36,7 +35,7 @@ namespace MaroonSeal.Maths {
         readonly public override int GetHashCode() { return System.HashCode.Combine(pointA, pointB, pointC); }
         #endregion
 
-        #region Triangle3D
+        #region Triangle
         readonly public bool ContainsPoint(Vector3 _point) { return _point == pointA || _point == pointB || _point == pointC; }
 
         readonly public float GetLengthAB() { return Vector3.Distance(pointA, pointB); }
@@ -46,6 +45,12 @@ namespace MaroonSeal.Maths {
         readonly public Line GetEdgeAB() { return new Line(pointA, pointB); }
         readonly public Line GetEdgeBC() { return new Line(pointB, pointC); }
         readonly public Line GetEdgeCA() { return new Line(pointC, pointA); }
+
+        readonly public Vector3 GetNormal() {
+            Vector3 deltaA = pointB - pointA;
+            Vector3 deltaB = pointC - pointA;
+            return Vector3.Cross(deltaA, deltaB).normalized;
+        }
 
         readonly public Vector3 GetCentroid() { return (pointA + pointB + pointC) / 3.0f; }
 
@@ -61,6 +66,19 @@ namespace MaroonSeal.Maths {
             // The 3 space coords of the circumsphere center then:
             Vector3 ccs = pointA  +  toCircumsphereCenter; // now this is the actual 3space location
             return new(ccs, circumsphereRadius);
+        }
+
+        readonly public Circle GetCircumcircle() {
+            float d = 2 * (pointA.x * (pointB.y - pointC.y) + pointB.x * (pointC.y - pointA.y) + pointC.x * (pointA.y - pointB.y));
+
+            float ux = ((pointA.x * pointA.x + pointA.y * pointA.y) * (pointB.y - pointC.y) + (pointB.x * pointB.x + pointB.y * pointB.y) * (pointC.y - pointA.y) + (pointC.x * pointC.x + pointC.y * pointC.y) * (pointA.y - pointB.y)) / d;
+            float uy = ((pointA.x * pointA.x + pointA.y * pointA.y) * (pointC.x - pointB.x) + (pointB.x * pointB.x + pointB.y * pointB.y) * (pointA.x - pointC.x) + (pointC.x * pointC.x + pointC.y * pointC.y) * (pointB.x - pointA.x)) / d;
+
+            Vector2 circumCentre = new(ux, uy);
+            float circumRadius = Vector2.Distance(pointA, circumCentre);
+
+            PointTransform circumcircleTransform = new(circumCentre, Quaternion.FromToRotation(Vector3.up, GetNormal()), Vector3.one);
+            return new Circle(circumcircleTransform, circumRadius);
         }
         #endregion
 
@@ -81,19 +99,10 @@ namespace MaroonSeal.Maths {
         }
         #endregion
 
-        #region IInterpolatable
-        public readonly Vector3 GetPositionAtTime(float _time) {
-            float totalTime = _time * 3.0f;
-            if (totalTime <= 1.0f) {
-                return Vector3.Lerp(pointA, pointB, totalTime);
-            }
-            else if (totalTime > 1.0f && totalTime <= 2.0f) {
-                return Vector3.Lerp(pointB, pointC, totalTime-1.0f);
-            }
-            
-            return Vector3.Lerp(pointC, pointA, totalTime-2.0f);
+        static public Vector3 GetNormal(Vector3 _p0, Vector3 _p1, Vector3 _p2) {
+            Vector3 deltaA = _p1 - _p0;
+            Vector3 deltaB = _p2 - _p0;
+            return Vector3.Cross(deltaA, deltaB).normalized;
         }
-        #endregion
     }
 }
-

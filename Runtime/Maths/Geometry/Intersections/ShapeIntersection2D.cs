@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MaroonSeal.Maths {
+namespace MaroonSeal.Maths.Shapes {
+    /*
     public static class ShapeIntersection2D
     {
         // Line and Line
         //https://rosettacode.org/wiki/Find_the_intersection_of_two_lines#C#
-        static public Vector2 Calculate(Line2D _lineA, Line2D _lineB) {
+        static public Vector2 Calculate(Line _lineA, Line _lineB) {
             float a1 = _lineA.pointB.y - _lineA.pointA.y;
             float b1 = _lineA.pointA.x - _lineA.pointB.x;
             float c1 = a1 * _lineA.pointA.x + b1 * _lineA.pointA.y;
@@ -22,8 +23,8 @@ namespace MaroonSeal.Maths {
 
             Vector2 intersectPoint = new((b2 * c1 - b1 * c2) / delta, (a1 * c2 - a2 * c1) / delta);
 
-            if (!_lineA.IsPointInBounds(intersectPoint) ||
-                !_lineB.IsPointInBounds(intersectPoint)) {
+            if (!_lineA.IsPositionInBounds(intersectPoint) ||
+                !_lineB.IsPositionInBounds(intersectPoint)) {
                 return Vector2.one * Mathf.Infinity;
             }
 
@@ -121,7 +122,8 @@ namespace MaroonSeal.Maths {
 
             return intersectPoints.Count == 0 ? null : intersectPoints;
         }
-        */
+       
     }
+     */
 }
 

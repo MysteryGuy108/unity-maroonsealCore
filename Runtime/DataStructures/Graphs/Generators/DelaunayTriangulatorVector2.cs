@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using MaroonSeal.Maths;
+using MaroonSeal.Maths.Shapes;
 
 namespace MaroonSeal.DataStructures.NodeGraphs.Generators {
     public class DelaunayTriangulatorGraphCalculator
@@ -14,7 +14,7 @@ namespace MaroonSeal.DataStructures.NodeGraphs.Generators {
             // Adding points to graph.
             graph.PushNodeRange(_points);
 
-            List<Triangle2D> triangles = CaluclateTrianglesFromPoints(_points, _pointsSquareBounds);
+            List<Triangle> triangles = CaluclateTrianglesFromPoints(_points, _pointsSquareBounds);
 
             for(int i = 0; i < triangles.Count; i++) {
                 
@@ -33,25 +33,25 @@ namespace MaroonSeal.DataStructures.NodeGraphs.Generators {
             return graph;
         }
 
-        static private List<Triangle2D> CaluclateTrianglesFromPoints(List<Vector2> _points, float _pointsSquareBounds) {
+        static private List<Triangle> CaluclateTrianglesFromPoints(List<Vector2> _points, float _pointsSquareBounds) {
             
-            List<Triangle2D> triangles = new() {
+            List<Triangle> triangles = new() {
                 GetSuperTriangle(_pointsSquareBounds)
             };
 
             foreach(Vector2 point in _points) {
                 
-                List<Triangle2D> badTriangles =  new List<Triangle2D>();
+                List<Triangle> badTriangles =  new List<Triangle>();
 
-                foreach(Triangle2D tri in triangles) {
-                    if (tri.GetCircumcircle().IsPointInCircle(point)) {
+                foreach(Triangle tri in triangles) {
+                    if (tri.GetCircumcircle().IsPositionInCircle(point)) {
                         badTriangles.Add(tri);
                     }
                 }
 
                 List<Vector2[]> polygonEdges = new();
 
-                foreach(Triangle2D badTri in badTriangles) { 
+                foreach(Triangle badTri in badTriangles) { 
                     List<Vector2[]> edges = new() {
                         new Vector2[2] { badTri.pointA, badTri.pointB },
                         new Vector2[2] { badTri.pointB, badTri.pointC },
@@ -62,7 +62,7 @@ namespace MaroonSeal.DataStructures.NodeGraphs.Generators {
 
                         int count = 0;
 
-                        foreach(Triangle2D badTri2 in badTriangles) { 
+                        foreach(Triangle badTri2 in badTriangles) { 
                             if (badTri2.ContainsPoint(edge[0]) && badTri2.ContainsPoint(edge[1])) {
                                 count++;
                             }
@@ -75,7 +75,7 @@ namespace MaroonSeal.DataStructures.NodeGraphs.Generators {
                 }
 
                 for(int i = triangles.Count-1; i >=0; i--) {
-                    foreach(Triangle2D badTri in badTriangles) {
+                    foreach(Triangle badTri in badTriangles) {
                         if (triangles[i] == badTri) {
                             triangles.RemoveAt(i);
                             break;
@@ -86,7 +86,7 @@ namespace MaroonSeal.DataStructures.NodeGraphs.Generators {
                 badTriangles.Clear();
 
                 foreach(Vector2[] edge in polygonEdges) {
-                    Triangle2D newTri = new Triangle2D(point, edge[0], edge[1]);
+                    Triangle newTri = new(point, edge[0], edge[1]);
                     triangles.Add(newTri);
                 }
                 polygonEdges.Clear();
@@ -95,16 +95,16 @@ namespace MaroonSeal.DataStructures.NodeGraphs.Generators {
             return triangles;
         }
 
-        static private Triangle2D GetSuperTriangle(float _squareSize) {
+        static private Triangle GetSuperTriangle(float _squareSize) {
 
             float triangleSideLength = _squareSize / 0.464f;
 
-            Vector2Int triA = new((int)(_squareSize * 0.5f - triangleSideLength * 0.5f), 0);
-            Vector2Int triB = new((int)(_squareSize * 0.5f + triangleSideLength * 0.5f), 0);
+            Vector3Int triA = new((int)(_squareSize * 0.5f - triangleSideLength * 0.5f), 0, 0);
+            Vector3Int triB = new((int)(_squareSize * 0.5f + triangleSideLength * 0.5f), 0, 0);
 
-            Vector2Int triC = new((int)(_squareSize * 0.5f), (int)(0.86602540378f * triangleSideLength));
+            Vector3Int triC = new((int)(_squareSize * 0.5f), (int)(0.86602540378f * triangleSideLength), 0);
 
-            return new Triangle2D(triA, triB, triC);
+            return new Triangle(triA, triB, triC);
         }
     }
 }

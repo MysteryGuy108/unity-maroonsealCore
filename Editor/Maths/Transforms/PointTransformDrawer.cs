@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 using UnityEditor;
+using UnityEditor.UIElements;
 
 using MaroonSeal.Maths;
 
@@ -12,7 +13,16 @@ namespace MaroonSealEditor.Maths {
     public class PointTransformDrawer : PropertyDrawer
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty _property) {
-            return base.CreatePropertyGUI(_property);
+            Foldout root = new() {
+                text = _property.displayName,
+                bindingPath = _property.propertyPath
+            };
+
+            root.Add(new PropertyField(_property.FindPropertyRelative("position")));
+            root.Add(new PropertyField(_property.FindPropertyRelative("eulerAngles")));
+            root.Add(new PropertyField(_property.FindPropertyRelative("scale")));
+
+            return root;
         }
 
         #region Property Conversions

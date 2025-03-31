@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MaroonSeal.Maths.Interpolation {
+namespace MaroonSeal.Maths {
     public static class Interpolation {
 
         #region Lerp
