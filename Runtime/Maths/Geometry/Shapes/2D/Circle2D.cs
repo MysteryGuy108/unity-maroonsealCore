@@ -10,7 +10,7 @@ namespace MaroonSeal.Maths.Shapes {
         public PointTransform2D transform;
         readonly public PointTransform2D Transform => transform;
 
-        public float radius;
+        [Min(0.0f)]public float radius;
 
         #region Constructors
         public Circle2D(PointTransform2D _transform, float _radius) {
@@ -37,16 +37,18 @@ namespace MaroonSeal.Maths.Shapes {
         public override readonly bool Equals(object obj) => this.Equals((Circle2D)obj);
 
         public override readonly int GetHashCode() {
-            unchecked {
-                return HashCode.Combine(transform, radius);
-            }
+            unchecked { return HashCode.Combine(transform, radius); }
         }
         public static bool operator ==(Circle2D _a, Circle2D _b) => _a.Equals(_b);
         public static bool operator !=(Circle2D _a, Circle2D _b) => !_a.Equals(_b);
         #endregion
 
+        #region Casting
+        public static explicit operator Circle(Circle2D _circle2D) => new((PointTransform)_circle2D.transform, _circle2D.radius);
+        #endregion
+
         #region Circle2D
-        readonly public bool IsPositionInBounds(Vector2 _position) {
+        readonly public bool IsPositionInRadius(Vector2 _position) {
             return this.transform.InverseTransformPosition(_position).magnitude <= radius;
         }
         #endregion
@@ -101,7 +103,7 @@ namespace MaroonSeal.Maths.Shapes {
         }
 
         static public (Vector2, Vector2, Vector2, Vector2) FindTangentPoints(Circle2D _from, Circle2D _to) {
-            (float, float, float , float) thetas = Circle2D.FindTangentThetas(_from, _to);
+            (float, float, float , float) thetas = FindTangentThetas(_from, _to);
 
             Vector2 pointA = _from.EvaluatePositionAtTheta(thetas.Item1);
             Vector2 pointB = _from.EvaluatePositionAtTheta(thetas.Item2);
@@ -112,8 +114,8 @@ namespace MaroonSeal.Maths.Shapes {
         }
 
         static public (Line2D, Line2D, Line2D, Line2D) FindTangentLines(Circle2D _from, Circle2D _to) {
-            (Vector2, Vector2, Vector2, Vector2) fromPoints = Circle2D.FindTangentPoints(_from, _to);
-            (Vector2, Vector2, Vector2, Vector2) toPoints = Circle2D.FindTangentPoints(_to, _from);
+            (Vector2, Vector2, Vector2, Vector2) fromPoints = FindTangentPoints(_from, _to);
+            (Vector2, Vector2, Vector2, Vector2) toPoints = FindTangentPoints(_to, _from);
 
             return new(
                 new Line2D(fromPoints.Item1, toPoints.Item3),

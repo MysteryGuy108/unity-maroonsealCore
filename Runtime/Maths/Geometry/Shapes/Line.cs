@@ -30,7 +30,11 @@ namespace MaroonSeal.Maths.Shapes {
         readonly public override int GetHashCode() { return System.HashCode.Combine(from, to); }
         #endregion
 
-        #region ILine
+        #region Casting
+        public static implicit operator Line2D(Line _line) => new(_line.from, _line.to);
+        #endregion
+
+        #region Line
         public readonly float GetLength() { return Vector3.Distance(from, to); }
 
         public readonly Vector3 GetVector() => to - from;

@@ -32,6 +32,10 @@ namespace MaroonSeal.Maths.Shapes {
         public static bool operator !=(Line2D _a, Line2D _b) => !_a.Equals(_b);
         #endregion
 
+        #region Casting
+        public static explicit operator Line(Line2D _line) => new(_line.from, _line.to);
+        #endregion
+
         #region Line2D
         public readonly float GetLength() { return Vector2.Distance(from, to); }
 

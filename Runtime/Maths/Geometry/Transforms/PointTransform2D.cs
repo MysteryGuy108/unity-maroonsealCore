@@ -71,6 +71,10 @@ namespace MaroonSeal.Maths {
         public static bool operator !=(PointTransform2D _a, PointTransform2D _b) => !_a.Equals(_b);
         #endregion
         
+        #region Casting
+        public static explicit operator PointTransform(PointTransform2D _transform2D) => new(_transform2D.position, _transform2D.Rotation, _transform2D.scale);
+        #endregion
+
         #region IPointTransform
         public readonly Matrix4x4 ToWorldMatrix { 
             get {

@@ -89,22 +89,34 @@ namespace MaroonSeal.Maths {
         public static bool operator !=(PointTransform _a, PointTransform _b) => !_a.Equals(_b);
         #endregion
 
-        readonly public PointTransform GetLocalPoint(Transform _transform) {
+        #region Casting
+        public static implicit operator PointTransform2D(PointTransform _transform) => new(_transform.position, _transform.Rotation, _transform.scale);
+        #endregion
+
+        #region Point Transform
+        readonly public PointTransform GetLocalPoint(PointTransform _transform) {
             PointTransform localisedPoint = new(this.position, this.eulerAngles, this.scale);
-            localisedPoint.position = _transform.InverseTransformPoint(localisedPoint.position);
+
+            localisedPoint.position = _transform.InverseTransformPosition(localisedPoint.position);
             localisedPoint.Forward = _transform.InverseTransformDirection(localisedPoint.Forward);
             localisedPoint.Up = _transform.InverseTransformDirection(localisedPoint.Up);
 
             return localisedPoint;
         }
 
-        readonly public PointTransform GetGlobalPoint(Transform _transform) {
+        readonly public PointTransform GetGlobalPoint(PointTransform _transform) {
             PointTransform globalPoint = new(this.position, this.eulerAngles, this.scale);
-            globalPoint.position = _transform.TransformPoint(globalPoint.position);
+
+            globalPoint.position = _transform.TransformPosition(globalPoint.position);
             globalPoint.Forward = _transform.TransformDirection(globalPoint.Forward);
             globalPoint.Up = _transform.TransformDirection(globalPoint.Up);
+
             return globalPoint;
         }
+
+        readonly public PointTransform GetLocalPoint(Transform _transform) => GetLocalPoint(new PointTransform(_transform));
+        readonly public PointTransform GetGlobalPoint(Transform _transform) => GetGlobalPoint(new PointTransform(_transform));
+        #endregion
 
         #region Transformations
         /// <summary>

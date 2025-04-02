@@ -20,22 +20,22 @@ namespace MaroonSeal.Maths.Shapes {
         }
 
         public static void DrawBox(Box _box) {
-            Gizmos.DrawWireCube(_box.transform.position, _box.size);
+            Gizmos.DrawWireCube(_box.transform.position, _box.dimensions);
         }
 
         public static void DrawCircle(Circle _circle, int _resolution = 32, float _pointSize = 0.125f) {
             DrawInterpolationShape(_circle, _resolution);
-            ExtraGizmos.DrawCross(_circle.transform.position, _circle.radius * _pointSize * Vector2.one, _circle.transform.Rotation);
+            ExtraGizmos.DrawAxis(_circle.transform.position, _circle.transform.Rotation, _circle.radius * _pointSize * Vector2.one);
         }
 
         public static void DrawCircle(Circle2D _circle, int _resolution = 32, float _pointSize = 0.125f) {
             DrawInterpolationShape(_circle, _resolution);
-            ExtraGizmos.DrawCross(_circle.transform.position, _circle.radius * _pointSize * Vector2.one, _circle.transform.Rotation);
+            ExtraGizmos.DrawAxis(_circle.transform.position,  _circle.transform.Rotation, _circle.radius * _pointSize * Vector2.one);
         }
 
         public static void DrawArc(Arc _arc, int _resolution = 32, float _pointRadii = 0.03125f, float _pointSize = 0.125f) {
             DrawInterpolationShape(_arc, _resolution);
-            ExtraGizmos.DrawCross(_arc.transform.position, _arc.radius * _pointSize * Vector2.one, _arc.transform.Rotation);
+            ExtraGizmos.DrawAxis(_arc.transform.position, _arc.transform.Rotation, _arc.radius * _pointSize * Vector2.one);
 
             Gizmos.DrawSphere(_arc.EvaluatePositionAtTime(0.0f), _pointRadii);
             Gizmos.DrawSphere(_arc.EvaluatePositionAtTime(1.0f), _pointRadii);
@@ -46,13 +46,13 @@ namespace MaroonSeal.Maths.Shapes {
             (Vector3, Vector3) foci = _conicSection.GetFoci();
             
             Vector2 size = _conicSection.minimumFociRadius * _pointSize * Vector2.one;
-            ExtraGizmos.DrawCross(foci.Item1, size, _conicSection.transform.Rotation);
-            ExtraGizmos.DrawCross(foci.Item2, size, _conicSection.transform.Rotation);
+            ExtraGizmos.DrawAxis(foci.Item1, _conicSection.transform.Rotation, size);
+            ExtraGizmos.DrawAxis(foci.Item2, _conicSection.transform.Rotation, size);
         }
 
         public static void DrawSphere(Sphere _sphere, float _pointSize = 0.125f) {
             Gizmos.DrawSphere(_sphere.transform.position, _sphere.radius);
-            ExtraGizmos.DrawCross(_sphere.transform.position, Vector3.one * _sphere.radius * _pointSize, _sphere.transform.Rotation);
+            ExtraGizmos.DrawAxis(_sphere.transform.position, _sphere.transform.Rotation, Vector3.one * _sphere.radius * _pointSize);
         }
 
         public static void DrawCubicBezier(CubicBezier _bezier, int _resolution = 32, float _pointRadii = 0.03125f) {

@@ -6,11 +6,11 @@ namespace MaroonSeal.Maths.Shapes {
     [System.Serializable]
     public struct Triangle : IShape3D, IPolygon, ISDFShape
     {
+        readonly public PointTransform Transform => PointTransform.Origin;
+
         public Vector3 pointA;
         public Vector3 pointB;
         public Vector3 pointC;
-
-        readonly public PointTransform Transform => PointTransform.Origin;
 
         #region Constructors
         public Triangle(Vector3 _point1, Vector3 _point2, Vector3 _point3) {
@@ -33,6 +33,10 @@ namespace MaroonSeal.Maths.Shapes {
             return ((Triangle)obj == this) && obj != null && obj is Triangle;
         }
         readonly public override int GetHashCode() { return System.HashCode.Combine(pointA, pointB, pointC); }
+        #endregion
+
+        #region Casting
+        public static implicit operator Triangle2D(Triangle _triangle) => new(_triangle.pointA, _triangle.pointB, _triangle.pointC);
         #endregion
 
         #region Triangle
@@ -67,22 +71,9 @@ namespace MaroonSeal.Maths.Shapes {
             Vector3 ccs = pointA  +  toCircumsphereCenter; // now this is the actual 3space location
             return new(ccs, circumsphereRadius);
         }
-
-        readonly public Circle GetCircumcircle() {
-            float d = 2 * (pointA.x * (pointB.y - pointC.y) + pointB.x * (pointC.y - pointA.y) + pointC.x * (pointA.y - pointB.y));
-
-            float ux = ((pointA.x * pointA.x + pointA.y * pointA.y) * (pointB.y - pointC.y) + (pointB.x * pointB.x + pointB.y * pointB.y) * (pointC.y - pointA.y) + (pointC.x * pointC.x + pointC.y * pointC.y) * (pointA.y - pointB.y)) / d;
-            float uy = ((pointA.x * pointA.x + pointA.y * pointA.y) * (pointC.x - pointB.x) + (pointB.x * pointB.x + pointB.y * pointB.y) * (pointA.x - pointC.x) + (pointC.x * pointC.x + pointC.y * pointC.y) * (pointB.x - pointA.x)) / d;
-
-            Vector2 circumCentre = new(ux, uy);
-            float circumRadius = Vector2.Distance(pointA, circumCentre);
-
-            PointTransform circumcircleTransform = new(circumCentre, Quaternion.FromToRotation(Vector3.up, GetNormal()), Vector3.one);
-            return new Circle(circumcircleTransform, circumRadius);
-        }
         #endregion
 
-        #region IPolygon3D
+        #region IPolygon
         public readonly int VertexCount => 3;
         readonly public Vector3[] GetVertices() {
             return new Vector3[3] { pointA, pointB, pointC };

@@ -44,6 +44,7 @@ namespace MaroonSeal {
         }
         #endregion
 
+        #region Cross
         public static void DrawCross(Vector3 _pos, float _size) {
             Vector3 tr = new Vector3(1.0f, 0.0f, 1.0f).normalized * _size;
             Vector3 tl = new Vector3(-1.0f, 0.0f, 1.0f).normalized * _size;
@@ -55,22 +56,30 @@ namespace MaroonSeal {
             Gizmos.DrawLine(_pos + br, _pos + tl);
         }
 
-        public static void DrawCross(Vector3 _pos, Vector3 _size, Quaternion? _rotation = null) {
-            Quaternion rotation = _rotation ?? Quaternion.identity;
-            Vector3 right = rotation * (_size.x * 0.5f * Vector3.right);
-            Vector3 up = rotation * (_size.y * 0.5f * Vector3.up);
-            Vector3 forward = rotation * (_size.z * 0.5f * Vector3.forward);
-
-            Gizmos.DrawLine(_pos - right, _pos + right);
-            Gizmos.DrawLine(_pos - up, _pos + up);
-            Gizmos.DrawLine(_pos - forward, _pos + forward);
-        }
- 
         public static void DrawCircleCross(Vector3 _pos, float _crossSize = 1.0f, float _circleRadius = 1.0f, int _resolution = 32) {
             DrawWireCircle(_pos, _circleRadius, _resolution);
             DrawCross(_pos, _crossSize);
         }
+        #endregion
 
+        #region Axis
+        public static void DrawAxis(Vector3 _pos, Quaternion? _rotation = null, Vector3? _size = null, Color? _xColour = null, Color? _yColour = null, Color? _zColour = null) {
+            Quaternion rotation = _rotation ?? Quaternion.identity;
+            Vector3 size = _size ?? Vector3.one;
+
+            Vector3 right = rotation * (size.x * 0.5f * Vector3.right);
+            Vector3 up = rotation * (size.y * 0.5f * Vector3.up);
+            Vector3 forward = rotation * (size.z * 0.5f * Vector3.forward);
+            
+            Gizmos.color = _xColour ?? Gizmos.color;
+            Gizmos.DrawLine(_pos - right, _pos + right);
+            Gizmos.color = _yColour ?? Gizmos.color;
+            Gizmos.DrawLine(_pos - up, _pos + up);
+            Gizmos.color = _zColour ?? Gizmos.color;
+            Gizmos.DrawLine(_pos - forward, _pos + forward);
+        }
+        #endregion
+ 
         public static void DrawWireCircle(Vector3 _pos, float _radius, int _resolution = 32) {
             DrawWireArc(_pos, _radius, 0.0f, Mathf.PI * 2.0f, _resolution);
         }

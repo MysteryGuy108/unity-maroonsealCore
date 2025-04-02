@@ -53,6 +53,10 @@ namespace MaroonSeal.Maths.Shapes {
         readonly public override int GetHashCode() { return System.HashCode.Combine(transform, radius); }
         #endregion
 
+        #region Casting
+        public static implicit operator Circle2D(Circle _circle) => new(_circle.transform, _circle.radius);
+        #endregion
+
         #region Circle
         readonly public bool IsPositionInCircle(Vector3 _point) {
             Vector3 localPoint = transform.InverseTransformPosition(_point);
