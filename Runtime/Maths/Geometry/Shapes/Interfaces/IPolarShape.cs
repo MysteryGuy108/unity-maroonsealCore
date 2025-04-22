@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace MaroonSeal.Maths.Shapes 
 {
-    public interface IPolarSpaceShape : IInterpolationShape
+    public interface IPolarShape : IInterpolationShape
     {
         public Vector3 EvaluatePositionAtTheta(float _theta);
         public Vector3 EvaluateTangentAtTheta(float _theta);

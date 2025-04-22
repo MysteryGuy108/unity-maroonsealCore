@@ -14,7 +14,7 @@ namespace MaroonSealTesting.Maths.PolarCoordinates
         [Test]
         public void Constructor_NoParametres_EqualsOrigin()
         {
-            var coordinate = new PolarCoordinate2D();
+            var coordinate = new PolarVector2();
             Assert.AreEqual(0.0f, coordinate.theta);
         }
         #endregion

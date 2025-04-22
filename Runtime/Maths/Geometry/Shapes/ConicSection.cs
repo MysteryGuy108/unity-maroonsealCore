@@ -7,7 +7,7 @@ using MaroonSeal.Maths.SDFs;
 namespace MaroonSeal.Maths.Shapes {
 
     [System.Serializable]
-    public struct ConicSection : IShape3D, IPolarSpaceShape, ISDFShape
+    public struct ConicSection : IShape3D, IPolarShape, ISDFShape
     {
         public enum CurveType { Circle, Ellipse, Parabola, Hyperbola }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MaroonSeal.Maths.Shapes {
     [System.Serializable]
-    public struct Circle2D : IShape2D, IPolarSpaceShape
+    public struct Circle2D : IShape2D, IPolarShape
     {
         public PointTransform2D transform;
         readonly public PointTransform2D Transform => transform;
@@ -54,14 +54,14 @@ namespace MaroonSeal.Maths.Shapes {
         #endregion
 
         #region IPolarSpaceShape
-        readonly public Vector2 EvaluatePositionAtTheta(float _radians) => IPolarSpaceShape.GetCartesianPosition(transform, radius, _radians);
-        readonly public Vector2 EvaluateTangentAtTheta(float _radians) => transform.TransformDirection(IPolarSpaceShape.GetCircleTangent(_radians));   
+        readonly public Vector2 EvaluatePositionAtTheta(float _radians) => IPolarShape.GetCartesianPosition(transform, radius, _radians);
+        readonly public Vector2 EvaluateTangentAtTheta(float _radians) => transform.TransformDirection(IPolarShape.GetCircleTangent(_radians));   
 
         readonly public Vector2 EvaluatePositionAtTime(float _t) => EvaluatePositionAtTheta(_t * Mathf.PI * 2.0f);
         readonly public Vector2 EvaluateTangentAtTime(float _t) => EvaluateTangentAtTheta(_t * Mathf.PI * 2.0f);
 
-        readonly Vector3 IPolarSpaceShape.EvaluatePositionAtTheta(float _radians) => this.EvaluatePositionAtTheta(_radians);
-        readonly Vector3 IPolarSpaceShape.EvaluateTangentAtTheta(float _radians) => this.EvaluateTangentAtTheta(_radians);
+        readonly Vector3 IPolarShape.EvaluatePositionAtTheta(float _radians) => this.EvaluatePositionAtTheta(_radians);
+        readonly Vector3 IPolarShape.EvaluateTangentAtTheta(float _radians) => this.EvaluateTangentAtTheta(_radians);
 
         readonly Vector3 IInterpolationShape.EvaluatePositionAtTime(float _t) => this.EvaluatePositionAtTime(_t);
         readonly Vector3 IInterpolationShape.EvaluateTangentAtTime(float _t) => this.EvaluateTangentAtTime(_t);

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace MaroonSeal.Maths.Shapes {
     [System.Serializable]
-    public struct Circle : IShape3D, IPolarSpaceShape
+    public struct Circle : IShape3D, IPolarShape
     {
         public PointTransform transform;
         readonly public PointTransform Transform => transform;
@@ -66,10 +66,10 @@ namespace MaroonSeal.Maths.Shapes {
         #endregion
 
         #region IPolarSpaceShape
-        readonly public Vector3 EvaluatePositionAtTheta(float _radians) => IPolarSpaceShape.GetCartesianPosition(transform, radius, _radians);
+        readonly public Vector3 EvaluatePositionAtTheta(float _radians) => IPolarShape.GetCartesianPosition(transform, radius, _radians);
 
         readonly public Vector3 EvaluateTangentAtTheta(float _radians) {
-            return transform.TransformDirection(IPolarSpaceShape.GetCircleTangent(_radians));   
+            return transform.TransformDirection(IPolarShape.GetCircleTangent(_radians));   
         }
 
         readonly public Vector3 EvaluatePositionAtTime(float _t) => EvaluatePositionAtTheta(_t * Mathf.PI * 2.0f);
