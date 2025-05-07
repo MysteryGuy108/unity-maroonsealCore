@@ -44,7 +44,7 @@ namespace MaroonSeal.Maths.Shapes {
         #endregion
 
         #region Casting
-        public static explicit operator Circle(Circle2D _circle2D) => new((PointTransform)_circle2D.transform, _circle2D.radius);
+        public static explicit operator Circle(Circle2D _circle2D) => new(_circle2D.transform.ToXY(), _circle2D.radius);
         #endregion
 
         #region Circle2D

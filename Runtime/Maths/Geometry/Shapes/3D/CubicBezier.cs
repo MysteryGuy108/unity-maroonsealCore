@@ -49,6 +49,7 @@ namespace MaroonSeal.Maths.Shapes {
         }
         
         public readonly Vector3 EvaluateTangentAtTime(float _t) {
+            _t = Mathf.Clamp01(_t);
             float tm = 1.0f -_t;
             float tm2 = tm * tm;
             float t2 = _t * _t;

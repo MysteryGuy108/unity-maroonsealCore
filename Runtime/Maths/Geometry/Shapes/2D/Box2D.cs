@@ -47,7 +47,7 @@ namespace MaroonSeal.Maths.Shapes {
         #endregion
 
         #region Casting
-        public static explicit operator Box(Box2D _box2D) => new((PointTransform)_box2D.transform, _box2D.dimensions);
+        public static explicit operator Box(Box2D _box2D) => new(_box2D.transform.ToXY(), _box2D.dimensions);
         #endregion
 
         #region Box2D

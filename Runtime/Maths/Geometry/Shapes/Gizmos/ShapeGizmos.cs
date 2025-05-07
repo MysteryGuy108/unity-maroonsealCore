@@ -4,9 +4,9 @@ namespace MaroonSeal.Maths.Shapes {
     public static class ShapeGizmos
     {
         public static void DrawLine(Line _line, float _pointRadii = 0.03125f) {
-            Gizmos.DrawLine(_line.from, _line.to);
-            Gizmos.DrawSphere(_line.from, _pointRadii);
-            Gizmos.DrawSphere(_line.to, _pointRadii);
+            Gizmos.DrawLine(_line.start, _line.end);
+            Gizmos.DrawSphere(_line.start, _pointRadii);
+            Gizmos.DrawSphere(_line.end, _pointRadii);
         }
 
         public static void DrawLine(Line2D _line, float _pointRadii = 0.03125f) {
@@ -45,7 +45,7 @@ namespace MaroonSeal.Maths.Shapes {
             DrawInterpolationShape(_conicSection, _resolution);
             (Vector3, Vector3) foci = _conicSection.GetFoci();
             
-            Vector2 size = _conicSection.minimumFociRadius * _pointSize * Vector2.one;
+            Vector2 size = _conicSection.minR * _pointSize * Vector2.one;
             ExtraGizmos.DrawAxis(foci.Item1, _conicSection.transform.Rotation, size);
             ExtraGizmos.DrawAxis(foci.Item2, _conicSection.transform.Rotation, size);
         }
@@ -65,6 +65,10 @@ namespace MaroonSeal.Maths.Shapes {
             Gizmos.DrawLine(_bezier.anchorB, _bezier.controlB);
             Gizmos.DrawSphere(_bezier.controlB, _pointRadii);
             Gizmos.DrawSphere(_bezier.anchorB, _pointRadii);
+        }
+
+        public static void DrawPointTransform(PointTransform _transform) {
+            ExtraGizmos.DrawAxisArrows(_transform.position, _transform.Rotation, _transform.scale, Color.red, Color.green, Color.blue);
         }
 
         #region Interface Drawers

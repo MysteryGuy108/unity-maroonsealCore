@@ -70,22 +70,30 @@ namespace MaroonSeal.Maths {
         public static bool operator ==(PointTransform2D _a, PointTransform2D _b) => _a.Equals(_b);
         public static bool operator !=(PointTransform2D _a, PointTransform2D _b) => !_a.Equals(_b);
         #endregion
-        
-        #region Casting
-        public static explicit operator PointTransform(PointTransform2D _transform2D) => new(_transform2D.position, _transform2D.Rotation, _transform2D.scale);
-        #endregion
 
         #region IPointTransform
         public readonly Matrix4x4 ToWorldMatrix { 
             get {
                 Matrix4x4 transformMatrix = Matrix4x4.identity;
-                transformMatrix.SetTRS(position, Rotation, scale);
+                Vector3 adjustedScale = scale;
+                adjustedScale.z = 1.0f;
+                transformMatrix.SetTRS(position, Rotation, adjustedScale);
                 return transformMatrix;
             }
         }
 
-        public readonly Matrix4x4 ToLocalMatrix {
-            get => ToWorldMatrix.inverse;
+        public readonly Matrix4x4 ToLocalMatrix => ToWorldMatrix.inverse;
+        #endregion
+
+        #region Conversions
+        readonly public PointTransform ToXY() { return new PointTransform(this.position, this.Rotation, this.scale); }
+
+        readonly public PointTransform ToXZ() {
+            Vector3 position = this.position.ToXZ();
+            Quaternion rotation = Quaternion.Euler(0.0f, -this.angle, 0.0f);
+            Vector3 scale = this.scale.ToXZ();
+            scale.y = 1.0f;
+            return new(position, rotation, scale);
         }
         #endregion
 
@@ -95,39 +103,39 @@ namespace MaroonSeal.Maths {
         /// </summary>
         /// <param name="_position"></param>
         /// <returns></returns>
-        readonly public Vector2 TransformPosition(Vector2 _position) => ToWorldMatrix.MultiplyPoint(_position);
+        readonly public Vector2 TransformPosition(Vector2 _position) => ToWorldMatrix.MultiplyPoint(_position.ToXY());
         /// <summary>
         /// Transforms position from world space to local space.
         /// </summary>
         /// <param name="_position"></param>
         /// <returns></returns>
-        readonly public Vector2 InverseTransformPosition(Vector2 _position) => ToLocalMatrix.MultiplyPoint(_position);
+        readonly public Vector2 InverseTransformPosition(Vector2 _position) => ToLocalMatrix.MultiplyPoint(_position.ToXY());
 
         /// <summary>
         /// Transforms vector from local space to world space.
         /// </summary>
         /// <param name="_position"></param>
         /// <returns></returns>
-        readonly public Vector2 TransformVector(Vector2 _vector) => ToWorldMatrix.MultiplyVector(_vector);
+        readonly public Vector2 TransformVector(Vector2 _vector) => ToWorldMatrix.MultiplyVector(_vector.ToXY());
         /// <summary>
         /// Transforms vector from world space to local space.
         /// </summary>
         /// <param name="_position"></param>
         /// <returns></returns>
-        readonly public Vector2 InverseTransformVector(Vector2 _vector) => ToLocalMatrix.MultiplyVector(_vector);
+        readonly public Vector2 InverseTransformVector(Vector2 _vector) => ToLocalMatrix.MultiplyVector(_vector.ToXY());
 
         /// <summary>
         /// Transforms direction from local space to world space.
         /// </summary>
         /// <param name="_position"></param>
         /// <returns></returns>
-        readonly public Vector2 TransformDirection(Vector2 _direction) => TransformVector(_direction).normalized;
+        readonly public Vector2 TransformDirection(Vector2 _direction) => TransformVector(_direction.ToXY()).normalized;
         /// <summary>
         /// Transforms direction from world space to local space.
         /// </summary>
         /// <param name="_position"></param>
         /// <returns></returns>
-        readonly public Vector2 InverseTransformDirection(Vector2 _direction) => InverseTransformVector(_direction).normalized;
+        readonly public Vector2 InverseTransformDirection(Vector2 _direction) => InverseTransformVector(_direction.ToXY()).normalized;
         #endregion
     }
 }

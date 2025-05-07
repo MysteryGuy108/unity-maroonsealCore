@@ -30,7 +30,7 @@ namespace MaroonSeal.Maths.Shapes {
         }
         #endregion
 
-        readonly public float GetLength() => GetRadiansDelta() * radius;
+        readonly public float GetLength() => Mathf.Abs(GetRadiansDelta() * radius);
 
         readonly public float GetDegreesDelta() => Mathf.DeltaAngle(startDegrees, endDegrees);
         readonly public float GetRadiansDelta() => GetDegreesDelta() * Mathf.Deg2Rad;
@@ -41,7 +41,7 @@ namespace MaroonSeal.Maths.Shapes {
         }
 
         readonly public Vector3 EvaluateTangentAtTheta(float _theta) {
-            return transform.TransformVector(IPolarShape.GetCircleTangent(_theta) * Mathf.Sign(GetDegreesDelta()));
+            return transform.TransformVector(IPolarShape.GetCircleTangent(_theta));
         }
 
         readonly public Vector3 EvaluatePositionAtTime(float _time) {

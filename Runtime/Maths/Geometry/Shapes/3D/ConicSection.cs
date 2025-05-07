@@ -15,9 +15,9 @@ namespace MaroonSeal.Maths.Shapes {
         readonly public PointTransform Transform => transform;
 
         [Min(-1.0f)] public float eccentricity;
-        [Min(0.0f)] public float minimumFociRadius;
+        [Min(0.0f)] public float minR;
         
-        public readonly float SemiLatusRectum { get => minimumFociRadius * (1.0f + eccentricity); }
+        public readonly float SemiLatusRectum { get => minR * (1.0f + eccentricity); }
         public readonly float MajorAxis { get => SemiLatusRectum / (1.0f-(eccentricity * eccentricity)); }
 
         #region Conic Section

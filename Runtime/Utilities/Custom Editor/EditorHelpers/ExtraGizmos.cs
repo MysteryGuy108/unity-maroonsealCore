@@ -7,11 +7,11 @@ namespace MaroonSeal {
     static public class ExtraGizmos
     {
         #region Arrows
-        public static void DrawArrowHead(Vector3 _position, Vector3 _direction, float _headLength = 1.5f, float _headAngle = 20.0f) {
+        public static void DrawArrowHead(Vector3 _position, Vector3 _direction, float _headLength = 1.5f, float _headAngle = 30.0f, Vector3? _up = null) {
 
             Quaternion directionRotation;
-
-            directionRotation = _direction.magnitude <= 0.0f ? Quaternion.identity : Quaternion.LookRotation(_direction);
+            Vector3 arrowUp = _up ?? Vector3.up;
+            directionRotation = _direction.magnitude <= 0.0f ? Quaternion.identity : Quaternion.LookRotation(_direction, arrowUp);
 
             Vector3 right = directionRotation * Quaternion.Euler(0,180+_headAngle,0) * new Vector3(0,0,1);
             Vector3 left = directionRotation * Quaternion.Euler(0,180-_headAngle,0) * new Vector3(0,0,1);
@@ -20,20 +20,20 @@ namespace MaroonSeal {
             Gizmos.DrawRay(_position, left * _headLength);
         }
 
-        public static void DrawArrow(Vector3 _position, Vector3 _target, float _arrowHeadLength = 1.5f, float _arrowHeadAngle = 20.0f) {
+        public static void DrawArrow(Vector3 _position, Vector3 _target, float _arrowHeadLength = 1.5f, float _arrowHeadAngle = 30.0f, Vector3? _up = null) {
             Vector3 delta = _target - _position;
 
             if (delta.magnitude <= 0.0f) { return; }
 
             Gizmos.DrawRay(_position, delta);
             
-            DrawArrowHead(_target, delta.normalized, _arrowHeadLength, _arrowHeadAngle);
+            DrawArrowHead(_target, delta.normalized, _arrowHeadLength, _arrowHeadAngle, _up);
         }
 
-        public static void DrawBiDirectionalArrow(Vector3 pos, Vector3 target, float arrowHeadLength = 1.5f, float arrowHeadAngle = 20.0f) {
+        public static void DrawBiDirectionalArrow(Vector3 pos, Vector3 target, float arrowHeadLength = 1.5f, float arrowHeadAngle = 30.0f, Vector3? _up = null) {
             Vector3 midPoint = Vector3.Lerp(pos, target, 0.5f);
-            DrawArrow(midPoint, target, arrowHeadLength, arrowHeadAngle);
-            DrawArrow(midPoint, pos, arrowHeadLength, arrowHeadAngle);
+            DrawArrow(midPoint, target, arrowHeadLength, arrowHeadAngle, _up);
+            DrawArrow(midPoint, pos, arrowHeadLength, arrowHeadAngle, _up);
         }
 
         public static void DrawArrowTarget(Vector3 _pos) {
@@ -77,6 +77,22 @@ namespace MaroonSeal {
             Gizmos.DrawLine(_pos - up, _pos + up);
             Gizmos.color = _zColour ?? Gizmos.color;
             Gizmos.DrawLine(_pos - forward, _pos + forward);
+        }
+
+        public static void DrawAxisArrows(Vector3 _pos, Quaternion? _rotation = null, Vector3? _size = null, Color? _xColour = null, Color? _yColour = null, Color? _zColour = null) {
+            Quaternion rotation = _rotation ?? Quaternion.identity;
+            Vector3 size = _size ?? Vector3.one;
+
+            Vector3 right = rotation * (size.x * 0.5f * Vector3.right);
+            Vector3 up = rotation * (size.y * 0.5f * Vector3.up);
+            Vector3 forward = rotation * (size.z * 0.5f * Vector3.forward);
+            
+            Gizmos.color = _xColour ?? Gizmos.color;
+            ExtraGizmos.DrawArrow(_pos - right, _pos + right, 0.1f, 40.0f);
+            Gizmos.color = _yColour ?? Gizmos.color;
+            ExtraGizmos.DrawArrow(_pos - up, _pos + up, 0.1f, 40.0f);
+            Gizmos.color = _zColour ?? Gizmos.color;
+            ExtraGizmos.DrawArrow(_pos - forward, _pos + forward, 0.1f, 40.0f);
         }
         #endregion
  

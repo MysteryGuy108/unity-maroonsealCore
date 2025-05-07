@@ -15,7 +15,6 @@ namespace MaroonSeal.Maths.Shapes
             return _transform.TransformPosition(ToCartesian(_radius, _radians));
         }
 
-
         public static Vector2 GetCircleTangent(float _radians) {
             _radians += Mathf.PI*0.5f;
             return new Vector2(Mathf.Cos(_radians), Mathf.Sin(_radians));   

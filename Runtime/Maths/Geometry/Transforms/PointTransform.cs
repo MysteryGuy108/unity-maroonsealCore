@@ -58,6 +58,7 @@ namespace MaroonSeal.Maths {
         }
 
         public PointTransform(Transform _transform) {
+            if (_transform == null) { position = Vector3.zero; eulerAngles = Vector3.zero; scale = Vector3.one; return; }
             position = _transform.position;
             eulerAngles = _transform.eulerAngles;
             scale = _transform.localScale;
@@ -89,8 +90,11 @@ namespace MaroonSeal.Maths {
         public static bool operator !=(PointTransform _a, PointTransform _b) => !_a.Equals(_b);
         #endregion
 
-        #region Casting
-        public static implicit operator PointTransform2D(PointTransform _transform) => new(_transform.position, _transform.Rotation, _transform.scale);
+        #region Casting and Conversions
+        public static implicit operator PointTransform2D(PointTransform _transform) => _transform.ConvertToXY();
+        
+        readonly public PointTransform2D ConvertToXY() { return new(this.position.FlattenXY(), this.eulerAngles.z, this.scale.FlattenXY()); }
+        readonly public PointTransform2D ConvertToXZ() { return new(this.position.FlattenXZ(), -this.eulerAngles.y, this.scale.FlattenXZ()); }
         #endregion
 
         #region Point Transform
