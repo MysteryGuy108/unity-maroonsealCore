@@ -10,7 +10,7 @@ using MaroonSeal.Maths;
 
 namespace MaroonSealEditor.Maths {
     [CustomPropertyDrawer(typeof(PointTransform))]
-    public class PointTransformDrawer : PropertyDrawer
+    public class PointTransformPropertyDrawer : PropertyDrawer
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty _property) {
             Foldout root = new() {
@@ -52,8 +52,6 @@ namespace MaroonSealEditor.Maths {
 
             Quaternion rotation = _pointTransform.Rotation;
             
-            
-
             Handles.color = xAxisColour;
             Vector3 right = rotation * Vector3.right * _pointTransform.scale.x * 0.5f * scale.x;
             if (_negativeXAxis) { Handles.DrawLine(_pointTransform.position - right, _pointTransform.position + right); }
