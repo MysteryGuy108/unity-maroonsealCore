@@ -51,7 +51,7 @@ namespace MaroonSeal.Maths {
             scale = new(_TRS.GetColumn(0).magnitude, _TRS.GetColumn(1).magnitude);
         }
 
-        static public PointTransform2D Origin { get => new(Vector2.zero); }
+        static public PointTransform2D Origin => new(Vector2.zero);
         #endregion
 
         #region Operators

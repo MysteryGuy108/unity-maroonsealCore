@@ -63,7 +63,10 @@ namespace MaroonSeal {
         #endregion
 
         #region Axis
-        public static void DrawAxis(Vector3 _pos, Quaternion? _rotation = null, Vector3? _size = null, Color? _xColour = null, Color? _yColour = null, Color? _zColour = null) {
+        public static void DrawAxis(Vector3 _pos, Quaternion? _rotation = null, Vector3? _size = null, 
+                                    Color? _xColour = null, Color? _yColour = null, Color? _zColour = null,
+                                    bool? _negativeX = null, bool? _negativeY = null, bool? _negativeZ = null) {
+            
             Quaternion rotation = _rotation ?? Quaternion.identity;
             Vector3 size = _size ?? Vector3.one;
 
@@ -72,11 +75,16 @@ namespace MaroonSeal {
             Vector3 forward = rotation * (size.z * 0.5f * Vector3.forward);
             
             Gizmos.color = _xColour ?? Gizmos.color;
-            Gizmos.DrawLine(_pos - right, _pos + right);
+            if (_negativeX ?? true) { Gizmos.DrawLine(_pos - right, _pos + right); }
+            else { Gizmos.DrawLine(_pos, _pos + right); }
+            
             Gizmos.color = _yColour ?? Gizmos.color;
-            Gizmos.DrawLine(_pos - up, _pos + up);
+            if (_negativeY ?? true) { Gizmos.DrawLine(_pos - up, _pos + up); }
+            else { Gizmos.DrawLine(_pos, _pos + up); }
+
             Gizmos.color = _zColour ?? Gizmos.color;
-            Gizmos.DrawLine(_pos - forward, _pos + forward);
+            if (_negativeZ ?? true) { Gizmos.DrawLine(_pos - forward, _pos + forward); }
+            else { Gizmos.DrawLine(_pos, _pos + forward); }
         }
 
         public static void DrawAxisArrows(Vector3 _pos, Quaternion? _rotation = null, Vector3? _size = null, Color? _xColour = null, Color? _yColour = null, Color? _zColour = null) {
@@ -88,11 +96,11 @@ namespace MaroonSeal {
             Vector3 forward = rotation * (size.z * 0.5f * Vector3.forward);
             
             Gizmos.color = _xColour ?? Gizmos.color;
-            ExtraGizmos.DrawArrow(_pos - right, _pos + right, 0.1f, 40.0f);
+            DrawArrow(_pos - right, _pos + right, 0.1f, 40.0f);
             Gizmos.color = _yColour ?? Gizmos.color;
-            ExtraGizmos.DrawArrow(_pos - up, _pos + up, 0.1f, 40.0f);
+            DrawArrow(_pos - up, _pos + up, 0.1f, 40.0f);
             Gizmos.color = _zColour ?? Gizmos.color;
-            ExtraGizmos.DrawArrow(_pos - forward, _pos + forward, 0.1f, 40.0f);
+            DrawArrow(_pos - forward, _pos + forward, 0.1f, 40.0f);
         }
         #endregion
  
