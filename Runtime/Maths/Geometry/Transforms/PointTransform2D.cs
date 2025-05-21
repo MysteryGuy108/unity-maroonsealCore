@@ -39,9 +39,9 @@ namespace MaroonSeal.Maths {
             scale = _scale ?? Vector2.one;
         }
 
-        public PointTransform2D(Transform _transform) {
-            position = _transform.position;
-            angle = _transform.eulerAngles.z;
+        public PointTransform2D(Transform _transform, bool _worldSpace = true) {
+            position = _worldSpace ? _transform.position : _transform.localPosition;
+            angle = _worldSpace ? _transform.eulerAngles.z : _transform.localEulerAngles.z;
             scale = _transform.localScale;
         }
 
@@ -60,7 +60,7 @@ namespace MaroonSeal.Maths {
                 this.angle == _other.angle && 
                 this.scale == _other.scale;
         }
-        public override readonly bool Equals(object obj) => this.Equals((PointTransform)obj);
+        public override readonly bool Equals(object obj) => this.Equals((PointTransform2D)obj);
 
         public override readonly int GetHashCode() {
             unchecked {
@@ -86,7 +86,9 @@ namespace MaroonSeal.Maths {
         #endregion
 
         #region Conversions
-        readonly public PointTransform ToXY() { return new PointTransform(this.position, this.Rotation, this.scale); }
+        readonly public PointTransform ToXY() { 
+            return new PointTransform(this.position, this.Rotation, new(this.scale.x, this.scale.y, 1.0f)); 
+        }
 
         readonly public PointTransform ToXZ() {
             Vector3 position = this.position.ToXZ();

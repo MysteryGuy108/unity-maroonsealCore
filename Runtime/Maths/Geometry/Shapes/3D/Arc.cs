@@ -22,9 +22,9 @@ namespace MaroonSeal.Maths.Shapes {
         }
 
         #region Constructors
-        public Arc(PointTransform transform, float radius, float _startDegrees, float _endDegrees) {
-            this.transform = transform;
-            this.radius = radius;
+        public Arc(PointTransform _transform, float _radius, float _startDegrees, float _endDegrees) {
+            this.transform = _transform;
+            this.radius = _radius;
             this.startDegrees = _startDegrees;
             this.endDegrees = _endDegrees;
         }
@@ -36,13 +36,11 @@ namespace MaroonSeal.Maths.Shapes {
         readonly public float GetRadiansDelta() => GetDegreesDelta() * Mathf.Deg2Rad;
 
         #region IPolarSpaceShape
-        readonly public Vector3 EvaluatePositionAtTheta(float _theta) {
-            return transform.TransformPosition(IPolarShape.ToCartesian(radius, _theta));
-        }
+        readonly public Vector3 EvaluatePositionAtTheta(float _theta) =>
+            transform.TransformPosition(IPolarShape.ToCartesian(radius, _theta));
 
-        readonly public Vector3 EvaluateTangentAtTheta(float _theta) {
-            return transform.TransformVector(IPolarShape.GetCircleTangent(_theta));
-        }
+        readonly public Vector3 EvaluateTangentAtTheta(float _theta) =>
+            transform.TransformVector(IPolarShape.GetCircleTangent(_theta));
 
         readonly public Vector3 EvaluatePositionAtTime(float _time) {
             float lerpTheta = Mathf.Lerp(startDegrees, endDegrees, _time) * Mathf.Deg2Rad;

@@ -16,7 +16,10 @@ namespace MaroonSeal.Maths {
 
         public Vector3 Forward { 
             readonly get { return Rotation * Vector3.forward; }
-            set { Rotation = Quaternion.LookRotation(value, Up); }
+            set { 
+                if (value == Vector3.zero || Up == Vector3.zero) { Debug.Log("HERE"); }
+                Rotation = Quaternion.LookRotation(value, Up); 
+            }
         }
 
         public Vector3 Right { 
@@ -142,6 +145,7 @@ namespace MaroonSeal.Maths {
         /// <param name="_position"></param>
         /// <returns></returns>
         readonly public Vector3 TransformVector(Vector3 _vector) => ToWorldMatrix.MultiplyVector(_vector);
+        
         /// <summary>
         /// Transforms vector from world space to local space.
         /// </summary>
