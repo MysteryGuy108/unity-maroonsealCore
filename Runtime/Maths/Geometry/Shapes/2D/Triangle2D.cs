@@ -45,6 +45,23 @@ namespace MaroonSeal.Maths.Shapes {
         public static explicit operator Triangle(Triangle2D _triangle) => new(_triangle.pointA, _triangle.pointB, _triangle.pointC);
         #endregion
 
+        #region Shape2D
+        public void Rotate(float _rotation)
+        {
+            Quaternion rotation = Quaternion.AngleAxis(_rotation, Vector3.forward);
+            pointA = rotation * pointA;
+            pointB = rotation * pointB;
+            pointC = rotation * pointC;
+        }
+
+        public void Translate(Vector2 _translation)
+        {
+            pointA += _translation;
+            pointB += _translation;
+            pointC += _translation;
+        }
+        #endregion
+
         #region Triangle2D
         readonly public bool ContainsPoint(Vector2 _point) { return _point == pointA || _point == pointB || _point == pointC; }
 

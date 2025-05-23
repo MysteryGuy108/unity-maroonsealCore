@@ -20,6 +20,16 @@ namespace MaroonSeal.Maths.Shapes {
         public readonly float SemiLatusRectum { get => minR * (1.0f + eccentricity); }
         public readonly float MajorAxis { get => SemiLatusRectum / (1.0f-(eccentricity * eccentricity)); }
 
+        #region Shape3D
+        public void Rotate(Quaternion _rotation) {
+            this.transform.position = _rotation * transform.position;
+            this.transform.Rotation = _rotation * transform.Rotation;
+        }
+
+        public void Translate(Vector3 _translation) =>
+            this.transform.position += _translation;
+        #endregion
+
         #region Conic Section
         readonly public float GetBetweenFociDistance() => 2.0f * eccentricity * MajorAxis;
 
@@ -37,7 +47,8 @@ namespace MaroonSeal.Maths.Shapes {
         #endregion
 
         #region IPolarSpaceShape
-        readonly public Vector3 EvaluatePositionAtTheta(float _theta) {
+        readonly public Vector3 EvaluatePositionAtTheta(float _theta)
+        {
             float radius = SemiLatusRectum / (1.0f + (eccentricity * Mathf.Cos(_theta)));
             Vector3 localPoint = new Vector3(Mathf.Cos(_theta), Mathf.Sin(_theta)) * radius;
             return transform.TransformPosition(localPoint);

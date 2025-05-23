@@ -44,8 +44,20 @@ namespace MaroonSeal.Maths.Shapes {
         public static implicit operator Box2D(Box _box) => new(_box.transform, _box.dimensions);
         #endregion
 
+        #region Shape3D
+        public void Rotate(Quaternion _rotation)
+        {
+            this.transform.position = _rotation * transform.position;
+            this.transform.Rotation = _rotation * transform.Rotation;
+        }
+
+        public void Translate(Vector3 _translation) =>
+            this.transform.position += _translation;
+        #endregion
+
         #region Box
-        readonly public bool IsPositionInBounds(Vector2 _position) {
+        readonly public bool IsPositionInBounds(Vector2 _position)
+        {
             _position = transform.InverseTransformPosition(_position);
             Vector2 halfSize = dimensions * 0.5f;
 

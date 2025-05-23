@@ -57,8 +57,19 @@ namespace MaroonSeal.Maths.Shapes {
         public static implicit operator Circle2D(Circle _circle) => new(_circle.transform, _circle.radius);
         #endregion
 
+        #region Shape3D
+        public void Rotate(Quaternion _rotation) {
+            this.transform.position = _rotation * transform.position;
+            this.transform.Rotation = _rotation * transform.Rotation;
+        }
+
+        public void Translate(Vector3 _translation) =>
+            this.transform.position += _translation;
+        #endregion
+
         #region Circle
-        readonly public bool IsPositionInCircle(Vector3 _point) {
+        readonly public bool IsPositionInCircle(Vector3 _point)
+        {
             Vector3 localPoint = transform.InverseTransformPosition(_point);
             localPoint.z = 0.0f;
             return localPoint.magnitude <= radius;

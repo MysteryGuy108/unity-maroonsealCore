@@ -32,7 +32,17 @@ namespace MaroonSeal.Maths {
         readonly public override int GetHashCode() { return System.HashCode.Combine(transform, radius); }
         #endregion
 
-        #region Sphere3D
+        #region Shape3D
+        public void Rotate(Quaternion _rotation) {
+            this.transform.position = _rotation * transform.position;
+            this.transform.Rotation = _rotation * transform.Rotation;
+        }
+
+        public void Translate(Vector3 _translation) =>
+            this.transform.position += _translation;
+        #endregion
+
+        #region Sphere
         readonly public float GetArea() { return 4.0f * Mathf.PI * radius * radius; }
         readonly public bool IsPointInSphere(Vector3 _point) { return Vector3.Distance(_point, transform.position) < radius; }
         #endregion

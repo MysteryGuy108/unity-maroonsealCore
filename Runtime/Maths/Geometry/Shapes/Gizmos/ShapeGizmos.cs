@@ -33,9 +33,9 @@ namespace MaroonSeal.Maths.Shapes {
             ExtraGizmos.DrawAxis(_circle.transform.position,  _circle.transform.Rotation, _circle.radius * _pointSize * Vector2.one);
         }
 
-        public static void DrawArc(Arc _arc, int _resolution = 32, float _pointRadii = 0.03125f, float _pointSize = 0.125f) {
+        public static void DrawArc(Arc _arc, int _resolution = 32, float _pointRadii = 0.03125f, float _axisSize = 0.125f) {
             DrawInterpolationShape(_arc, _resolution);
-            ExtraGizmos.DrawAxis(_arc.transform.position, _arc.transform.Rotation, _arc.radius * _pointSize * Vector2.one);
+            ExtraGizmos.DrawAxis(_arc.transform.position, _arc.transform.Rotation, _arc.radius * _axisSize * Vector2.one);
 
             Gizmos.DrawSphere(_arc.EvaluatePositionAtTime(0.0f), _pointRadii);
             Gizmos.DrawSphere(_arc.EvaluatePositionAtTime(1.0f), _pointRadii);

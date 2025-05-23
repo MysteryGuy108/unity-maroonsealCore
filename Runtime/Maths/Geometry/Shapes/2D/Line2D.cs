@@ -36,6 +36,21 @@ namespace MaroonSeal.Maths.Shapes {
         public static explicit operator Line(Line2D _line) => new(_line.from, _line.to);
         #endregion
 
+        #region Shape2D
+        public void Rotate(float _rotation)
+        {
+            Quaternion rotation = Quaternion.AngleAxis(_rotation, Vector3.forward);
+            from = rotation * from;
+            to = rotation * to;
+        }
+
+        public void Translate(Vector2 _translation)
+        {
+            from += _translation;
+            to += _translation;
+        }
+        #endregion
+
         #region Line2D
         public readonly float GetLength() { return Vector2.Distance(from, to); }
 

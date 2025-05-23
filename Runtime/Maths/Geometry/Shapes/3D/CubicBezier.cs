@@ -2,8 +2,10 @@ using UnityEngine;
 
 
 namespace MaroonSeal.Maths.Shapes {
-    public struct CubicBezier : IInterpolationShape
+    public struct CubicBezier : IShape3D, IInterpolationShape
     {
+        public readonly PointTransform Transform => PointTransform.Origin;
+
         public Vector3 anchorA;
         public Vector3 controlA;
         public Vector3 controlB;
@@ -37,9 +39,28 @@ namespace MaroonSeal.Maths.Shapes {
         readonly public override int GetHashCode() { return System.HashCode.Combine(anchorA, controlA, controlB, anchorB); }
         #endregion
 
+        #region Shape3D
+        public void Rotate(Quaternion _rotation)
+        {
+            anchorA = _rotation * anchorA;
+            controlA = _rotation * controlA;
+            controlB = _rotation * controlB;
+            anchorB = _rotation * anchorB;
+        }
+
+        public void Translate(Vector3 _translation)
+        {
+            anchorA += _translation;
+            controlA += _translation;
+            controlB += _translation;
+            anchorB += _translation;
+        }
+        #endregion
+
         #region ICubic Bezier
-        public readonly Vector3 EvaluatePositionAtTime(float _t) {
-            float tm = 1.0f -_t;
+        public readonly Vector3 EvaluatePositionAtTime(float _t)
+        {
+            float tm = 1.0f - _t;
             float tm2 = tm * tm;
             float tm3 = tm * tm * tm;
 

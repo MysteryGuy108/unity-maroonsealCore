@@ -47,8 +47,17 @@ namespace MaroonSeal.Maths.Shapes {
         public static explicit operator Circle(Circle2D _circle2D) => new(_circle2D.transform.ToXY(), _circle2D.radius);
         #endregion
 
+        #region Shape2D
+        public void Rotate(float _rotation) =>
+            transform.angle += _rotation;
+
+        public void Translate(Vector2 _translation) =>
+            transform.position += _translation;
+        #endregion
+
         #region Circle2D
-        readonly public bool IsPositionInRadius(Vector2 _position) {
+        readonly public bool IsPositionInRadius(Vector2 _position)
+        {
             return this.transform.InverseTransformPosition(_position).magnitude <= radius;
         }
         #endregion

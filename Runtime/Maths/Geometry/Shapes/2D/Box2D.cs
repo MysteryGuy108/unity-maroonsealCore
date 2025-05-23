@@ -50,8 +50,17 @@ namespace MaroonSeal.Maths.Shapes {
         public static explicit operator Box(Box2D _box2D) => new(_box2D.transform.ToXY(), _box2D.dimensions);
         #endregion
 
+        #region Shape2D
+        public void Rotate(float _rotation) =>
+            transform.angle += _rotation;
+
+        public void Translate(Vector2 _translation) =>
+            transform.position += _translation;
+        #endregion
+
         #region Box2D
-        readonly public bool IsPositionInBounds(Vector2 _position) {
+        readonly public bool IsPositionInBounds(Vector2 _position)
+        {
             _position = transform.InverseTransformPosition(_position);
             Vector2 halfSize = dimensions * 0.5f;
 
@@ -67,6 +76,8 @@ namespace MaroonSeal.Maths.Shapes {
             Vector2 d = (Vector2)_position.Abs() - dimensions;
             return d.Max(0.0f).magnitude + Mathf.Min(Mathf.Max(d.x,d.y), 0.0f);
         }
+
+
         #endregion
     }
 }

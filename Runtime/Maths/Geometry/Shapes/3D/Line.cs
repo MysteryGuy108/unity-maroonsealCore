@@ -45,6 +45,16 @@ namespace MaroonSeal.Maths.Shapes {
         }
         #endregion
 
+        public void Rotate(Quaternion _rotation) {
+            start = _rotation * start;
+            end = _rotation * end;
+        }
+
+        public void Translate(Vector3 _translation) {
+            start += _translation;
+            end += _translation;
+        }
+
         #region IInterpolationShape
         public readonly Vector3 EvaluatePositionAtTime(float _time) { return Vector3.Lerp(start, end, _time); }
         public readonly Vector3 EvaluateTangentAtTime(float _time) { return GetDirection(); }
