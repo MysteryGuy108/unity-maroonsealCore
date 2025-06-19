@@ -36,8 +36,18 @@ namespace MaroonSeal {
             return _current.Min(Vector3.one * _min);
         }
 
+        public static bool IsInBounds(this Vector3 _current, Vector3 _pointA, Vector3 _pointB)
+        {
+            Vector3 min = _pointA.Min(_pointB);
+            Vector3 max = _pointA.Max(_pointB);
 
-        public static Vector3 Clamp(this Vector3 _current, Vector3 _min, Vector3 _max) {
+            return min.x <= _current.x && _current.x <= max.x &&
+                    min.y <= _current.y && _current.y <= max.y &&
+                    min.z <= _current.z && _current.z <= max.z;
+        }
+
+        public static Vector3 Clamp(this Vector3 _current, Vector3 _min, Vector3 _max)
+        {
             return new(Mathf.Clamp(_current.x, _min.x, _max.x), Mathf.Clamp(_current.y, _min.y, _max.y), Mathf.Clamp(_current.z, _min.z, _max.z));
         }
 
