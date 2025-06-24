@@ -29,7 +29,7 @@ namespace MaroonSeal {
         }
 
         public static Vector3 Min(this Vector3 _current, Vector3 _min) {
-            return new(Mathf.Min(_current.x, _min.x), Mathf.Max(_current.y, _min.y), Mathf.Max(_current.z, _min.z));
+            return new(Mathf.Min(_current.x, _min.x), Mathf.Min(_current.y, _min.y), Mathf.Min(_current.z, _min.z));
         }
 
         public static Vector3 Min(this Vector3 _current, float _min) {
