@@ -13,7 +13,7 @@ namespace MaroonSeal.Maths.Shapes {
 
         public PointTransform transform;
         readonly public PointTransform Transform => transform;
-
+        [Space]
         [Min(-1.0f)] public float eccentricity;
         [Min(0.0f)] public float minRadius;
         
