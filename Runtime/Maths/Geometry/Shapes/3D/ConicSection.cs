@@ -15,13 +15,41 @@ namespace MaroonSeal.Maths.Shapes {
         readonly public PointTransform Transform => transform;
 
         [Min(-1.0f)] public float eccentricity;
-        [Min(0.0f)] public float minR;
+        [Min(0.0f)] public float minRadius;
         
-        public readonly float SemiLatusRectum { get => minR * (1.0f + eccentricity); }
+        public readonly float SemiLatusRectum { get => minRadius * (1.0f + eccentricity); }
         public readonly float MajorAxis { get => SemiLatusRectum / (1.0f-(eccentricity * eccentricity)); }
 
+        #region Constructors
+        public ConicSection(PointTransform _transform, float _eccentricity, float _minRadius)
+        {
+            transform = _transform;
+            eccentricity = _eccentricity;
+            minRadius = _minRadius;
+        }
+        #endregion
+
+        #region Operators
+        public static bool operator ==(ConicSection _a, ConicSection _b)
+        {
+            return _a.transform == _b.transform &&
+                _a.eccentricity == _b.eccentricity &&
+                _a.minRadius == _b.minRadius;
+        }
+
+        public static bool operator != (ConicSection _a, ConicSection _b) {
+            return !(_a.transform == _b.transform &&
+                _a.eccentricity == _b.eccentricity &&
+                _a.minRadius == _b.minRadius);
+        }
+    
+        readonly public override bool Equals(object obj) { return ((ConicSection)obj == this) && obj != null && obj is ConicSection; }
+        readonly public override int GetHashCode() { return System.HashCode.Combine(transform, eccentricity, minRadius); }
+        #endregion
+
         #region Shape3D
-        public void Rotate(Quaternion _rotation) {
+        public void Rotate(Quaternion _rotation)
+        {
             this.transform.position = _rotation * transform.position;
             this.transform.Rotation = _rotation * transform.Rotation;
         }

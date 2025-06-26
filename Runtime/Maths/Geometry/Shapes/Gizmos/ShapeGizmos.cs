@@ -45,7 +45,7 @@ namespace MaroonSeal.Maths.Shapes {
             DrawInterpolationShape(_conicSection, _resolution);
             (Vector3, Vector3) foci = _conicSection.GetFoci();
             
-            Vector2 size = _conicSection.minR * _pointSize * Vector2.one;
+            Vector2 size = _conicSection.minRadius * _pointSize * Vector2.one;
             ExtraGizmos.DrawAxis(foci.Item1, _conicSection.transform.Rotation, size);
             ExtraGizmos.DrawAxis(foci.Item2, _conicSection.transform.Rotation, size);
         }
