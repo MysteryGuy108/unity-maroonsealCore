@@ -95,7 +95,7 @@ namespace MaroonSeal.Maths.Shapes {
         }
 
         readonly public Vector3 EvaluateTangentAtTime(float _t) {
-            throw new System.NotImplementedException();
+            return EvaluateTangentAtTheta(_t * Mathf.PI * 2.0f);
         }
         #endregion
 

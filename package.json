@@ -1,7 +1,7 @@
 {
   "name": "com.maroonseal.core",
   "version": "1.0.0",
-  "displayName": "Core",
+  "displayName": "Maroon Seal Core",
   "description": "A small collection of code libraries for use with Maroon Seal packages.",
   "unity": "2022.3",
   "unityRelease": "20f1",
