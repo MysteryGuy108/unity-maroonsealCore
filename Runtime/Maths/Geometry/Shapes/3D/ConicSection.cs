@@ -74,18 +74,19 @@ namespace MaroonSeal.Maths.Shapes {
         }
         #endregion
 
+        readonly public float GetRadiusAtTheta(float _theta) => SemiLatusRectum / (1.0f + (eccentricity * Mathf.Cos(_theta)));
+
         #region IPolarSpaceShape
         readonly public Vector3 EvaluatePositionAtTheta(float _theta)
         {
-            float radius = SemiLatusRectum / (1.0f + (eccentricity * Mathf.Cos(_theta)));
+            float radius = GetRadiusAtTheta(_theta);
             Vector3 localPoint = new Vector3(Mathf.Cos(_theta), Mathf.Sin(_theta)) * radius;
             return transform.TransformPosition(localPoint);
         }
 
         readonly public Vector3 EvaluateTangentAtTheta(float _theta) {
-            float radius = eccentricity * Mathf.Sin(_theta) / (1.0f + eccentricity * Mathf.Cos(_theta));
-            Vector3 localPoint = new Vector3(Mathf.Cos(_theta), Mathf.Sin(_theta)) * radius;
-            return transform.TransformPosition(localPoint);
+            Vector3 localPoint = new Vector3(-Mathf.Sin(_theta), Mathf.Cos(_theta) + eccentricity).normalized;
+            return transform.TransformDirection(localPoint);
         }
         #endregion
 
