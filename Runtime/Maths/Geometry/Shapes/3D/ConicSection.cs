@@ -53,7 +53,6 @@ namespace MaroonSeal.Maths.Shapes {
             this.transform.position = _rotation * transform.position;
             this.transform.Rotation = _rotation * transform.Rotation;
         }
-
         public void Translate(Vector3 _translation) =>
             this.transform.position += _translation;
         #endregion
@@ -75,6 +74,7 @@ namespace MaroonSeal.Maths.Shapes {
         #endregion
 
         readonly public float GetRadiusAtTheta(float _theta) => SemiLatusRectum / (1.0f + (eccentricity * Mathf.Cos(_theta)));
+        readonly public float GetThetaAtRadius(float _radius) => Mathf.Acos((SemiLatusRectum / (_radius * eccentricity)) - 1.0f);
 
         #region IPolarSpaceShape
         readonly public Vector3 EvaluatePositionAtTheta(float _theta)
