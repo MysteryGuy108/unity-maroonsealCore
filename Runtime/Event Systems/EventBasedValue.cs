@@ -12,7 +12,7 @@ namespace MaroonSeal
         [SerializeField] private TValue current;
         private TValue previous;
 
-        private HashSet<Action<TValue>> callbackLUT;
+        readonly private HashSet<Action<TValue>> listenerLUT;
 
         public TValue Value
         {
@@ -21,7 +21,7 @@ namespace MaroonSeal
             {
                 previous = current;
                 current = value;
-                InvokeCallbacks(current);
+                InvokeListeners(current);
             }
         }
 
@@ -31,31 +31,31 @@ namespace MaroonSeal
         public EventBasedValue(TValue _value) {
             current = _value;
             previous = _value;
-            callbackLUT = new();
+            listenerLUT = new();
         }
         public EventBasedValue() : this(default) {}
 
-        ~EventBasedValue() => callbackLUT?.Clear();
+        ~EventBasedValue() => listenerLUT?.Clear();
         #endregion
 
         #region Callbacks
-        public void AddCallback(Action<TValue> _value)
+        public void AddListener(Action<TValue> _value)
         {
-            if (callbackLUT.Contains(_value)) { return; }
-            callbackLUT.Add(_value);
+            if (listenerLUT.Contains(_value)) { return; }
+            listenerLUT.Add(_value);
         }
 
-        public void RemoveCallback(Action<TValue> _value)
+        public void RemoveListener(Action<TValue> _value)
         {
-            if (!callbackLUT.Contains(_value)) { return; }
-            callbackLUT.Remove(_value);
+            if (!listenerLUT.Contains(_value)) { return; }
+            listenerLUT.Remove(_value);
         }
 
-        private void InvokeCallbacks(TValue _value)
+        private void InvokeListeners(TValue _value)
         {
-            foreach (Action<TValue> callback in callbackLUT)
+            foreach (Action<TValue> listener in listenerLUT)
             {
-                callback.Invoke(_value);
+                listener.Invoke(_value);
             }
         }
         #endregion
@@ -63,11 +63,11 @@ namespace MaroonSeal
         #region ISerializationCallbackReceiver
         public void OnAfterDeserialize()
         {
-            if (callbackLUT == null) { return; }
+            if (listenerLUT == null) { return; }
             if (current.Equals(previous)) { return; }
 
             previous = current;
-            InvokeCallbacks(current);
+            InvokeListeners(current);
         }
 
         public void OnBeforeSerialize() {}
