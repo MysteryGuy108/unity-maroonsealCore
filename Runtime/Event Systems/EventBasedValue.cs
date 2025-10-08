@@ -14,17 +14,7 @@ namespace MaroonSeal
 
         readonly private HashSet<Action<TValue>> listenerLUT;
 
-        public TValue Value
-        {
-            get { return current; }
-            private set
-            {
-                previous = current;
-                current = value;
-                InvokeListeners(current);
-            }
-        }
-
+        public TValue Value => current;
         public TValue Previous => previous;
 
         #region Constructors
@@ -37,6 +27,13 @@ namespace MaroonSeal
 
         ~EventBasedValue() => listenerLUT?.Clear();
         #endregion
+
+        public void SetValue(TValue _value)
+        {
+            previous = current;
+            current = _value;
+            InvokeListeners(current);
+        }
 
         #region Callbacks
         public void AddListener(Action<TValue> _value)
