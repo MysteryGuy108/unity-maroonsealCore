@@ -13,7 +13,11 @@ namespace MaroonSealEditor
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty _property)
         {
-            PropertyField valueProperty = new(_property.FindPropertyRelative("current"));
+            PropertyField valueProperty = new(_property.FindPropertyRelative("current"))
+            {
+                label = _property.displayName
+            };
+
             return valueProperty;
         }
     }
