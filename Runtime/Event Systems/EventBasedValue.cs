@@ -12,7 +12,7 @@ namespace MaroonSeal
         [SerializeField] private TValue current;
         private TValue previous;
 
-        readonly private HashSet<Action<TValue>> listenerLUT;
+        readonly private List<Action<TValue>> listeners;
 
         public TValue Value => current;
         public TValue Previous => previous;
@@ -21,11 +21,11 @@ namespace MaroonSeal
         public EventBasedValue(TValue _value) {
             current = _value;
             previous = _value;
-            listenerLUT = new();
+            listeners = new();
         }
         public EventBasedValue() : this(default) {}
 
-        ~EventBasedValue() => listenerLUT?.Clear();
+        ~EventBasedValue() => listeners?.Clear();
         #endregion
 
         public void SetValue(TValue _value)
@@ -36,31 +36,31 @@ namespace MaroonSeal
         }
 
         #region Callbacks
-        public void AddListener(Action<TValue> _value)
+        public void AddListener(Action<TValue> _listener)
         {
-            if (listenerLUT.Contains(_value)) { return; }
-            listenerLUT.Add(_value);
+            if (listeners.Contains(_listener) || _listener == null) { return; }
+            listeners.Add(_listener);
         }
 
-        public void RemoveListener(Action<TValue> _value)
+        public void RemoveListener(Action<TValue> _listener)
         {
-            if (!listenerLUT.Contains(_value)) { return; }
-            listenerLUT.Remove(_value);
+            if (!listeners.Contains(_listener)) { return; }
+            listeners.Remove(_listener);
         }
 
         private void InvokeListeners(TValue _value)
         {
-            foreach (Action<TValue> listener in listenerLUT)
-            {
-                listener.Invoke(_value);
+            for (int i = listeners.Count - 1; i >= 0; i--) {
+                listeners[i].Invoke(_value);
             }
+
         }
         #endregion
 
         #region ISerializationCallbackReceiver
         public void OnAfterDeserialize()
         {
-            if (listenerLUT == null) { return; }
+            if (listeners == null) { return; }
             if (current.Equals(previous)) { return; }
 
             previous = current;
