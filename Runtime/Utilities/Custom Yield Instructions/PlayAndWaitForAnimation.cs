@@ -40,7 +40,15 @@ namespace MaroonSeal
                     return true;
                 }
 
-                return stateInfo.shortNameHash == stateHash && stateInfo.normalizedTime < 1.0f;
+                if (stateInfo.speedMultiplier >= 0)
+                {
+                    return stateInfo.shortNameHash == stateHash && stateInfo.normalizedTime < 1.0f;
+                }
+                else
+                {
+                    return stateInfo.shortNameHash == stateHash && stateInfo.normalizedTime > 0.0f;
+                }
+                
             }
         }
         #endregion
